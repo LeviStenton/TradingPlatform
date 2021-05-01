@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"<Unnamed>","c":"Orders","l":"getPrice()"},{"p":"<Unnamed>","c":"Orders","l":"getQuantity()"},{"p":"<Unnamed>","c":"Orders","l":"getType()"},{"p":"<Unnamed>","c":"Orders","l":"Orders()","u":"%3Cinit%3E()"}];updateSearchResults();
