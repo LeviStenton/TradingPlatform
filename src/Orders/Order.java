@@ -8,6 +8,7 @@ public class Order {
     private float price;
     private float quantity;
     private String asset;
+    private String placedBy;
 
     /**
      *Constructor for the Order class
@@ -15,13 +16,22 @@ public class Order {
      * @param type The type of order, eg 'B' for buy and 'S' for sell
      * @param price The price that the order was placed for
      * @param quantity The quantity of the asset to be sold
+     * @param asset The asset name
+     * @param placedBy The person who placed the order
      */
-    public Order(String type, float price, float quantity, String asset){
+    public Order(String type, float price, float quantity, String asset, String placedBy){
         this.type = type;
         this.price = price;
         this.quantity = quantity;
         this.asset = asset;
+        this.placedBy = placedBy;
     }
+
+    /**
+     * Get the name of the person who placed the order
+     * @return
+     */
+    public String getPlacedBy(){return this.placedBy;}
 
     /**
      * Get the Type of the order

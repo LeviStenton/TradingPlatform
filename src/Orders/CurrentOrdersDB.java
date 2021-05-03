@@ -4,8 +4,8 @@ package Orders;
  * Handles updating of the current orders database
  */
 public class CurrentOrdersDB {
-
-    public static final String CREATE_TABLE = null; //Create table if it does not exist
+    //Create table if it does not exist
+    public static final String CREATE_TABLE = null;
 
     /**
      * Adds a order to the database
@@ -27,9 +27,22 @@ public class CurrentOrdersDB {
     }
 
     /**
-     * Change a order to have a different quantity or price
+     * Change a placed orders price
+     *
+     * @param id The id of the order to be changed
+     * @param price The new Price for the order
      */
-    public void updateOrder(int id){
+    public void updatePrice(int id, float price){
+
+    }
+
+    /**
+     * Change a placed orders quantity
+     *
+     * @param id The id of the order to be changed
+     * @param quantity The new Quantity for the order
+     */
+    public void updateQuantity(int id, float quantity){
 
     }
 
