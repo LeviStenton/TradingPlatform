@@ -1,4 +1,4 @@
-package Ui;
+package UI;
 
 public class BuyScreenUi {
 

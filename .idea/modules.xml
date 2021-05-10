@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ElectronicAssetTradingPlatform.iml" filepath="$PROJECT_DIR$/ElectronicAssetTradingPlatform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CAB302 Assignment.iml" filepath="$PROJECT_DIR$/CAB302 Assignment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/Server.iml" filepath="$PROJECT_DIR$/Server/Server.iml" />
     </modules>
   </component>
 </project>
