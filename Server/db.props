@@ -1,0 +1,4 @@
+jdbc.url=jdbc:sqlite:ETPInformation.db
+jdbc.schema=
+jdbc.username=
+jdbc.password=
