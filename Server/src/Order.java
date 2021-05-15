@@ -7,11 +7,12 @@ import java.sql.SQLException;
 public class Order {
     private int orderID;
     private String datePlaced;
-    private String assetID;
+    private int assetID;
     private float price;
     private String orderType;
-    private float quantity;
+    private int quantity;
     private int userID;
+    private String completed;
 
     /**
      * Constructor for the Order class
@@ -22,7 +23,7 @@ public class Order {
             this.orderType = order.getString("OrderType");
             this.price = order.getFloat("Price");
             this.quantity = order.getInt("Quantity");
-            this.assetID = order.getString("AssetID");
+            this.assetID = order.getInt("AssetID");
             this.userID = order.getInt("UserID");
             this.orderID = order.getInt("OrderID");
             this.datePlaced = order.getString("DatePlaced");
@@ -30,6 +31,21 @@ public class Order {
             e.printStackTrace();
         }
 
+    }
+
+    public Order(ResultSet order, String completed){
+        try {
+            this.orderType = order.getString("OrderType");
+            this.price = order.getFloat("Price");
+            this.quantity = order.getInt("Quantity");
+            this.assetID = order.getInt("AssetID");
+            this.userID = order.getInt("UserID");
+            this.orderID = order.getInt("OrderID");
+            this.datePlaced = order.getString("DatePlaced");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        this.completed = completed;
     }
 
     /**
@@ -54,17 +70,19 @@ public class Order {
      * Get the Quantity of the order
      * @return Float of the quantity the order was placed for
      */
-    public float getQuantity(){ return this.quantity; }
+    public int getQuantity(){ return this.quantity; }
 
     /**
      * Get the Asset type that was placed in the order
      * @return The string of the Asset name
      */
-    public String getAsset(){ return this.assetID; }
-
+    public int getAssetID(){ return this.assetID; }
+    //TODO comments
     public int getOrderID(){return this.orderID;}
 
     public String getDatePlaced(){return this.datePlaced;}
+
+    public String getCompleted(){return this.completed;}
 
     /**
      * Set the Price of the order
@@ -74,13 +92,15 @@ public class Order {
 
     /**
      * Set the Quantity of the order
-     * @param quantity Float of the new quantity for the order
+     * @param quantity Int of the new quantity for the order
      */
-    public void setQuantity(float quantity){ this.quantity = quantity; }
+    public void setQuantity(int quantity){ this.quantity = quantity; }
 
     /**
      * Set the date the order was placed
      * @param datePlaced
      */
     public void setDatePlaced(String datePlaced){this.datePlaced = datePlaced;}
+
+    public void setCompleted(String completed){this.completed = completed;};
 }

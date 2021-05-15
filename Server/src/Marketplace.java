@@ -1,12 +1,52 @@
+import java.util.List;
+
 public class Marketplace {
         public void GroupAssets(){
-                //DBSource source = new DBSource();
-                //source.GetBuyOrders();
+                DBSource source = new DBSource();
 
-                //SELECT MAX(AssetID)
-                // FROM Assets
+                int assetCount = source.GetAssetCount();
+                List<Order> buyOrders;
+                List<Order> sellOrders;
 
-                //Store in int maxAssets
+
+                for(int i = 1; i < assetCount; i++){
+                        buyOrders = source.GetOrders(i,"B");
+                        sellOrders = source.GetOrders(i,"S");
+                        if(buyOrders.size() > 0 && sellOrders.size() > 0){
+                                for(int z = 0; z < buyOrders.size(); z++)  {
+                                        for(int q = 0; q < sellOrders.size(); q++) {
+                                                if(buyOrders.get(z).getPrice() >= sellOrders.get(q).getPrice()){
+                                                        buyOrders.get(z).setPrice(sellOrders.get(q).getPrice());
+                                                        if(buyOrders.get(z).getQuantity() == sellOrders.get(q).getQuantity()){
+                                                                buyOrders.get(z).setCompleted("Y");
+                                                                sellOrders.get(q).setCompleted("Y");
+
+                                                                source.AddOrgCredits(sellOrders.get(q).getPrice(), source.OrderJoinOrgID(sellOrders.get(q).getOrderID()), "+");
+
+                                                                source.AddToOrderHistory(buyOrders.get(z));
+                                                                source.AddToOrderHistory(sellOrders.get(q));
+
+                                                                //Orders finished
+                                                                //buyOrders.remove(z);
+                                                                //sellOrders.remove(q);
+                                                                //break * 2
+                                                                System.out.println("gg");
+                                                        }
+                                                        else if(buyOrders.get(z).getQuantity() > sellOrders.get(q).getQuantity()){
+                                                                //Sell order is finished
+                                                                //buyOrder quantity - sellOrder quantity
+                                                        }
+                                                        else if(buyOrders.get(z).getQuantity() < sellOrders.get(q).getQuantity()){
+                                                                //buyOrder is finished
+                                                                //sellOrder quantity - buyOrder quantity
+                                                        }
+                                                        //break;
+                                                }
+
+                                        }
+                                }
+                        }
+                }
 
                 //for(int i, to maxAssets)
                         //SELECT Asset_ID FROM Orders

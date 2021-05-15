@@ -77,13 +77,13 @@ loadScripts(document, 'script');</script>
 <h1 title="Class Order" class="title">Class Order</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree">java.lang.Object
-<div class="inheritance">Orders.Order</div>
+<div class="inheritance">Orders.COrder</div>
 </div>
 <section class="description">
 <hr>
 <pre>public class <span class="type-name-label">Order</span>
 extends java.lang.Object</pre>
-<div class="block">Hold details about a order so they can be changed or referenced</div>
+<div class="block">Hold details about a COrder so they can be changed or referenced</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -135,42 +135,42 @@ java.lang.String&nbsp;asset)</code></th>
 <td class="col-first"><code>java.lang.String</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getAsset()">getAsset</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Get the Asset type that was placed in the order</div>
+<div class="block">Get the Asset type that was placed in the COrder</div>
 </td>
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>float</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getPrice()">getPrice</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Get the Price of the order</div>
+<div class="block">Get the Price of the COrder</div>
 </td>
 </tr>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code>float</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getQuantity()">getQuantity</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Get the Quantity of the order</div>
+<div class="block">Get the Quantity of the COrder</div>
 </td>
 </tr>
 <tr class="row-color" id="i3">
 <td class="col-first"><code>java.lang.String</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getType()">getType</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Get the Type of the order</div>
+<div class="block">Get the Type of the COrder</div>
 </td>
 </tr>
 <tr class="alt-color" id="i4">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#setPrice(float)">setPrice</a></span>&#8203;(float&nbsp;price)</code></th>
 <td class="col-last">
-<div class="block">Set the Price of the order</div>
+<div class="block">Set the Price of the COrder</div>
 </td>
 </tr>
 <tr class="row-color" id="i5">
 <td class="col-first"><code>void</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#setQuantity(float)">setQuantity</a></span>&#8203;(float&nbsp;quantity)</code></th>
 <td class="col-last">
-<div class="block">Set the Quantity of the order</div>
+<div class="block">Set the Quantity of the COrder</div>
 </td>
 </tr>
 </tbody>
@@ -201,8 +201,8 @@ java.lang.String&nbsp;asset)</span></div>
 <div class="block">Constructor for the Order class</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>type</code> - The type of order, eg 'B' for buy and 'S' for sell</dd>
-<dd><code>price</code> - The price that the order was placed for</dd>
+<dd><code>type</code> - The type of COrder, eg 'B' for buy and 'S' for sell</dd>
+<dd><code>price</code> - The price that the COrder was placed for</dd>
 <dd><code>quantity</code> - The quantity of the asset to be sold</dd>
 </dl>
 </section>
@@ -219,10 +219,10 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="getType()">
 <h3>getType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.lang.String</span>&nbsp;<span class="member-name">getType</span>()</div>
-<div class="block">Get the Type of the order</div>
+<div class="block">Get the Type of the COrder</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>'B' or 'S' depending on, if it is a buy or sell order</dd>
+<dd>'B' or 'S' depending on, if it is a buy or sell COrder</dd>
 </dl>
 </section>
 </li>
@@ -230,10 +230,10 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="getPrice()">
 <h3>getPrice</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="member-name">getPrice</span>()</div>
-<div class="block">Get the Price of the order</div>
+<div class="block">Get the Price of the COrder</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Float of the price the order was placed for</dd>
+<dd>Float of the price the COrder was placed for</dd>
 </dl>
 </section>
 </li>
@@ -241,10 +241,10 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="getQuantity()">
 <h3>getQuantity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">float</span>&nbsp;<span class="member-name">getQuantity</span>()</div>
-<div class="block">Get the Quantity of the order</div>
+<div class="block">Get the Quantity of the COrder</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>Float of the quantity the order was placed for</dd>
+<dd>Float of the quantity the COrder was placed for</dd>
 </dl>
 </section>
 </li>
@@ -252,7 +252,7 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="getAsset()">
 <h3>getAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">java.lang.String</span>&nbsp;<span class="member-name">getAsset</span>()</div>
-<div class="block">Get the Asset type that was placed in the order</div>
+<div class="block">Get the Asset type that was placed in the COrder</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>The string of the Asset name</dd>
@@ -263,10 +263,10 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="setPrice(float)">
 <h3>setPrice</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">setPrice</span>&#8203;(<span class="parameters">float&nbsp;price)</span></div>
-<div class="block">Set the Price of the order</div>
+<div class="block">Set the Price of the COrder</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>price</code> - Float of the new price for the order</dd>
+<dd><code>price</code> - Float of the new price for the COrder</dd>
 </dl>
 </section>
 </li>
@@ -274,10 +274,10 @@ java.lang.String&nbsp;asset)</span></div>
 <section class="detail" id="setQuantity(float)">
 <h3>setQuantity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="member-name">setQuantity</span>&#8203;(<span class="parameters">float&nbsp;quantity)</span></div>
-<div class="block">Set the Quantity of the order</div>
+<div class="block">Set the Quantity of the COrder</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>quantity</code> - Float of the new quantity for the order</dd>
+<dd><code>quantity</code> - Float of the new quantity for the COrder</dd>
 </dl>
 </section>
 </li>

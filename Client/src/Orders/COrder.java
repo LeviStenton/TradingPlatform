@@ -3,7 +3,7 @@ package Orders;
 /**
  * Hold details about a order so they can be changed or referenced
  */
-public class Order {
+public class COrder {
     private String type;
     private float price;
     private float quantity;
@@ -19,7 +19,7 @@ public class Order {
      * @param asset The asset name
      * @param placedBy The person who placed the order
      */
-    public Order(String type, float price, float quantity, String asset, String placedBy){
+    public COrder(String type, float price, float quantity, String asset, String placedBy){
         this.type = type;
         this.price = price;
         this.quantity = quantity;

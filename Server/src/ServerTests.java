@@ -19,8 +19,15 @@ public class ServerTests {
     }
 
     @Test
-    void Test(){
+    void CountAssets(){
         DBSource source = new DBSource();
-        source.GetOrders(1, "B");
+        System.out.println(source.GetAssetCount());
+        assertTrue(source.GetAssetCount() > 0);
+    }
+
+    @Test
+    void RunMarketPlaceLoop(){
+        Marketplace mk = new Marketplace();
+        mk.GroupAssets();
     }
 }

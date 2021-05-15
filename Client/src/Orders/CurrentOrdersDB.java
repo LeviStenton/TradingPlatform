@@ -10,9 +10,9 @@ public class CurrentOrdersDB {
     /**
      * Adds a order to the database
      *
-     * @param order the order to be added
+     * @param COrder the order to be added
      */
-    public void addOrder(Order order){
+    public void addOrder(COrder COrder){
 
     }
 
