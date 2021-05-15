@@ -17,4 +17,10 @@ public class ServerTests {
         DBSource source = new DBSource();        ;
         assertTrue(source.loginAttempt("LeviStenton", "password1"));
     }
+
+    @Test
+    void Test(){
+        DBSource source = new DBSource();
+        source.GetOrders(1, "B");
+    }
 }
