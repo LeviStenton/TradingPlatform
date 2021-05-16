@@ -21,6 +21,7 @@ public class DBSource {
     private final String INSERTORGASSET = "INSERT INTO OrganizationAssets(OrganizationID, AssetID, Quantity) VALUES (?,?,?)";
     private final String UPDATEORGASSET = "UPDATE OrganizationAssets SET Quantity = ? WHERE OrganizationID = ? AND AssetID = ?";
     private final String GETORGASSETQUANTITY = "SELECT Quantity FROM OrganizationAssets WHERE OrganizationID = ? AND AssetID = ?";
+    private final String DELETEORDER = "DELETE FROM Orders WHERE OrderID = ?";
 
     private PreparedStatement loginVerification;
     private PreparedStatement accountCreation;
@@ -33,6 +34,7 @@ public class DBSource {
     private PreparedStatement insertOrgAsset;
     private PreparedStatement updateOrgAsset;
     private PreparedStatement getOrgAssetQuantity;
+    private PreparedStatement deleteOrder;
 
     public DBSource(){
         connection = DBConnection.getInstance();
@@ -49,6 +51,7 @@ public class DBSource {
             insertOrgAsset = connection.prepareStatement(INSERTORGASSET);
             updateOrgAsset = connection.prepareStatement(UPDATEORGASSET);
             getOrgAssetQuantity = connection.prepareStatement(GETORGASSETQUANTITY);
+            deleteOrder = connection.prepareStatement(DELETEORDER);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,6 +80,16 @@ public class DBSource {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    public void DeleteOrder(int orderID){
+        try {
+            deleteOrder.setInt(1, orderID);
+            deleteOrder.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -113,9 +126,9 @@ public class DBSource {
             addOrderHistory.setInt(1, order.getOrderID());
             addOrderHistory.setString(2, order.getDatePlaced());
             addOrderHistory.setInt(3, order.getAssetID());
-            addOrderHistory.setFloat(4, order.getPrice());
+            addOrderHistory.setDouble(4, order.getPrice());
             addOrderHistory.setString(5, order.getOrderType());
-            addOrderHistory.setInt(6, order.getQuantity());
+            addOrderHistory.setDouble(6, order.getQuantity());
             addOrderHistory.setInt(7, order.getUserID());
             addOrderHistory.setString(8, order.getCompleted());
             addOrderHistory.executeUpdate();

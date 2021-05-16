@@ -13,83 +13,74 @@ public class Marketplace {
                         buyOrders = source.GetOrders(i,"B");
                         sellOrders = source.GetOrders(i,"S");
                         if(buyOrders.size() > 0 && sellOrders.size() > 0){
-                                for(int z = 0; z < buyOrders.size(); z++)  {
-                                        for(int q = 0; q < sellOrders.size(); q++) {
-                                                if(buyOrders.get(z).getPrice() >= sellOrders.get(q).getPrice()){
-                                                        buyOrders.get(z).setPrice(sellOrders.get(q).getPrice());
-                                                        if(buyOrders.get(z).getQuantity() == sellOrders.get(q).getQuantity()){
-                                                                //sets orders to complete
-                                                                buyOrders.get(z).setCompleted("Y");
-                                                                sellOrders.get(q).setCompleted("Y");
-
-                                                                //Adds credits to seller
-                                                                source.ChangeOrgCredits(sellOrders.get(q).getPrice(), source.OrderJoinOrgID(sellOrders.get(q).getOrderID()), "+");
-                                                                //Adds asset to buyer
-                                                                source.InsertOrgAsset(source.OrderJoinOrgID(buyOrders.get(z).getOrderID()),buyOrders.get(z).getAssetID(),buyOrders.get(z).getQuantity(), "+");
-
-                                                                source.AddToOrderHistory(buyOrders.get(z));
-                                                                source.AddToOrderHistory(sellOrders.get(q));
-
-                                                                //Orders finished
-                                                                //buyOrders.remove(z);
-                                                                //sellOrders.remove(q);
-                                                                //break * 2
-                                                                System.out.println("gg");
-                                                        }
-                                                        else if(buyOrders.get(z).getQuantity() > sellOrders.get(q).getQuantity()){
-                                                                //Sell order is finished
-                                                                //buyOrder quantity - sellOrder quantity
-                                                        }
-                                                        else if(buyOrders.get(z).getQuantity() < sellOrders.get(q).getQuantity()){
-                                                                //buyOrder is finished
-                                                                //sellOrder quantity - buyOrder quantity
-                                                        }
-                                                        //break;
-                                                }
-
-                                        }
-                                }
+                               LoopBuyOrders(buyOrders,sellOrders,source);
                         }
                 }
+        }
 
-                //for(int i, to maxAssets)
-                        //SELECT Asset_ID FROM Orders
-                        //ORDER BY Asset_ID,date
-                        //WHERE Asset_ID = i && Order type = B
-                        //Store in buyList
+        private void LoopBuyOrders(List<Order> buyOrders, List<Order> sellOrders, DBSource source){
+                boolean endLoop = false;
+                for(int buyI = 0; buyI < buyOrders.size(); buyI++)  {
+                        LoopSellOrders(buyOrders,sellOrders,source , buyI);
+                }
+        }
 
-                        //SELECT Asset_ID FROM Orders
-                        //ORDER BY Asset_ID,date
-                        //WHERE Asset_ID = i && Order type = S
-                        //Store in sellList
+        private void LoopSellOrders(List<Order> buyOrders, List<Order> sellOrders, DBSource source, int buyI){
+                double buyOrderPrice;
+                double sellOrderPrice;
+                double buyOrderQuantity;
+                double sellOrderQuantity;
+                int buyOrderOrderID;
+                int sellOrderOrderID;
+                int buyOrderAssetID;
+                double sellPriceTotal;
 
-                        //if(buyList.count >= 1 && sellList.count >= 1)
-                                //for(int z; z <= buyList.Count; z++)
-                                        //for(int q; q <= sellList.Count; q++)
-                                                //if(buyList[z].price >= sellList[q].price){
-                                                // buy
-                                                //}
+                for(int q = 0; q < sellOrders.size(); q++) {
+                        buyOrderPrice = buyOrders.get(buyI).getPrice();
+                        sellOrderPrice = sellOrders.get(q).getPrice();
+                        buyOrderQuantity = buyOrders.get(buyI).getQuantity();
+                        sellOrderQuantity = sellOrders.get(q).getQuantity();
+                        buyOrderOrderID = buyOrders.get(buyI).getOrderID();
+                        sellOrderOrderID = sellOrders.get(q).getOrderID();
+                        buyOrderAssetID = buyOrders.get(buyI).getAssetID();
 
 
+                        if(buyOrderPrice >= sellOrderPrice){
+                                buyOrders.get(buyI).setPrice(sellOrderPrice);
+                                buyOrderPrice = buyOrders.get(buyI).getPrice();
+
+                                if(buyOrderQuantity > sellOrderQuantity){
+                                        buyOrderQuantity = sellOrderQuantity;
+                                }
+
+                                sellPriceTotal = buyOrderQuantity * sellOrderPrice;
+
+                                //Adds credits to seller
+                                source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(sellOrderOrderID), "+");
+                                //Adds asset to buyer
+                                source.InsertOrgAsset(source.OrderJoinOrgID(buyOrderOrderID),buyOrderAssetID,buyOrderQuantity, "+");
+
+                                buyOrders.get(buyI).setQuantity(buyOrderQuantity);
+                                sellOrders.get(q).setQuantity(sellOrderQuantity);
+
+                                source.AddToOrderHistory(buyOrders.get(buyI));
+                                source.AddToOrderHistory(sellOrders.get(q));
+
+                                //Remove buy/sell orders from orders DB
+                                if(buyOrderQuantity == 0){
+                                        buyOrders.get(buyI).setCompleted("Y");
+                                        source.DeleteOrder(buyOrderOrderID);
+                                }
+                                if(sellOrderQuantity == 0){
+                                        sellOrders.get(q).setCompleted("Y");
+                                        source.DeleteOrder(sellOrderOrderID);
+                                }
+
+                                break;
 
 
+                        }
 
-
-
-
-
-                //SELECT DISTINCT Asset_ID FROM Orders
-                //ORDER BY Asset_ID;
-                //Where order type = B
-                //Store in array1
-
-                //SELECT DISTINCT Asset_ID FROM Orders
-                //ORDER BY Asset_ID;
-                //Where order type = S
-                //store in array2
-
-                //Check array1 has every element of array2
-                //if they match add to array3
-                //Array 3 will be
+                }
         }
 }
