@@ -34,6 +34,6 @@ public class ServerTests {
     @Test
     void InsertAsset(){
         DBSource source = new DBSource();
-        source.InsertOrgAsset(1,1,10);
+        //source.InsertOrgAsset(1,1,10);
     }
 }

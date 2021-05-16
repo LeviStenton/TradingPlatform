@@ -25,6 +25,7 @@ public class Marketplace {
                                                                 //Adds credits to seller
                                                                 source.ChangeOrgCredits(sellOrders.get(q).getPrice(), source.OrderJoinOrgID(sellOrders.get(q).getOrderID()), "+");
                                                                 //Adds asset to buyer
+                                                                source.InsertOrgAsset(source.OrderJoinOrgID(buyOrders.get(z).getOrderID()),buyOrders.get(z).getAssetID(),buyOrders.get(z).getQuantity(), "+");
 
                                                                 source.AddToOrderHistory(buyOrders.get(z));
                                                                 source.AddToOrderHistory(sellOrders.get(q));

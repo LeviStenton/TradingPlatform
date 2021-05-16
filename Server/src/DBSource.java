@@ -57,7 +57,7 @@ public class DBSource {
 
 
 
-    public void InsertOrgAsset(int orgID, int assetID, double quantity){
+    public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator){
         ResultSet rs;
         try{
             insertOrgAsset.setInt(1,orgID);
@@ -69,9 +69,14 @@ public class DBSource {
             //error code 19 = org.sqlite.SQLiteException: [SQLITE_CONSTRAINT_PRIMARYKEY]
             if(e.getErrorCode() == 19){
                 //Org already has some of this asset it needs to be updated instead of inserted
+                UpdateOrgAsset(quantity, orgID, assetID, operator);
+                System.out.println("Yes");
             }
-            System.out.println(e.getErrorCode());
-            e.printStackTrace();
+            else {
+                System.out.println(e.getErrorCode());
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -172,10 +177,10 @@ public class DBSource {
 
     public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator){
         ResultSet rs;
-        double assetQuantity =
-        assetQuantity = ChangeWithOperator(GetOrgAssetQuantity, quantity, operator);
+        double assetQuantity = GetOrgAssetQuantity(orgID,assetID);
+        assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
         try{
-            updateOrgAsset.setDouble(1,quantity);
+            updateOrgAsset.setDouble(1,assetQuantity);
             updateOrgAsset.setInt(2,orgID);
             updateOrgAsset.setInt(3,assetID);
             updateOrgAsset.executeUpdate();
