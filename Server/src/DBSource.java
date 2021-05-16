@@ -1,8 +1,6 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.sqlite.SQLiteException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +18,9 @@ public class DBSource {
     private final String CHANGEORGCREDITS = "UPDATE OrganizationDetails SET CreditQuantity = ? WHERE OrganizationID = ?";
     private final String GETORGCREDITS = "SELECT CreditQuantity FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String ORDERJOINORGID = "SELECT AccountDetails.OrganizationID FROM Orders LEFT JOIN AccountDetails ON Orders.UserID = AccountDetails.UserID WHERE OrderID = ?";
+    private final String INSERTORGASSET = "INSERT INTO OrganizationAssets(OrganizationID, AssetID, Quantity) VALUES (?,?,?)";
+    private final String UPDATEORGASSET = "UPDATE OrganizationAssets SET Quantity = ? WHERE OrganizationID = ? AND AssetID = ?";
+    private final String GETORGASSETQUANTITY = "SELECT Quantity FROM OrganizationAssets WHERE OrganizationID = ? AND AssetID = ?";
 
     private PreparedStatement loginVerification;
     private PreparedStatement accountCreation;
@@ -29,6 +30,10 @@ public class DBSource {
     private PreparedStatement changeOrgCredits;
     private PreparedStatement getOrgCredits;
     private PreparedStatement orderJoinOrgID;
+    private PreparedStatement insertOrgAsset;
+    private PreparedStatement updateOrgAsset;
+    private PreparedStatement getOrgAssetQuantity;
+
     public DBSource(){
         connection = DBConnection.getInstance();
 
@@ -41,7 +46,31 @@ public class DBSource {
             changeOrgCredits = connection.prepareStatement(CHANGEORGCREDITS);
             getOrgCredits = connection.prepareStatement(GETORGCREDITS);
             orderJoinOrgID = connection.prepareStatement(ORDERJOINORGID);
+            insertOrgAsset = connection.prepareStatement(INSERTORGASSET);
+            updateOrgAsset = connection.prepareStatement(UPDATEORGASSET);
+            getOrgAssetQuantity = connection.prepareStatement(GETORGASSETQUANTITY);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public void InsertOrgAsset(int orgID, int assetID, double quantity){
+        ResultSet rs;
+        try{
+            insertOrgAsset.setInt(1,orgID);
+            insertOrgAsset.setInt(2,assetID);
+            insertOrgAsset.setDouble(3,quantity);
+            insertOrgAsset.executeUpdate();
+        }
+        catch (SQLException e) {
+            //error code 19 = org.sqlite.SQLiteException: [SQLITE_CONSTRAINT_PRIMARYKEY]
+            if(e.getErrorCode() == 19){
+                //Org already has some of this asset it needs to be updated instead of inserted
+            }
+            System.out.println(e.getErrorCode());
             e.printStackTrace();
         }
     }
@@ -91,10 +120,9 @@ public class DBSource {
         }
     }
 
-    public void AddOrgCredits(float credits, int orgID, String operator){
+    public double GetOrgCredits(int orgID){
         ResultSet rs;
-        float currentCredits = 0;
-
+        double currentCredits = -1;
         try{
             getOrgCredits.setInt(1, orgID);
             rs = getOrgCredits.executeQuery();
@@ -104,20 +132,70 @@ public class DBSource {
             e.printStackTrace();
         }
 
+        return currentCredits;
+    }
+
+
+
+    public double ChangeWithOperator(double current,double toChange, String operator){
         switch (operator){
             case "+":
-                currentCredits += credits;
+                current += toChange;
                 break;
             case "-":
-                currentCredits -= credits;
+                current -= toChange;
                 break;
             case "=":
-                currentCredits = credits;
+                current = toChange;
                 break;
         }
+        return current;
+    }
+
+    public double GetOrgAssetQuantity(int orgID, int assetID){
+        ResultSet rs;
+        float quantity = 0;
+
+        try{
+            getOrgAssetQuantity.setInt(1,orgID);
+            getOrgAssetQuantity.setInt(2,assetID);
+            rs = getOrgAssetQuantity.executeQuery();
+            return rs.getDouble("Quantity");
+        }
+        catch (SQLException e) {
+
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator){
+        ResultSet rs;
+        double assetQuantity =
+        assetQuantity = ChangeWithOperator(GetOrgAssetQuantity, quantity, operator);
+        try{
+            updateOrgAsset.setDouble(1,quantity);
+            updateOrgAsset.setInt(2,orgID);
+            updateOrgAsset.setInt(3,assetID);
+            updateOrgAsset.executeUpdate();
+        }
+        catch (SQLException e) {
+
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+    }
+
+    public void ChangeOrgCredits(double credits, int orgID, String operator){
+        double currentCredits = 0;
+
+        currentCredits = GetOrgCredits(orgID);
+        currentCredits = ChangeWithOperator(currentCredits, credits, operator);
+
 
         try {
-            changeOrgCredits.setFloat(1, currentCredits);
+            changeOrgCredits.setDouble(1, currentCredits);
             changeOrgCredits.setInt(2, orgID);
             changeOrgCredits.executeUpdate();
         }catch (SQLException e){
@@ -159,10 +237,6 @@ public class DBSource {
         }
 
         return null;
-    }
-
-    public void ChangeCredits(){
-
     }
 
     public int GetAssetCount(){

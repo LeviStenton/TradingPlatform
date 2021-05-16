@@ -18,10 +18,13 @@ public class Marketplace {
                                                 if(buyOrders.get(z).getPrice() >= sellOrders.get(q).getPrice()){
                                                         buyOrders.get(z).setPrice(sellOrders.get(q).getPrice());
                                                         if(buyOrders.get(z).getQuantity() == sellOrders.get(q).getQuantity()){
+                                                                //sets orders to complete
                                                                 buyOrders.get(z).setCompleted("Y");
                                                                 sellOrders.get(q).setCompleted("Y");
 
-                                                                source.AddOrgCredits(sellOrders.get(q).getPrice(), source.OrderJoinOrgID(sellOrders.get(q).getOrderID()), "+");
+                                                                //Adds credits to seller
+                                                                source.ChangeOrgCredits(sellOrders.get(q).getPrice(), source.OrderJoinOrgID(sellOrders.get(q).getOrderID()), "+");
+                                                                //Adds asset to buyer
 
                                                                 source.AddToOrderHistory(buyOrders.get(z));
                                                                 source.AddToOrderHistory(sellOrders.get(q));

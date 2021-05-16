@@ -30,4 +30,10 @@ public class ServerTests {
         Marketplace mk = new Marketplace();
         mk.GroupAssets();
     }
+
+    @Test
+    void InsertAsset(){
+        DBSource source = new DBSource();
+        source.InsertOrgAsset(1,1,10);
+    }
 }
