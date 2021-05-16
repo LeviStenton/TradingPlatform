@@ -2,7 +2,9 @@ package Orders;
 
 /**
  * Handles updating of the current orders database
+ * @dprecated This has been moved to the server side, needs to be changed to notify the server to make these changes
  */
+
 public class CurrentOrdersDB {
     //Create table if it does not exist
     public static final String CREATE_TABLE = null;
