@@ -26,14 +26,39 @@ public class ServerTests {
     }
 
     @Test
-    void RunMarketPlaceLoop(){
+    void RunMarketPlaceLoopNormalCase(){
         Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
         source.AddOrder(100,1,15,"B",10,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
+    }
 
+    @Test
+    void RunMarketPlaceLoopNoCase(){
+        Marketplace mk = new Marketplace();
+        DBSource source = new DBSource();
+        source.AddOrder(100,1,15,"B",10,1);
+        source.AddOrder(101,2,15,"S",10,2);
+        mk.GroupAssets();
+    }
 
+    @Test
+    void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
+        Marketplace mk = new Marketplace();
+        DBSource source = new DBSource();
+        source.AddOrder(100,1,20,"B",20,1);
+        source.AddOrder(101,1,15,"S",10,2);
+        mk.GroupAssets();
+    }
+
+    @Test
+    void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
+        Marketplace mk = new Marketplace();
+        DBSource source = new DBSource();
+        source.AddOrder(100,1,13,"B",20,1);
+        source.AddOrder(101,1,15,"S",10,2);
+        mk.GroupAssets();
     }
 
     @Test

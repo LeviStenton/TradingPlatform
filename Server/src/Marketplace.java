@@ -48,9 +48,15 @@ public class Marketplace {
                         if(buyOrderPrice >= sellOrderPrice){
                                 buyOrders.get(buyI).setPrice(sellOrderPrice);
                                 buyOrderPrice = buyOrders.get(buyI).getPrice();
-
+                                double remainingBuyQuantity = 0;
+                                double remainingSellQuantity = 0;
                                 if(buyOrderQuantity > sellOrderQuantity){
+                                        remainingBuyQuantity = buyOrderQuantity - sellOrderQuantity;
                                         buyOrderQuantity = sellOrderQuantity;
+                                }
+                                if(sellOrderQuantity > buyOrderQuantity){
+                                        remainingSellQuantity = sellOrderQuantity - buyOrderQuantity;
+                                        sellOrderQuantity = buyOrderQuantity;
                                 }
 
                                 sellPriceTotal = buyOrderQuantity * sellOrderPrice;
@@ -71,7 +77,7 @@ public class Marketplace {
                                 double tempBuyQuantity = buyOrderQuantity - sellOrderQuantity;
                                 double tempSelluantity = sellOrderQuantity - buyOrderQuantity;
 
-                                if(tempBuyQuantity == 0){
+                                if(tempBuyQuantity == 0 && remainingBuyQuantity == 0){
                                         buyOrders.get(buyI).setCompleted("Y");
                                         source.AddToOrderHistory(buyOrders.get(buyI));
                                         source.DeleteOrder(buyOrderOrderID);
@@ -81,7 +87,8 @@ public class Marketplace {
                                         source.AddToOrderHistory(buyOrders.get(buyI));
                                         source.ChangeOrderQuantity(buyOrderOrderID,buyOrderQuantity,"-");
                                 }
-                                if(tempSelluantity == 0){
+
+                                if(tempSelluantity == 0 && remainingSellQuantity == 0){
                                         sellOrders.get(q).setCompleted("Y");
                                         source.AddToOrderHistory(sellOrders.get(q));
                                         source.DeleteOrder(sellOrderOrderID);
