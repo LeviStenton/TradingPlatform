@@ -57,24 +57,44 @@ public class Marketplace {
 
                                 //Adds credits to seller
                                 source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(sellOrderOrderID), "+");
+                                System.out.println("added " + sellPriceTotal + " credits to org " + source.OrderJoinOrgID(sellOrderOrderID));
                                 //Adds asset to buyer
                                 source.InsertOrgAsset(source.OrderJoinOrgID(buyOrderOrderID),buyOrderAssetID,buyOrderQuantity, "+");
+                                System.out.println("added " + buyOrderQuantity + " , " + buyOrderAssetID + " to org " + source.OrderJoinOrgID(buyOrderOrderID));
+
+
 
                                 buyOrders.get(buyI).setQuantity(buyOrderQuantity);
                                 sellOrders.get(q).setQuantity(sellOrderQuantity);
 
-                                source.AddToOrderHistory(buyOrders.get(buyI));
-                                source.AddToOrderHistory(sellOrders.get(q));
-
                                 //Remove buy/sell orders from orders DB
-                                if(buyOrderQuantity == 0){
+                                double tempBuyQuantity = buyOrderQuantity - sellOrderQuantity;
+                                double tempSelluantity = sellOrderQuantity - buyOrderQuantity;
+
+                                if(tempBuyQuantity == 0){
                                         buyOrders.get(buyI).setCompleted("Y");
+                                        source.AddToOrderHistory(buyOrders.get(buyI));
                                         source.DeleteOrder(buyOrderOrderID);
                                 }
-                                if(sellOrderQuantity == 0){
+                                else {
+                                        buyOrders.get(buyI).setCompleted("Y");
+                                        source.AddToOrderHistory(buyOrders.get(buyI));
+                                        source.ChangeOrderQuantity(buyOrderOrderID,buyOrderQuantity,"-");
+                                }
+                                if(tempSelluantity == 0){
                                         sellOrders.get(q).setCompleted("Y");
+                                        source.AddToOrderHistory(sellOrders.get(q));
                                         source.DeleteOrder(sellOrderOrderID);
                                 }
+                                else{
+                                        sellOrders.get(q).setCompleted("Y");
+                                        source.AddToOrderHistory(sellOrders.get(q));
+                                        source.ChangeOrderQuantity(sellOrderOrderID,sellOrderQuantity,"-");
+
+                                }
+
+
+
 
                                 break;
 

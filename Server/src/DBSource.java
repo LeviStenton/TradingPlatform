@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DBSource {
 
@@ -22,6 +24,9 @@ public class DBSource {
     private final String UPDATEORGASSET = "UPDATE OrganizationAssets SET Quantity = ? WHERE OrganizationID = ? AND AssetID = ?";
     private final String GETORGASSETQUANTITY = "SELECT Quantity FROM OrganizationAssets WHERE OrganizationID = ? AND AssetID = ?";
     private final String DELETEORDER = "DELETE FROM Orders WHERE OrderID = ?";
+    private final String ADDORDER = "INSERT INTO Orders(OrderID, DatePlaced, AssetID, Price, OrderType,Quantity,UserID) VALUES (?,?,?,?,?,?,?)";
+    private final String CHANGEORDERQUANTITY = "UPDATE Orders SET Quantity = ? WHERE OrderID = ?";
+    private final String GETORDERFROMORDERID = "SELECT * FROM Orders WHERE OrderID = ?";
 
     private PreparedStatement loginVerification;
     private PreparedStatement accountCreation;
@@ -35,6 +40,9 @@ public class DBSource {
     private PreparedStatement updateOrgAsset;
     private PreparedStatement getOrgAssetQuantity;
     private PreparedStatement deleteOrder;
+    private PreparedStatement addOrder;
+    private PreparedStatement changeOrderQuantity;
+    private PreparedStatement getOrderFromOrderID;
 
     public DBSource(){
         connection = DBConnection.getInstance();
@@ -52,13 +60,67 @@ public class DBSource {
             updateOrgAsset = connection.prepareStatement(UPDATEORGASSET);
             getOrgAssetQuantity = connection.prepareStatement(GETORGASSETQUANTITY);
             deleteOrder = connection.prepareStatement(DELETEORDER);
+            addOrder = connection.prepareStatement(ADDORDER);
+            changeOrderQuantity = connection.prepareStatement(CHANGEORDERQUANTITY);
+            getOrderFromOrderID = connection.prepareStatement(GETORDERFROMORDERID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public double GetOrderQuantity(int orderID){
+        ResultSet rs;
+        double quantity = -1;
+        try{
+            getOrderFromOrderID.setInt(1, orderID);
+            rs = getOrderFromOrderID.executeQuery();
+            quantity = rs.getInt("Quantity");
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return quantity;
+    }
+
+    public void ChangeOrderQuantity(int orderID, double quantity, String operator){
+        ResultSet rs;
+        double assetQuantity = GetOrderQuantity(orderID);
+        assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
+        try{
+            changeOrderQuantity.setDouble(1,assetQuantity);
+            changeOrderQuantity.setInt(2,orderID);
+            changeOrderQuantity.executeUpdate();
+        }
+        catch (SQLException e) {
+
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+    }
 
 
+    public void AddOrder(int orderID,int assetID, double price, String type, double quantity, int userID){
+        ResultSet rs;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        try{
+            if(orderID != -1){
+                addOrder.setInt(1,orderID);
+            }
+            addOrder.setString(2,formatter.format(date));
+            addOrder.setInt(3,assetID);
+            addOrder.setDouble(4,price);
+            addOrder.setString(5,type);
+            addOrder.setDouble(6,quantity);
+            addOrder.setInt(7,userID);
+            addOrder.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator){
         ResultSet rs;

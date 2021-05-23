@@ -28,7 +28,12 @@ public class ServerTests {
     @Test
     void RunMarketPlaceLoop(){
         Marketplace mk = new Marketplace();
+        DBSource source = new DBSource();
+        source.AddOrder(100,1,15,"B",10,1);
+        source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
+
+
     }
 
     @Test
