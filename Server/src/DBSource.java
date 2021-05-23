@@ -68,6 +68,12 @@ public class DBSource {
         }
     }
 
+    /**
+     * Gets the quantity of a order
+     * Selects order based on orderID
+     * @param orderID the ID of the order
+     * @return The current quantity that the order has
+     */
     public double GetOrderQuantity(int orderID){
         ResultSet rs;
         double quantity = -1;
@@ -83,6 +89,13 @@ public class DBSource {
         return quantity;
     }
 
+    /**
+     * Changes the quantity of a order based on the operator
+     * Selects order based on orderID
+     * @param orderID The ID of the order
+     * @param quantity The amount to change the order by
+     * @param operator Takes math operators eg "+" "-". Will change the order quantity based on this
+     */
     public void ChangeOrderQuantity(int orderID, double quantity, String operator){
         ResultSet rs;
         double assetQuantity = GetOrderQuantity(orderID);
@@ -99,7 +112,15 @@ public class DBSource {
         }
     }
 
-
+    /**
+     * Adds a order to the Orders database
+     * @param orderID The ID of the order
+     * @param assetID the ID of the asset
+     * @param price the price per unit
+     * @param type What type of order is the order eg "B" "S"
+     * @param quantity The amount of the asset to be listed
+     * @param userID The userID of the person who placed the order
+     */
     public void AddOrder(int orderID,int assetID, double price, String type, double quantity, int userID){
         ResultSet rs;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -122,6 +143,13 @@ public class DBSource {
         }
     }
 
+    /**
+     * Inserts a asset into a org if it doesn't exist or updates it instead
+     * @param orgID The ID of the org
+     * @param assetID The ID of the asset
+     * @param quantity The amount to be changed by
+     * @param operator Takes math operators eg "+" "-". Will change the amount a Org has of a asset based on this
+     */
     public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator){
         ResultSet rs;
         try{
@@ -145,6 +173,11 @@ public class DBSource {
         }
     }
 
+    /**
+     * Deletes order from Orders DB
+     * Selects based on orderID
+     * @param orderID The ID of the order
+     */
     public void DeleteOrder(int orderID){
         try {
             deleteOrder.setInt(1, orderID);
@@ -169,6 +202,11 @@ public class DBSource {
         }
     }
 
+    /**
+     * Left joins AccountDetails to Orders to add the user who placed the order orgID
+     * @param orderID The ID of the order
+     * @return the user who placed the order orgID
+     */
     public int OrderJoinOrgID(int orderID){
         ResultSet rs;
 
@@ -183,6 +221,10 @@ public class DBSource {
         return -1;
     }
 
+    /**
+     * Adds a completed order to the OrderHistory database
+     * @param order Contains all the order details
+     */
     public void AddToOrderHistory(Order order){
         try {
             addOrderHistory.setInt(1, order.getOrderID());
@@ -200,6 +242,12 @@ public class DBSource {
         }
     }
 
+    /**
+     * Gets a org current amount of credits
+     * Selects from orgID
+     * @param orgID the ID of the org
+     * @return
+     */
     public double GetOrgCredits(int orgID){
         ResultSet rs;
         double currentCredits = -1;
@@ -216,7 +264,13 @@ public class DBSource {
     }
 
 
-
+    /**
+     * Acts as a calculator
+     * @param current The left side of the operator
+     * @param toChange The right side of the operator
+     * @param operator Takes math operators "+" "-" "="
+     * @return The result of the calculator
+     */
     public double ChangeWithOperator(double current,double toChange, String operator){
         switch (operator){
             case "+":
@@ -232,6 +286,13 @@ public class DBSource {
         return current;
     }
 
+    /**
+     * Gets how many of a asset a org has
+     * Select based on orgID and assetID
+     * @param orgID The ID of the org
+     * @param assetID The ID of the asset
+     * @return
+     */
     public double GetOrgAssetQuantity(int orgID, int assetID){
         ResultSet rs;
         float quantity = 0;
@@ -250,6 +311,13 @@ public class DBSource {
         return -1;
     }
 
+    /**
+     * Updates the amount of a asset a org has
+     * @param quantity The amount to change by
+     * @param orgID The ID of the org
+     * @param assetID the ID of the asset
+     * @param operator Takes math operators "+" "-" "="
+     */
     public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator){
         ResultSet rs;
         double assetQuantity = GetOrgAssetQuantity(orgID,assetID);
@@ -267,6 +335,12 @@ public class DBSource {
         }
     }
 
+    /**
+     *Change the amount of credits a org has
+     * @param credits The amount to change
+     * @param orgID The ID of the org
+     * @param operator Takes math operators "+" "-" "="
+     */
     public void ChangeOrgCredits(double credits, int orgID, String operator){
         double currentCredits = 0;
 
@@ -284,6 +358,12 @@ public class DBSource {
 
     }
 
+    /**
+     * Creates a new Account
+     * @param userName The selected name for the account
+     * @param password The selected password for the account
+     * @param orgID The org the user will be apart of
+     */
     public void CreateAccount(String userName, String password, Integer orgID){
         ResultSet rs;
         try {
@@ -297,6 +377,13 @@ public class DBSource {
         }
     }
 
+    /**
+     * Gets all orders from the Orders database
+     * Selects based on order Type and assetID
+     * @param assetID The ID of the asset
+     * @param orderType The type of order eg "B" "S"
+     * @return A list of all orders matching the params
+     */
     public List<Order> GetOrders(int assetID, String orderType){
         ResultSet rs;
         List<Order> orders = new ArrayList<Order>();
@@ -319,6 +406,10 @@ public class DBSource {
         return null;
     }
 
+    /**
+     * Finds how many assets are currently in the system
+     * @return The highest AssetID
+     */
     public int GetAssetCount(){
         ResultSet rs;
         int count = 0;
@@ -334,5 +425,3 @@ public class DBSource {
         return count;
     }
 }
-
-//accountCreation.executeQuery();
