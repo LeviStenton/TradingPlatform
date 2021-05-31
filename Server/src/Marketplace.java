@@ -4,14 +4,14 @@ public class Marketplace {
         public void GroupAssets(){
                 DBSource source = new DBSource();
 
-                int assetCount = source.GetAssetCount();
+                List<Integer> assetCount = source.GetAssetCount();
                 List<Order> buyOrders;
                 List<Order> sellOrders;
 
-
-                for(int i = 1; i < assetCount; i++){
-                        buyOrders = source.GetOrders(i,"B");
-                        sellOrders = source.GetOrders(i,"S");
+                //TODO you just changed assetCount to a list
+                for(int i = 1; i < assetCount.size(); i++){
+                        buyOrders = source.GetOrders(assetCount.get(i - 1),"B");
+                        sellOrders = source.GetOrders(assetCount.get(i - 1),"S");
                         if(buyOrders.size() > 0 && sellOrders.size() > 0){
                                LoopBuyOrders(buyOrders,sellOrders,source);
                         }

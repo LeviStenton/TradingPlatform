@@ -15,7 +15,7 @@ public class DBSource {
     private final String LOGIN_DETAILS = "SELECT Username, Password FROM AccountDetails WHERE Username=?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
-    private final String ASSETCOUNT ="SELECT MAX(AssetID) FROM Assets";
+    private final String ASSETCOUNT ="SELECT AssetID FROM Assets";
     private final String ADDORDERHISTORY = "INSERT INTO OrderHistory(OrderID, DatePlaced, AssetID, Price, OrderType, Quantity, UserID, Completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String CHANGEORGCREDITS = "UPDATE OrganizationDetails SET CreditQuantity = ? WHERE OrganizationID = ?";
     private final String GETORGCREDITS = "SELECT CreditQuantity FROM OrganizationDetails WHERE OrganizationID = ?";
@@ -27,6 +27,14 @@ public class DBSource {
     private final String ADDORDER = "INSERT INTO Orders(OrderID, DatePlaced, AssetID, Price, OrderType,Quantity,UserID) VALUES (?,?,?,?,?,?,?)";
     private final String CHANGEORDERQUANTITY = "UPDATE Orders SET Quantity = ? WHERE OrderID = ?";
     private final String GETORDERFROMORDERID = "SELECT * FROM Orders WHERE OrderID = ?";
+    private final String CHANGEUSERORG = "UPDATE AccountDetails SET OrganizationID = ? WHERE UserID = ?";
+    private final String CHANGEUSERPASSWORD = "UPDATE AccountDetails SET Password = ? WHERE UserID = ?";
+    private final String ADDNEWASSET = "INSERT INTO Assets(AssetName) VALUES (?)";
+    private final String DELETEASSET = "DELETE FROM Assets WHERE AssetID = ?";
+    private final String DELETEUSER = "DELETE FROM AccountDetails WHERE UserID = ?";
+    private final String INSERTNEWORGINTOORGDETAILS = "INSERT INTO OrganizationDetails(CreditQuantity,OrganizationName) VALUES (?,?)";
+    private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
+    private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
 
     private PreparedStatement loginVerification;
     private PreparedStatement accountCreation;
@@ -43,6 +51,14 @@ public class DBSource {
     private PreparedStatement addOrder;
     private PreparedStatement changeOrderQuantity;
     private PreparedStatement getOrderFromOrderID;
+    private PreparedStatement changeUserOrg;
+    private PreparedStatement changeUserPassword;
+    private PreparedStatement addNewAsset;
+    private PreparedStatement deleteUser;
+    private PreparedStatement deleteAsset;
+    private PreparedStatement insetNewOrgIntoOrgDetails;
+    private PreparedStatement deleteOrgFromOrgDetails;
+    private PreparedStatement deleteOrgFromOrgAssets;
 
     public DBSource(){
         connection = DBConnection.getInstance();
@@ -63,7 +79,127 @@ public class DBSource {
             addOrder = connection.prepareStatement(ADDORDER);
             changeOrderQuantity = connection.prepareStatement(CHANGEORDERQUANTITY);
             getOrderFromOrderID = connection.prepareStatement(GETORDERFROMORDERID);
+            changeUserOrg = connection.prepareStatement(CHANGEUSERORG);
+            changeUserPassword = connection.prepareStatement(CHANGEUSERPASSWORD);
+            addNewAsset = connection.prepareStatement(ADDNEWASSET);
+            deleteUser = connection.prepareStatement(DELETEUSER);
+            deleteAsset = connection.prepareStatement(DELETEASSET);
+            insetNewOrgIntoOrgDetails = connection.prepareStatement(INSERTNEWORGINTOORGDETAILS);
+            deleteOrgFromOrgDetails = connection.prepareStatement(DELETEORGFROMORGDETAILS);
+            deleteOrgFromOrgAssets = connection.prepareStatement(DELETEORGFROMORGASSETS);
+
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void DeteteOrgFromOrgDetails(int orgID){
+        try {
+            deleteOrgFromOrgDetails.setInt(1, orgID);
+            deleteOrgFromOrgDetails.executeUpdate();
+            deleteOrgFromOrgAssets.setInt(1, orgID);
+            deleteOrgFromOrgAssets.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Inserts new org into OrganizationDetails
+     * @param credits The amount of credits the org should have
+     * @param orgName The name of the new org
+     */
+    public void InsertNewOrgIntoOrgDetails(float credits, String orgName){
+        try{
+            insetNewOrgIntoOrgDetails.setFloat(1,credits);
+            insetNewOrgIntoOrgDetails.setString(1,orgName);
+            insetNewOrgIntoOrgDetails.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Used to delete a asset from Asset table
+     * @param assetID
+     */
+    public void DeleteAsset(int assetID){
+        try {
+            deleteAsset.setInt(1, assetID);
+            deleteAsset.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Adds a new Asset to Asset table
+     * @param assetName the asset to add
+     */
+    public void AddNewAsset(String assetName){
+        try{
+            addNewAsset.setString(1,assetName);
+            addNewAsset.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Used to delete a user
+     * @param userID The user to delete
+     */
+    public void DeleteUser(int userID){
+        try {
+            deleteUser.setInt(1, userID);
+            deleteUser.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Used to change a users password
+     * Hashing is done client side
+     * @param password The new password to set
+     * @param userID The user password to change
+     */
+    public void ChangeUserPassword(String password, int userID){
+        ResultSet rs;
+        try{
+            changeUserPassword.setString(1,password);
+            changeUserPassword.setInt(2,userID);
+            changeUserPassword.executeUpdate();
+        }
+        catch (SQLException e) {
+
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Changes the org a user is in
+     * @param orgID The org to change the user to
+     * @param userID The user to change
+     */
+    public void ChangeUserOrg(int orgID, int userID){
+        ResultSet rs;
+        try{
+            changeUserOrg.setInt(1,orgID);
+            changeUserOrg.setInt(2,userID);
+            changeUserOrg.executeUpdate();
+        }
+        catch (SQLException e) {
+
+            System.out.println(e.getErrorCode());
             e.printStackTrace();
         }
     }
@@ -410,18 +546,21 @@ public class DBSource {
      * Finds how many assets are currently in the system
      * @return The highest AssetID
      */
-    public int GetAssetCount(){
+    public List<Integer> GetAssetCount(){
         ResultSet rs;
-        int count = 0;
+        List<Integer> id = new ArrayList<Integer>();
 
         try {
             rs = getAssetCount.executeQuery();
-            count = rs.getInt("MAX(AssetID)");
-            return count;
+            while (rs.next())
+            {
+                id.add(rs.getInt("AssetID"));
+            }
+            return id;
         }catch (SQLException e){
             e.printStackTrace();
         }
 
-        return count;
+        return id;
     }
 }
