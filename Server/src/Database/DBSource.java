@@ -1,16 +1,18 @@
+<<<<<<< HEAD:Server/src/Database/DBSource.java
 package src.Database;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+=======
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DBSource {
+public class DBSource implements DBInterface {
 
     private final Connection connection;
 
@@ -94,8 +96,13 @@ public class DBSource {
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD:Server/src/Database/DBSource.java
 
     public void DeteteOrgFromOrgDetails(int orgID) {
+=======
+    @Override
+    public void DeteteOrgFromOrgDetails(int orgID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         try {
             deleteOrgFromOrgDetails.setInt(1, orgID);
             deleteOrgFromOrgDetails.executeUpdate();
@@ -113,10 +120,18 @@ public class DBSource {
      * @param credits The amount of credits the org should have
      * @param orgName The name of the new org
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void InsertNewOrgIntoOrgDetails(float credits, String orgName) {
         try {
             insetNewOrgIntoOrgDetails.setFloat(1, credits);
             insetNewOrgIntoOrgDetails.setString(1, orgName);
+=======
+    @Override
+    public void InsertNewOrgIntoOrgDetails(float credits, String orgName){
+        try{
+            insetNewOrgIntoOrgDetails.setFloat(1,credits);
+            insetNewOrgIntoOrgDetails.setString(1,orgName);
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
             insetNewOrgIntoOrgDetails.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -129,7 +144,12 @@ public class DBSource {
      *
      * @param assetID
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void DeleteAsset(int assetID) {
+=======
+    @Override
+    public void DeleteAsset(int assetID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         try {
             deleteAsset.setInt(1, assetID);
             deleteAsset.executeUpdate();
@@ -145,9 +165,16 @@ public class DBSource {
      *
      * @param assetName the asset to add
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void AddNewAsset(String assetName) {
         try {
             addNewAsset.setString(1, assetName);
+=======
+    @Override
+    public void AddNewAsset(String assetName){
+        try{
+            addNewAsset.setString(1,assetName);
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
             addNewAsset.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,7 +186,12 @@ public class DBSource {
      *
      * @param userID The user to delete
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void DeleteUser(int userID) {
+=======
+    @Override
+    public void DeleteUser(int userID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         try {
             deleteUser.setInt(1, userID);
             deleteUser.executeUpdate();
@@ -177,7 +209,12 @@ public class DBSource {
      * @param password The new password to set
      * @param userID   The user password to change
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void ChangeUserPassword(String password, int userID) {
+=======
+    @Override
+    public void ChangeUserPassword(String password, int userID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         try {
             changeUserPassword.setString(1, password);
@@ -196,7 +233,12 @@ public class DBSource {
      * @param orgID  The org to change the user to
      * @param userID The user to change
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void ChangeUserOrg(int orgID, int userID) {
+=======
+    @Override
+    public void ChangeUserOrg(int orgID, int userID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         try {
             changeUserOrg.setInt(1, orgID);
@@ -216,7 +258,12 @@ public class DBSource {
      * @param orderID the ID of the order
      * @return The current quantity that the order has
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public double GetOrderQuantity(int orderID) {
+=======
+    @Override
+    public double GetOrderQuantity(int orderID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         double quantity = -1;
         try {
@@ -239,7 +286,12 @@ public class DBSource {
      * @param quantity The amount to change the order by
      * @param operator Takes math operators eg "+" "-". Will change the order quantity based on this
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void ChangeOrderQuantity(int orderID, double quantity, String operator) {
+=======
+    @Override
+    public void ChangeOrderQuantity(int orderID, double quantity, String operator){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         double assetQuantity = GetOrderQuantity(orderID);
         assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
@@ -264,7 +316,12 @@ public class DBSource {
      * @param quantity The amount of the asset to be listed
      * @param userID   The userID of the person who placed the order
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void AddOrder(int orderID, int assetID, double price, String type, double quantity, int userID) {
+=======
+    @Override
+    public void AddOrder(int orderID, int assetID, double price, String type, double quantity, int userID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
@@ -293,7 +350,12 @@ public class DBSource {
      * @param quantity The amount to be changed by
      * @param operator Takes math operators eg "+" "-". Will change the amount a Org has of a asset based on this
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator) {
+=======
+    @Override
+    public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         try {
             insertOrgAsset.setInt(1, orgID);
@@ -320,7 +382,12 @@ public class DBSource {
      *
      * @param orderID The ID of the order
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void DeleteOrder(int orderID) {
+=======
+    @Override
+    public void DeleteOrder(int orderID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         try {
             deleteOrder.setInt(1, orderID);
             deleteOrder.executeUpdate();
@@ -330,22 +397,32 @@ public class DBSource {
         }
     }
 
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public boolean loginAttempt(String userName, String password) {
+=======
+    @Override
+    public boolean loginAttempt(String userName, String password){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         try {
             loginVerification.setString(1, userName);
             rs = loginVerification.executeQuery();
             rs.next();
+<<<<<<< HEAD:Server/src/Database/DBSource.java
             boolean passwordMatch = validatePassword(rs.getString("Password"), password);
+=======
+            boolean passwordMatch =  password.equals(rs.getString("Password"));
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
             return rs.getString("Username").equals(userName) && passwordMatch;
 
-        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
     /**
+<<<<<<< HEAD:Server/src/Database/DBSource.java
      * Validate of hashed passwords
      * Code stolen from https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
      *
@@ -381,12 +458,19 @@ public class DBSource {
     }
 
     /**
+=======
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
      * Left joins AccountDetails to Orders to add the user who placed the order orgID
      *
      * @param orderID The ID of the order
      * @return the user who placed the order orgID
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public int OrderJoinOrgID(int orderID) {
+=======
+    @Override
+    public int OrderJoinOrgID(int orderID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
 
         try {
@@ -405,7 +489,12 @@ public class DBSource {
      *
      * @param order Contains all the order details
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void AddToOrderHistory(Order order) {
+=======
+    @Override
+    public void AddToOrderHistory(Order order){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         try {
             addOrderHistory.setInt(1, order.getOrderID());
             addOrderHistory.setString(2, order.getDatePlaced());
@@ -429,7 +518,12 @@ public class DBSource {
      * @param orgID the ID of the org
      * @return
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public double GetOrgCredits(int orgID) {
+=======
+    @Override
+    public double GetOrgCredits(int orgID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         double currentCredits = -1;
         try {
@@ -453,8 +547,14 @@ public class DBSource {
      * @param operator Takes math operators "+" "-" "="
      * @return The result of the calculator
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public double ChangeWithOperator(double current, double toChange, String operator) {
         switch (operator) {
+=======
+    @Override
+    public double ChangeWithOperator(double current, double toChange, String operator){
+        switch (operator){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
             case "+":
                 current += toChange;
                 break;
@@ -476,7 +576,12 @@ public class DBSource {
      * @param assetID The ID of the asset
      * @return
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public double GetOrgAssetQuantity(int orgID, int assetID) {
+=======
+    @Override
+    public double GetOrgAssetQuantity(int orgID, int assetID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         float quantity = 0;
 
@@ -501,7 +606,12 @@ public class DBSource {
      * @param assetID  the ID of the asset
      * @param operator Takes math operators "+" "-" "="
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator) {
+=======
+    @Override
+    public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         double assetQuantity = GetOrgAssetQuantity(orgID, assetID);
         assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
@@ -524,7 +634,12 @@ public class DBSource {
      * @param orgID    The ID of the org
      * @param operator Takes math operators "+" "-" "="
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void ChangeOrgCredits(double credits, int orgID, String operator) {
+=======
+    @Override
+    public void ChangeOrgCredits(double credits, int orgID, String operator){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         double currentCredits = 0;
 
         currentCredits = GetOrgCredits(orgID);
@@ -548,7 +663,12 @@ public class DBSource {
      * @param password The selected password for the account
      * @param orgID    The org the user will be apart of
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public void CreateAccount(String userName, String password, Integer orgID) {
+=======
+    @Override
+    public void CreateAccount(String userName, String password, Integer orgID){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         try {
             accountCreation.setString(1, userName);
@@ -569,7 +689,12 @@ public class DBSource {
      * @param orderType The type of order eg "B" "S"
      * @return A list of all orders matching the params
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public List<Order> GetOrders(int assetID, String orderType) {
+=======
+    @Override
+    public List<Order> GetOrders(int assetID, String orderType){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         List<Order> orders = new ArrayList<Order>();
         Order order;
@@ -596,7 +721,12 @@ public class DBSource {
      *
      * @return The highest AssetID
      */
+<<<<<<< HEAD:Server/src/Database/DBSource.java
     public List<Integer> GetAssetCount() {
+=======
+    @Override
+    public List<Integer> GetAssetCount(){
+>>>>>>> Marketplace_Loop:Server/src/DBSource.java
         ResultSet rs;
         List<Integer> id = new ArrayList<Integer>();
 
