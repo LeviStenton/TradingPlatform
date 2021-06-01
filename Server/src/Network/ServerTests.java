@@ -1,4 +1,4 @@
-package Server;
+package Network;
 
 import Database.DBSource;
 import Database.Marketplace;

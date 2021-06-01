@@ -1,13 +1,10 @@
-package Server;
+package Network;
 
-import java.io.Console;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServerConnection {

@@ -1,3 +1,5 @@
+package Network;
+
 import java.io.*;
 
 public class NetworkConfig {

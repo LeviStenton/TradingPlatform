@@ -1,10 +1,10 @@
-package Server;
+package Network;
 
 import java.io.*;
 import java.sql.Connection;
 
 public class NetworkConfig {
-    private static final String FILENAME = "config.txt";
+    private static final String FILENAME = "server/config.txt";
     private int PORT = 10000;
 
     /**

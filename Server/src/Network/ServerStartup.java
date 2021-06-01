@@ -1,4 +1,4 @@
-package Server;
+package Network;
 
 import javax.swing.*;
 import java.awt.*;
