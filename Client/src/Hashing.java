@@ -10,18 +10,18 @@ import java.security.spec.InvalidKeySpecException;
  */
 public class Hashing {
 
-    //public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException
-    //{
-        //String  originalPassword = "password";
-        //String generatedSecuredPasswordHash = generateStorngPasswordHash(originalPassword);
-        //System.out.println(generatedSecuredPasswordHash);
+    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+//        String  originalPassword = "password";
+//        String generatedSecuredPasswordHash = generateStorngPasswordHash(originalPassword);
+//        System.out.println(generatedSecuredPasswordHash);
 
-        //boolean matched = validatePassword("password", generatedSecuredPasswordHash);
-        //System.out.println(matched);
-
-        //matched = validatePassword("password1", generatedSecuredPasswordHash);
-        //System.out.println(matched);
-    //}
+//        boolean matched = validatePassword("password", generatedSecuredPasswordHash);
+//        System.out.println(matched);
+//
+//        matched = validatePassword("password1", generatedSecuredPasswordHash);
+//        System.out.println(matched);
+    }
 
     private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
     {

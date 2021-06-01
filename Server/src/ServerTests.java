@@ -15,7 +15,7 @@ public class ServerTests {
     @Test
     void LoginVerify(){
         DBSource source = new DBSource();        ;
-        assertTrue(source.loginAttempt("LeviStenton", "password1"));
+        assertTrue(source.loginAttempt("Alexander", "1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b"));
     }
 
     @Test
@@ -27,8 +27,8 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopNormalCase(){
-        Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
+        Marketplace mk = new Marketplace(source);
         source.AddOrder(100,1,15,"B",10,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
@@ -36,8 +36,8 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopNoCase(){
-        Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
+        Marketplace mk = new Marketplace(source);
         source.AddOrder(100,1,15,"B",10,1);
         source.AddOrder(101,2,15,"S",10,2);
         mk.GroupAssets();
@@ -45,8 +45,8 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
-        Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
+        Marketplace mk = new Marketplace(source);
         source.AddOrder(100,1,20,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
@@ -54,8 +54,8 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
-        Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
+        Marketplace mk = new Marketplace(source);
         source.AddOrder(100,1,13,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
