@@ -1,6 +1,11 @@
 import java.util.List;
 
 public class Marketplace {
+        private DBSource source;
+
+        public Marketplace(DBSource source){
+                this.source = source;
+        }
         public void GroupAssets(){
                 DBSource source = new DBSource();
 
