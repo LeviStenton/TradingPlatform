@@ -55,7 +55,7 @@ public class COrder {
      * Get the Asset type that was placed in the order
      * @return The string of the Asset name
      */
-    public int getAsset(){ return this.asset; }
+    public String getAsset(){ return this.asset; }
 
     /**
      * Set the Price of the order

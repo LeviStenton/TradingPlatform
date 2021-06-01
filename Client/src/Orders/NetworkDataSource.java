@@ -25,7 +25,7 @@ public class NetworkDataSource {
                             new ObjectOutputStream(socket.getOutputStream());
             ) {
                 objectOutputStream.writeObject(STORE);
-                objectOutputStream.writeObject(people);
+                //objectOutputStream.writeObject(people);
             }
         } catch (IOException e) {
             // Print the exception, but no need for a fatal error
@@ -64,10 +64,10 @@ public class NetworkDataSource {
                         ObjectInputStream objectInputStream =
                                 new ObjectInputStream(socket.getInputStream());
                 ) {
-                    people = (HashMap<String, Person>) objectInputStream.readObject();
+                    //people = (HashMap<String, Person>) objectInputStream.readObject();
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             // Print the exception, but no need for a fatal error
             // if the connection with the server happens to be down
             e.printStackTrace();
