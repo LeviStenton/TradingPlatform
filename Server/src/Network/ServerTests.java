@@ -1,69 +1,71 @@
 package Network;
 
-import Database.DBSource;
-import Database.Marketplace;
+import src.Database.DBSource;
+import src.Database.Marketplace;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServerTests {
 
     @Test
-    void CreateAccount(){
+    void CreateAccount() {
         DBSource source = new DBSource();
         source.CreateAccount("LeviStenton", "password1", 123456);
     }
 
     @Test
-    void LoginVerify(){
-        DBSource source = new DBSource();        ;
+    void LoginVerify() {
+        DBSource source = new DBSource();
+        ;
         assertTrue(source.loginAttempt("LeviStenton", "password1"));
     }
 
     @Test
-    void CountAssets(){
+    void CountAssets() {
         DBSource source = new DBSource();
         System.out.println(source.GetAssetCount());
         //assertTrue(source.GetAssetCount() > 0);
     }
 
     @Test
-    void RunMarketPlaceLoopNormalCase(){
+    void RunMarketPlaceLoopNormalCase() {
         Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
-        source.AddOrder(100,1,15,"B",10,1);
-        source.AddOrder(101,1,15,"S",10,2);
+        source.AddOrder(100, 1, 15, "B", 10, 1);
+        source.AddOrder(101, 1, 15, "S", 10, 2);
         mk.GroupAssets();
     }
 
     @Test
-    void RunMarketPlaceLoopNoCase(){
+    void RunMarketPlaceLoopNoCase() {
         Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
-        source.AddOrder(100,1,15,"B",10,1);
-        source.AddOrder(101,2,15,"S",10,2);
+        source.AddOrder(100, 1, 15, "B", 10, 1);
+        source.AddOrder(101, 2, 15, "S", 10, 2);
         mk.GroupAssets();
     }
 
     @Test
-    void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
+    void RunMarketPlaceLoopDifferentQuantityCaseMatch() {
         Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
-        source.AddOrder(100,1,20,"B",20,1);
-        source.AddOrder(101,1,15,"S",10,2);
+        source.AddOrder(100, 1, 20, "B", 20, 1);
+        source.AddOrder(101, 1, 15, "S", 10, 2);
         mk.GroupAssets();
     }
 
     @Test
-    void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
+    void RunMarketPlaceLoopDifferentQuantityCaseNoMatch() {
         Marketplace mk = new Marketplace();
         DBSource source = new DBSource();
-        source.AddOrder(100,1,13,"B",20,1);
-        source.AddOrder(101,1,15,"S",10,2);
+        source.AddOrder(100, 1, 13, "B", 20, 1);
+        source.AddOrder(101, 1, 15, "S", 10, 2);
         mk.GroupAssets();
     }
 
     @Test
-    void InsertAsset(){
+    void InsertAsset() {
         DBSource source = new DBSource();
         //source.InsertOrgAsset(1,1,10);
     }

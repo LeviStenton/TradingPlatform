@@ -25,7 +25,7 @@ public class ServerStartup {
 
     private static void createAndShowGUI(ServerConnection server) {
         JDialog dialog = new JDialog();
-        dialog.setTitle("Network server for Address Book");
+        dialog.setTitle("src.Network server for Address Book");
         JButton shutdownButton = new JButton("Shut down server");
         // This button will simply close the dialog. CLosing the dialog
         // will shut down the server

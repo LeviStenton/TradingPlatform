@@ -1,4 +1,4 @@
-package Database;
+package src.Database;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -17,7 +17,7 @@ public class DBSource {
     private final String LOGIN_DETAILS = "SELECT Username, Password FROM AccountDetails WHERE Username=?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
-    private final String ASSETCOUNT ="SELECT AssetID FROM Assets";
+    private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
     private final String ADDORDERHISTORY = "INSERT INTO OrderHistory(OrderID, DatePlaced, AssetID, Price, OrderType, Quantity, UserID, Completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String CHANGEORGCREDITS = "UPDATE OrganizationDetails SET CreditQuantity = ? WHERE OrganizationID = ?";
     private final String GETORGCREDITS = "SELECT CreditQuantity FROM OrganizationDetails WHERE OrganizationID = ?";
@@ -62,7 +62,7 @@ public class DBSource {
     private PreparedStatement deleteOrgFromOrgDetails;
     private PreparedStatement deleteOrgFromOrgAssets;
 
-    public DBSource(){
+    public DBSource() {
         connection = DBConnection.getInstance();
 
         try {
@@ -94,7 +94,8 @@ public class DBSource {
             e.printStackTrace();
         }
     }
-    public void DeteteOrgFromOrgDetails(int orgID){
+
+    public void DeteteOrgFromOrgDetails(int orgID) {
         try {
             deleteOrgFromOrgDetails.setInt(1, orgID);
             deleteOrgFromOrgDetails.executeUpdate();
@@ -108,16 +109,16 @@ public class DBSource {
 
     /**
      * Inserts new org into OrganizationDetails
+     *
      * @param credits The amount of credits the org should have
      * @param orgName The name of the new org
      */
-    public void InsertNewOrgIntoOrgDetails(float credits, String orgName){
-        try{
-            insetNewOrgIntoOrgDetails.setFloat(1,credits);
-            insetNewOrgIntoOrgDetails.setString(1,orgName);
+    public void InsertNewOrgIntoOrgDetails(float credits, String orgName) {
+        try {
+            insetNewOrgIntoOrgDetails.setFloat(1, credits);
+            insetNewOrgIntoOrgDetails.setString(1, orgName);
             insetNewOrgIntoOrgDetails.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -125,9 +126,10 @@ public class DBSource {
 
     /**
      * Used to delete a asset from Asset table
+     *
      * @param assetID
      */
-    public void DeleteAsset(int assetID){
+    public void DeleteAsset(int assetID) {
         try {
             deleteAsset.setInt(1, assetID);
             deleteAsset.executeUpdate();
@@ -140,23 +142,24 @@ public class DBSource {
 
     /**
      * Adds a new Asset to Asset table
+     *
      * @param assetName the asset to add
      */
-    public void AddNewAsset(String assetName){
-        try{
-            addNewAsset.setString(1,assetName);
+    public void AddNewAsset(String assetName) {
+        try {
+            addNewAsset.setString(1, assetName);
             addNewAsset.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Used to delete a user
+     *
      * @param userID The user to delete
      */
-    public void DeleteUser(int userID){
+    public void DeleteUser(int userID) {
         try {
             deleteUser.setInt(1, userID);
             deleteUser.executeUpdate();
@@ -170,17 +173,17 @@ public class DBSource {
     /**
      * Used to change a users password
      * Hashing is done client side
+     *
      * @param password The new password to set
-     * @param userID The user password to change
+     * @param userID   The user password to change
      */
-    public void ChangeUserPassword(String password, int userID){
+    public void ChangeUserPassword(String password, int userID) {
         ResultSet rs;
-        try{
-            changeUserPassword.setString(1,password);
-            changeUserPassword.setInt(2,userID);
+        try {
+            changeUserPassword.setString(1, password);
+            changeUserPassword.setInt(2, userID);
             changeUserPassword.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -189,17 +192,17 @@ public class DBSource {
 
     /**
      * Changes the org a user is in
-     * @param orgID The org to change the user to
+     *
+     * @param orgID  The org to change the user to
      * @param userID The user to change
      */
-    public void ChangeUserOrg(int orgID, int userID){
+    public void ChangeUserOrg(int orgID, int userID) {
         ResultSet rs;
-        try{
-            changeUserOrg.setInt(1,orgID);
-            changeUserOrg.setInt(2,userID);
+        try {
+            changeUserOrg.setInt(1, orgID);
+            changeUserOrg.setInt(2, userID);
             changeUserOrg.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -209,18 +212,19 @@ public class DBSource {
     /**
      * Gets the quantity of a order
      * Selects order based on orderID
+     *
      * @param orderID the ID of the order
      * @return The current quantity that the order has
      */
-    public double GetOrderQuantity(int orderID){
+    public double GetOrderQuantity(int orderID) {
         ResultSet rs;
         double quantity = -1;
-        try{
+        try {
             getOrderFromOrderID.setInt(1, orderID);
             rs = getOrderFromOrderID.executeQuery();
             quantity = rs.getInt("Quantity");
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -230,20 +234,20 @@ public class DBSource {
     /**
      * Changes the quantity of a order based on the operator
      * Selects order based on orderID
-     * @param orderID The ID of the order
+     *
+     * @param orderID  The ID of the order
      * @param quantity The amount to change the order by
      * @param operator Takes math operators eg "+" "-". Will change the order quantity based on this
      */
-    public void ChangeOrderQuantity(int orderID, double quantity, String operator){
+    public void ChangeOrderQuantity(int orderID, double quantity, String operator) {
         ResultSet rs;
         double assetQuantity = GetOrderQuantity(orderID);
         assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
-        try{
-            changeOrderQuantity.setDouble(1,assetQuantity);
-            changeOrderQuantity.setInt(2,orderID);
+        try {
+            changeOrderQuantity.setDouble(1, assetQuantity);
+            changeOrderQuantity.setInt(2, orderID);
             changeOrderQuantity.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -252,58 +256,57 @@ public class DBSource {
 
     /**
      * Adds a order to the Orders database
-     * @param orderID The ID of the order
-     * @param assetID the ID of the asset
-     * @param price the price per unit
-     * @param type What type of order is the order eg "B" "S"
+     *
+     * @param orderID  The ID of the order
+     * @param assetID  the ID of the asset
+     * @param price    the price per unit
+     * @param type     What type of order is the order eg "B" "S"
      * @param quantity The amount of the asset to be listed
-     * @param userID The userID of the person who placed the order
+     * @param userID   The userID of the person who placed the order
      */
-    public void AddOrder(int orderID,int assetID, double price, String type, double quantity, int userID){
+    public void AddOrder(int orderID, int assetID, double price, String type, double quantity, int userID) {
         ResultSet rs;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
 
-        try{
-            if(orderID != -1){
-                addOrder.setInt(1,orderID);
+        try {
+            if (orderID != -1) {
+                addOrder.setInt(1, orderID);
             }
-            addOrder.setString(2,formatter.format(date));
-            addOrder.setInt(3,assetID);
-            addOrder.setDouble(4,price);
-            addOrder.setString(5,type);
-            addOrder.setDouble(6,quantity);
-            addOrder.setInt(7,userID);
+            addOrder.setString(2, formatter.format(date));
+            addOrder.setInt(3, assetID);
+            addOrder.setDouble(4, price);
+            addOrder.setString(5, type);
+            addOrder.setDouble(6, quantity);
+            addOrder.setInt(7, userID);
             addOrder.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Inserts a asset into a org if it doesn't exist or updates it instead
-     * @param orgID The ID of the org
-     * @param assetID The ID of the asset
+     *
+     * @param orgID    The ID of the org
+     * @param assetID  The ID of the asset
      * @param quantity The amount to be changed by
      * @param operator Takes math operators eg "+" "-". Will change the amount a Org has of a asset based on this
      */
-    public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator){
+    public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator) {
         ResultSet rs;
-        try{
-            insertOrgAsset.setInt(1,orgID);
-            insertOrgAsset.setInt(2,assetID);
-            insertOrgAsset.setDouble(3,quantity);
+        try {
+            insertOrgAsset.setInt(1, orgID);
+            insertOrgAsset.setInt(2, assetID);
+            insertOrgAsset.setDouble(3, quantity);
             insertOrgAsset.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             //error code 19 = org.sqlite.SQLiteException: [SQLITE_CONSTRAINT_PRIMARYKEY]
-            if(e.getErrorCode() == 19){
+            if (e.getErrorCode() == 19) {
                 //Org already has some of this asset it needs to be updated instead of inserted
                 UpdateOrgAsset(quantity, orgID, assetID, operator);
                 System.out.println("Yes");
-            }
-            else {
+            } else {
                 System.out.println(e.getErrorCode());
                 e.printStackTrace();
             }
@@ -314,9 +317,10 @@ public class DBSource {
     /**
      * Deletes order from Orders DB
      * Selects based on orderID
+     *
      * @param orderID The ID of the order
      */
-    public void DeleteOrder(int orderID){
+    public void DeleteOrder(int orderID) {
         try {
             deleteOrder.setInt(1, orderID);
             deleteOrder.executeUpdate();
@@ -326,13 +330,13 @@ public class DBSource {
         }
     }
 
-    public boolean loginAttempt(String userName, String password){
+    public boolean loginAttempt(String userName, String password) {
         ResultSet rs;
         try {
             loginVerification.setString(1, userName);
             rs = loginVerification.executeQuery();
             rs.next();
-            boolean passwordMatch =  validatePassword(rs.getString("Password"), password);
+            boolean passwordMatch = validatePassword(rs.getString("Password"), password);
             return rs.getString("Username").equals(userName) && passwordMatch;
 
         } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -344,14 +348,14 @@ public class DBSource {
     /**
      * Validate of hashed passwords
      * Code stolen from https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
+     *
      * @param originalPassword
      * @param storedPassword
      * @return
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
-    {
+    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String[] parts = storedPassword.split(":");
         int iterations = Integer.parseInt(parts[0]);
         byte[] salt = fromHex(parts[1]);
@@ -362,36 +366,34 @@ public class DBSource {
         byte[] testHash = skf.generateSecret(spec).getEncoded();
 
         int diff = hash.length ^ testHash.length;
-        for(int i = 0; i < hash.length && i < testHash.length; i++)
-        {
+        for (int i = 0; i < hash.length && i < testHash.length; i++) {
             diff |= hash[i] ^ testHash[i];
         }
         return diff == 0;
     }
 
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
-    {
+    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
         byte[] bytes = new byte[hex.length() / 2];
-        for(int i = 0; i<bytes.length ;i++)
-        {
-            bytes[i] = (byte)Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return bytes;
     }
 
     /**
      * Left joins AccountDetails to Orders to add the user who placed the order orgID
+     *
      * @param orderID The ID of the order
      * @return the user who placed the order orgID
      */
-    public int OrderJoinOrgID(int orderID){
+    public int OrderJoinOrgID(int orderID) {
         ResultSet rs;
 
         try {
-            orderJoinOrgID.setInt(1,orderID);
+            orderJoinOrgID.setInt(1, orderID);
             rs = orderJoinOrgID.executeQuery();
             return rs.getInt("OrganizationID");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -400,9 +402,10 @@ public class DBSource {
 
     /**
      * Adds a completed order to the OrderHistory database
+     *
      * @param order Contains all the order details
      */
-    public void AddToOrderHistory(Order order){
+    public void AddToOrderHistory(Order order) {
         try {
             addOrderHistory.setInt(1, order.getOrderID());
             addOrderHistory.setString(2, order.getDatePlaced());
@@ -414,7 +417,7 @@ public class DBSource {
             addOrderHistory.setString(8, order.getCompleted());
             addOrderHistory.executeUpdate();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -422,18 +425,19 @@ public class DBSource {
     /**
      * Gets a org current amount of credits
      * Selects from orgID
+     *
      * @param orgID the ID of the org
      * @return
      */
-    public double GetOrgCredits(int orgID){
+    public double GetOrgCredits(int orgID) {
         ResultSet rs;
         double currentCredits = -1;
-        try{
+        try {
             getOrgCredits.setInt(1, orgID);
             rs = getOrgCredits.executeQuery();
             currentCredits = rs.getInt("CreditQuantity");
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -443,13 +447,14 @@ public class DBSource {
 
     /**
      * Acts as a calculator
-     * @param current The left side of the operator
+     *
+     * @param current  The left side of the operator
      * @param toChange The right side of the operator
      * @param operator Takes math operators "+" "-" "="
      * @return The result of the calculator
      */
-    public double ChangeWithOperator(double current,double toChange, String operator){
-        switch (operator){
+    public double ChangeWithOperator(double current, double toChange, String operator) {
+        switch (operator) {
             case "+":
                 current += toChange;
                 break;
@@ -466,21 +471,21 @@ public class DBSource {
     /**
      * Gets how many of a asset a org has
      * Select based on orgID and assetID
-     * @param orgID The ID of the org
+     *
+     * @param orgID   The ID of the org
      * @param assetID The ID of the asset
      * @return
      */
-    public double GetOrgAssetQuantity(int orgID, int assetID){
+    public double GetOrgAssetQuantity(int orgID, int assetID) {
         ResultSet rs;
         float quantity = 0;
 
-        try{
-            getOrgAssetQuantity.setInt(1,orgID);
-            getOrgAssetQuantity.setInt(2,assetID);
+        try {
+            getOrgAssetQuantity.setInt(1, orgID);
+            getOrgAssetQuantity.setInt(2, assetID);
             rs = getOrgAssetQuantity.executeQuery();
             return rs.getDouble("Quantity");
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -490,22 +495,22 @@ public class DBSource {
 
     /**
      * Updates the amount of a asset a org has
+     *
      * @param quantity The amount to change by
-     * @param orgID The ID of the org
-     * @param assetID the ID of the asset
+     * @param orgID    The ID of the org
+     * @param assetID  the ID of the asset
      * @param operator Takes math operators "+" "-" "="
      */
-    public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator){
+    public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator) {
         ResultSet rs;
-        double assetQuantity = GetOrgAssetQuantity(orgID,assetID);
+        double assetQuantity = GetOrgAssetQuantity(orgID, assetID);
         assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
-        try{
-            updateOrgAsset.setDouble(1,assetQuantity);
-            updateOrgAsset.setInt(2,orgID);
-            updateOrgAsset.setInt(3,assetID);
+        try {
+            updateOrgAsset.setDouble(1, assetQuantity);
+            updateOrgAsset.setInt(2, orgID);
+            updateOrgAsset.setInt(3, assetID);
             updateOrgAsset.executeUpdate();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
 
             System.out.println(e.getErrorCode());
             e.printStackTrace();
@@ -513,12 +518,13 @@ public class DBSource {
     }
 
     /**
-     *Change the amount of credits a org has
-     * @param credits The amount to change
-     * @param orgID The ID of the org
+     * Change the amount of credits a org has
+     *
+     * @param credits  The amount to change
+     * @param orgID    The ID of the org
      * @param operator Takes math operators "+" "-" "="
      */
-    public void ChangeOrgCredits(double credits, int orgID, String operator){
+    public void ChangeOrgCredits(double credits, int orgID, String operator) {
         double currentCredits = 0;
 
         currentCredits = GetOrgCredits(orgID);
@@ -529,7 +535,7 @@ public class DBSource {
             changeOrgCredits.setDouble(1, currentCredits);
             changeOrgCredits.setInt(2, orgID);
             changeOrgCredits.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -537,11 +543,12 @@ public class DBSource {
 
     /**
      * Creates a new Account
+     *
      * @param userName The selected name for the account
      * @param password The selected password for the account
-     * @param orgID The org the user will be apart of
+     * @param orgID    The org the user will be apart of
      */
-    public void CreateAccount(String userName, String password, Integer orgID){
+    public void CreateAccount(String userName, String password, Integer orgID) {
         ResultSet rs;
         try {
             accountCreation.setString(1, userName);
@@ -557,26 +564,27 @@ public class DBSource {
     /**
      * Gets all orders from the Orders database
      * Selects based on order Type and assetID
-     * @param assetID The ID of the asset
+     *
+     * @param assetID   The ID of the asset
      * @param orderType The type of order eg "B" "S"
      * @return A list of all orders matching the params
      */
-    public List<Order> GetOrders(int assetID, String orderType){
+    public List<Order> GetOrders(int assetID, String orderType) {
         ResultSet rs;
         List<Order> orders = new ArrayList<Order>();
         Order order;
 
-        try{
+        try {
             getOrders.setString(1, orderType);
             getOrders.setInt(2, assetID);
             rs = getOrders.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 order = new Order(rs);
                 orders.add(order);
             }
             return orders;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -585,20 +593,20 @@ public class DBSource {
 
     /**
      * Finds how many assets are currently in the system
+     *
      * @return The highest AssetID
      */
-    public List<Integer> GetAssetCount(){
+    public List<Integer> GetAssetCount() {
         ResultSet rs;
         List<Integer> id = new ArrayList<Integer>();
 
         try {
             rs = getAssetCount.executeQuery();
-            while (rs.next())
-            {
+            while (rs.next()) {
                 id.add(rs.getInt("AssetID"));
             }
             return id;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
