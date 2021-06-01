@@ -1,3 +1,5 @@
+package Database;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,7 +17,7 @@ public class Order {
     private String completed;
 
     /**
-     * Constructor for the Order class
+     * Constructor for the Database.Order class
 
      */
     public Order(ResultSet order){

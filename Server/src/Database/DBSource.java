@@ -1,4 +1,4 @@
-import org.sqlite.SQLiteException;
+package Database;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -7,8 +7,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

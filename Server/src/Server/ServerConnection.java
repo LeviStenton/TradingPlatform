@@ -1,15 +1,24 @@
+package Server;
+
+import java.io.Console;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ServerStartup {
-    private static final int PORT = 10000;
+public class ServerConnection {
+    private static int PORT = 10000;
     private static final int SOCKET_TIMEOUT = 100;
     private AtomicBoolean running = new AtomicBoolean(true);
+
+    public ServerConnection(){
+        NetworkConfig config = new NetworkConfig();
+        PORT = config.getPORT();
+    }
 
     /**
      * Handles the connection received from ServerSocket

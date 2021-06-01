@@ -1,8 +1,9 @@
+package Server;
+
+import Database.DBSource;
+import Database.Marketplace;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-
-import java.sql.SQLException;
 
 public class ServerTests {
 
