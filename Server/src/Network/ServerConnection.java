@@ -2,14 +2,19 @@ package Network;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServerConnection {
-    private static int PORT = 10000;
+    private static int PORT;
     private static final int SOCKET_TIMEOUT = 100;
+
+    private static final String STORE = "STORE";
+    private static final String RETRIEVE = "RETRIEVE";
     private AtomicBoolean running = new AtomicBoolean(true);
 
     public ServerConnection() {
@@ -25,7 +30,12 @@ public class ServerConnection {
     private void handleConnection(Socket socket) throws Exception {
         try (ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream())) {
             String command = (String) objInStream.readObject();
-            // Write what to do with the stored objects here
+//            if(command.equals(STORE))
+//                // store information in the database through here
+//            else if(command.equals(RETRIEVE))
+//                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+//                    // send information to the client through here
+//                }
         }
     }
 

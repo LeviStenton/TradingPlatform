@@ -26,7 +26,7 @@ public class NetworkConfig {
         } catch (IOException | NullPointerException e) {
             updateFile("port = " + PORT + "\n");
         } catch (NumberFormatException nE) {
-            System.out.println("Port is an invalid format. Must be an integer.");
+            System.out.println("Port is an invalid format. Must be a number.");
         }
     }
 
