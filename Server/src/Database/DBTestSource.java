@@ -1,6 +1,10 @@
+package Database;
+
+import Database.DBInterface;
+
 import java.util.List;
 
-public class DBTestSource implements DBInterface{
+public class DBTestSource implements DBInterface {
     @Override
     public void DeteteOrgFromOrgDetails(int orgID) {
 
