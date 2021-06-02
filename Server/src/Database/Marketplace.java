@@ -5,15 +5,20 @@ import Database.Order;
 import java.util.List;
 
 public class Marketplace {
+    DBInterface source;
+
+    public Marketplace(DBInterface source){
+        this.source = source;
+    }
+
     public void GroupAssets() {
-        DBSource source = new DBSource();
 
         List<Integer> assetCount = source.GetAssetCount();
         List<Order> buyOrders;
         List<Order> sellOrders;
 
         //TODO you just changed assetCount to a list
-        for (int i = 1; i < assetCount.size(); i++) {
+        for (int i = 1; i <= assetCount.size(); i++) {
             buyOrders = source.GetOrders(assetCount.get(i - 1), "B");
             sellOrders = source.GetOrders(assetCount.get(i - 1), "S");
             if (buyOrders.size() > 0 && sellOrders.size() > 0) {
@@ -22,14 +27,14 @@ public class Marketplace {
         }
     }
 
-    private void LoopBuyOrders(List<Order> buyOrders, List<Order> sellOrders, DBSource source) {
+    private void LoopBuyOrders(List<Order> buyOrders, List<Order> sellOrders, DBInterface source) {
         boolean endLoop = false;
         for (int buyI = 0; buyI < buyOrders.size(); buyI++) {
             LoopSellOrders(buyOrders, sellOrders, source, buyI);
         }
     }
 
-    private void LoopSellOrders(List<Order> buyOrders, List<Order> sellOrders, DBSource source, int buyI) {
+    private void LoopSellOrders(List<Order> buyOrders, List<Order> sellOrders, DBInterface source, int buyI) {
         double buyOrderPrice;
         double sellOrderPrice;
         double buyOrderQuantity;
@@ -64,6 +69,9 @@ public class Marketplace {
                 }
 
                 sellPriceTotal = buyOrderQuantity * sellOrderPrice;
+
+                //Removes credits from buyyer
+                source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(buyOrderOrderID), "-");
 
                 //Adds credits to seller
                 source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(sellOrderOrderID), "+");

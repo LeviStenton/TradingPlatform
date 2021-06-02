@@ -2,16 +2,24 @@ package Database;
 
 import Database.DBInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBTestSource implements DBInterface {
 
-    List<Assets> assetsList;
-    List<AccountDetails> accountDetailsList;
-    List<OrgAssets> orgAssetsList;
-    List<OrgDetails> orgDetailsList;
-    List<Order> orderList;
-    List<Order> orderHistoryList;
+    List<Assets> assetsList = new ArrayList<Assets>();
+    List<AccountDetails> accountDetailsList = new ArrayList<AccountDetails>();
+    List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
+    List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
+    List<Order> orderList = new ArrayList<Order>();
+    List<Order> orderHistoryList = new ArrayList<Order>();
+
+    public List<Assets> getAssetsList(){return this.assetsList;};
+    public List<AccountDetails> getAccountDetailsList(){return this.accountDetailsList;};
+    public List<OrgAssets> getOrgAssetsList(){return this.orgAssetsList;};
+    public List<OrgDetails> getOrgDetailsList(){return this.orgDetailsList;};
+    public List<Order> getOrderList(){return this.orderList;};
+    public List<Order> getOrderHistoryList(){return this.orderHistoryList;};
 
 
     @Override
@@ -23,7 +31,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void InsertNewOrgIntoOrgDetails(float credits, String orgName) {
-        orgDetailsList.add(new OrgDetails(orgDetailsList.size()-1,credits,orgName));
+        orgDetailsList.add(new OrgDetails(orgDetailsList.size() + 1,credits,orgName));
     }
 
     @Override
@@ -33,7 +41,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void AddNewAsset(String assetName) {
-        assetsList.add(new Assets(assetsList.size()-1,assetName));
+        assetsList.add(new Assets(assetsList.size() + 1,assetName));
     }
 
     @Override
@@ -87,66 +95,139 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator) {
+        for (OrgAssets asset:orgAssetsList){
+            if(asset.getOrgID() == orgID){
+                UpdateOrgAsset(quantity,orgID,assetID,operator);
+                return;
+            }
+        }
+        orgAssetsList.add(new OrgAssets(orgID, assetID,quantity));
 
     }
 
     @Override
     public void DeleteOrder(int orderID) {
-
+        orderList.removeIf(t -> t.getOrderID() == orderID);
     }
 
     @Override
     public boolean loginAttempt(String userName, String password) {
+        for(AccountDetails account:accountDetailsList){
+            if(account.getUserName() == userName && account.getPassword().equals(password)){
+                return  true;
+            }
+        }
         return false;
     }
 
     @Override
     public int OrderJoinOrgID(int orderID) {
-        return 0;
+        for(Order order: orderList){
+            for(AccountDetails account: accountDetailsList){
+                if(order.getOrderID() == orderID){
+                    if(account.getUserID() == order.getUserID()){
+                        return account.getOrgID();
+                    }
+                }
+            }
+        }
+        return -1;
+
     }
 
     @Override
     public void AddToOrderHistory(Order order) {
-
+        orderHistoryList.add(order);
     }
 
     @Override
     public double GetOrgCredits(int orgID) {
-        return 0;
+        for(OrgDetails org: orgDetailsList){
+            if(org.getOrgID() == orgID){
+                return org.getCredits();
+            }
+        }
+
+        return -1;
     }
 
     @Override
     public double ChangeWithOperator(double current, double toChange, String operator) {
-        return 0;
+        switch (operator) {
+            case "+":
+                current += toChange;
+                break;
+            case "-":
+                current -= toChange;
+                break;
+            case "=":
+                current = toChange;
+                break;
+        }
+        return current;
     }
 
     @Override
     public double GetOrgAssetQuantity(int orgID, int assetID) {
-        return 0;
+        for(OrgAssets org: orgAssetsList){
+            if(org.getOrgID() == orgID && org.getAssetID() == assetID){
+                return org.getQuantity();
+            }
+        }
+        return -1;
     }
 
     @Override
     public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator) {
-
+        double assetQuantity = GetOrgAssetQuantity(orgID, assetID);
+        assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
+        for(OrgAssets org:orgAssetsList){
+            if(org.getOrgID() == orgID && org.getAssetID() == assetID){
+                org.setQuantity(assetQuantity);
+            }
+        }
     }
 
     @Override
     public void ChangeOrgCredits(double credits, int orgID, String operator) {
+        double currentCredits = 0;
 
+        currentCredits = GetOrgCredits(orgID);
+        currentCredits = ChangeWithOperator(currentCredits, credits, operator);
+        for(OrgDetails org: orgDetailsList){
+            if(org.getOrgID() == orgID){
+                org.setCredits(currentCredits);
+            }
+        }
     }
 
     @Override
     public void CreateAccount(String userName, String password, Integer orgID) {
-
+        accountDetailsList.add(new AccountDetails(accountDetailsList.size() + 1,userName,password,orgID));
     }
 
     @Override
     public List<Order> GetOrders(int assetID, String orderType) {
+        List<Order> toReturn = new ArrayList<Order>();
+        for(Order order: orderList){
+            if(order.getOrderType() == orderType){
+                if(order.getAssetID() == assetID){
+                    toReturn.add(order);
+                }
+            }
+        }
+        if(toReturn.size() != 0){
+            return toReturn;
+        }
         return null;
     }
 
     @Override
     public List<Integer> GetAssetCount() {
-        return null;
+        List<Integer> toReturn = new ArrayList<Integer>();
+        for(Assets asset:assetsList){
+            toReturn.add(asset.getAssetID());
+        }
+        return toReturn;
     }
 }
