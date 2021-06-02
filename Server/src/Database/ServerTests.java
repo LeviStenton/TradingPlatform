@@ -100,22 +100,81 @@ public class ServerTests {
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
         Marketplace mk = new Marketplace(source);
+        source.InsertNewOrgIntoOrgDetails(150,"1");
+        source.InsertNewOrgIntoOrgDetails(0,"2");
+
+        source.AddNewAsset("hub");
+        source.AddNewAsset("pc");
+
+
+        source.CreateAccount("Alex","123",1);
+        source.CreateAccount("Levi","123",2);
+
         source.AddOrder(100,1,20,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
+
+        for(OrgAssets org: source.orgAssetsList){
+            if(org.getOrgID() == 1){
+                assertEquals(10,org.getQuantity(), "Asset were not added to org 1");
+            }
+        }
+        for(OrgDetails org: source.orgDetailsList){
+            if(org.getOrgID() == 2){
+                assertEquals(150,org.getCredits(), "Credits were not added to org 2");
+            }
+            if(org.getOrgID() == 1){
+                assertEquals(0,org.getCredits(), "Credits were not removed from org 1");
+            }
+        }
+        for(Order order:source.orderList){
+            assertEquals(10,order.getQuantity(), "Buy Order did not remain in OrderList");
+        }
+        assertEquals(1,source.orderList.size(), "OrderList should only have one order");
+
+        for(Order order:source.orderHistoryList){
+            if(order.getOrderType() == "B"){
+                assertEquals(10,order.getQuantity(), "Buy order has wrong q");
+            }
+            if(order.getOrderType() == "S"){
+                assertEquals(10,order.getQuantity(), "Sell order has wrong q");
+            }
+        }
+        assertEquals(2,source.orderHistoryList.size(), "Sell order should have two orders");
     }
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
         Marketplace mk = new Marketplace(source);
+        source.InsertNewOrgIntoOrgDetails(150,"1");
+        source.InsertNewOrgIntoOrgDetails(150,"2");
+
+        source.AddNewAsset("hub");
+
+
+        source.CreateAccount("Alex","123",1);
+        source.CreateAccount("Levi","123",2);
+
         source.AddOrder(100,1,13,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
         mk.GroupAssets();
+        for(OrgAssets org: source.orgAssetsList){
+
+            assertEquals(0,org.getQuantity(), "Assets were add added to org");
+
+        }
+        for(OrgDetails org: source.orgDetailsList){
+
+            assertEquals(150,org.getCredits(), "Credits were added to org");
+
+        }
+        assertTrue(source.orderList.size() == 2, "Orders were removed from orderList");
+        assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
     }
 
-    @Test
-    void InsertAsset(){
-        DBSource source = new DBSource();
-        //source.InsertOrgAsset(1,1,10);
-    }
+//    @Test
+//    void InsertAsset(){
+//        DBSource source = new DBSource();
+//        //source.InsertOrgAsset(1,1,10);
+//    }
 }

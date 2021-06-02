@@ -21,24 +21,24 @@ public class Marketplace {
         int sellOrdersSize;
         int buyOrdersSize;
 
-        if(sellOrders == null){
-            sellOrdersSize = 0;
-        }
-        else {
-            sellOrdersSize = sellOrders.size();
-        }
-
-        if(buyOrders == null){
-            buyOrdersSize = 0;
-        }
-        else {
-            buyOrdersSize = buyOrders.size();
-        }
 
         //TODO you just changed assetCount to a list
         for (int i = 1; i <= assetCount.size(); i++) {
             buyOrders = source.GetOrders(assetCount.get(i - 1), "B");
             sellOrders = source.GetOrders(assetCount.get(i - 1), "S");
+            if(sellOrders == null){
+                sellOrdersSize = 0;
+            }
+            else {
+                sellOrdersSize = sellOrders.size();
+            }
+
+            if(buyOrders == null){
+                buyOrdersSize = 0;
+            }
+            else {
+                buyOrdersSize = buyOrders.size();
+            }
             if (buyOrdersSize > 0 && sellOrdersSize > 0) {
                 LoopBuyOrders(buyOrders, sellOrders, source);
             }
@@ -99,8 +99,8 @@ public class Marketplace {
                 System.out.println("added " + buyOrderQuantity + " , " + buyOrderAssetID + " to org " + source.OrderJoinOrgID(buyOrderOrderID));
 
 
-                buyOrders.get(buyI).setQuantity(buyOrderQuantity);
-                sellOrders.get(q).setQuantity(sellOrderQuantity);
+                //buyOrders.get(buyI).setQuantity(buyOrderQuantity);
+                //sellOrders.get(q).setQuantity(sellOrderQuantity);
 
                 //Remove buy/sell orders from orders DB
                 double tempBuyQuantity = buyOrderQuantity - sellOrderQuantity;
