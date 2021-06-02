@@ -12,12 +12,6 @@ public class ClientSocket {
     private static String HOSTNAME = "127.0.0.1";
     private static int PORT = 10000;
 
-    /**
-     * Commands to issue to the server
-     */
-    public static final String STORE = "Store";
-    public static final String RETRIEVE = "Retrieve";
-
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
         HOSTNAME = config.getIP();
@@ -43,7 +37,7 @@ public class ClientSocket {
                 objOutStream.writeObject(command);
                 objOutStream.flush();
                 try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
-                    // thing to retrieve
+                    // thing to retrieve from the server
                 }
             }
         } catch (IOException e) {
