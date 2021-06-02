@@ -172,9 +172,4 @@ public class ServerTests {
         assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
     }
 
-//    @Test
-//    void InsertAsset(){
-//        DBSource source = new DBSource();
-//        //source.InsertOrgAsset(1,1,10);
-//    }
 }
