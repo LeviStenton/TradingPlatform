@@ -71,7 +71,7 @@ public class ServerTests {
     void RunMarketPlaceLoopNoCase(){
         Marketplace mk = new Marketplace(source);
         source.InsertNewOrgIntoOrgDetails(150,"1");
-        source.InsertNewOrgIntoOrgDetails(0,"1");
+        source.InsertNewOrgIntoOrgDetails(150,"1");
 
         source.AddNewAsset("hub");
         source.AddNewAsset("pc");
@@ -84,17 +84,17 @@ public class ServerTests {
         source.AddOrder(101,2,15,"S",10,2);
         mk.GroupAssets();
         for(OrgAssets org: source.orgAssetsList){
-            if(org.getOrgID() == 1){
-                assertEquals(10,org.getQuantity(), "Asset were not added to org 2");
-            }
+
+            assertEquals(0,org.getQuantity(), "Assets were add added to org");
+
         }
         for(OrgDetails org: source.orgDetailsList){
-            if(org.getOrgID() == 2){
-                assertEquals(150,org.getCredits(), "Credits were not added to org 1");
-            }
+
+            assertEquals(150,org.getCredits(), "Credits were added to org");
+
         }
-        assertTrue(source.orderList.size() == 0, "Orders was not removed from orderList");
-        assertTrue(source.orderHistoryList.size() == 2, "Orders were not added to orderHistoryList");
+        assertTrue(source.orderList.size() == 2, "Orders were removed from orderList");
+        assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
     }
 
     @Test

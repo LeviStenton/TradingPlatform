@@ -2,6 +2,7 @@ package Database;
 
 import Database.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Marketplace {
@@ -14,14 +15,31 @@ public class Marketplace {
     public void GroupAssets() {
 
         List<Integer> assetCount = source.GetAssetCount();
-        List<Order> buyOrders;
-        List<Order> sellOrders;
+        List<Order> buyOrders = new ArrayList<Order>();
+        List<Order> sellOrders = new ArrayList<Order>();
+
+        int sellOrdersSize;
+        int buyOrdersSize;
+
+        if(sellOrders == null){
+            sellOrdersSize = 0;
+        }
+        else {
+            sellOrdersSize = sellOrders.size();
+        }
+
+        if(buyOrders == null){
+            buyOrdersSize = 0;
+        }
+        else {
+            buyOrdersSize = buyOrders.size();
+        }
 
         //TODO you just changed assetCount to a list
         for (int i = 1; i <= assetCount.size(); i++) {
             buyOrders = source.GetOrders(assetCount.get(i - 1), "B");
             sellOrders = source.GetOrders(assetCount.get(i - 1), "S");
-            if (buyOrders.size() > 0 && sellOrders.size() > 0) {
+            if (buyOrdersSize > 0 && sellOrdersSize > 0) {
                 LoopBuyOrders(buyOrders, sellOrders, source);
             }
         }
