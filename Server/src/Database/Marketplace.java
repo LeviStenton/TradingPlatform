@@ -1,4 +1,4 @@
-package src.Database;
+package Database;
 
 import Database.Order;
 

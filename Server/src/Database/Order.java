@@ -49,6 +49,15 @@ public class Order {
         this.completed = completed;
     }
 
+    public Order(int orderID, int assetID, double price, String type, double quantity, int userID){
+        this.orderID = orderID;
+        this.assetID = assetID;
+        this.price = price;
+        this.orderType = type;
+        this.quantity = quantity;
+        this.userID = userID;
+    }
+
     /**
      * Get the ID of the person who placed the order
      *
