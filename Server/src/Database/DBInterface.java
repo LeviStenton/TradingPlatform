@@ -26,6 +26,8 @@ public interface DBInterface {
 
     void AddOrder(int orderID, int assetID, double price, String type, double quantity, int userID);
 
+    void AddOrder(Order order);
+
     void InsertOrgAsset(int orgID, int assetID, double quantity, String operator);
 
     void DeleteOrder(int orderID);

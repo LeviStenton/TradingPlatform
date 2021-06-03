@@ -14,7 +14,7 @@ public class CurrentOrdersDB {
      *
      * @param COrder the order to be added
      */
-    public void addOrder(COrder COrder){
+    public void addOrder(Order COrder){
 
     }
 

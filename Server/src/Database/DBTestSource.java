@@ -94,6 +94,11 @@ public class DBTestSource implements DBInterface {
     }
 
     @Override
+    public void AddOrder(Order order) {
+        orderList.add(order);
+    }
+
+    @Override
     public void InsertOrgAsset(int orgID, int assetID, double quantity, String operator) {
         for (OrgAssets asset:orgAssetsList){
             if(asset.getOrgID() == orgID){

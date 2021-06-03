@@ -286,6 +286,32 @@ public class DBSource {
     }
 
     /**
+     * Adds a order to the Orders database
+     *
+     * @param order The order to add to the database
+     */
+    public void AddOrder(Order order) {
+        ResultSet rs;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        try {
+            if (order.getOrderID() != -1) {
+                addOrder.setInt(1, order.getOrderID());
+            }
+            addOrder.setString(2, formatter.format(date));
+            addOrder.setInt(3, order.getAssetID());
+            addOrder.setDouble(4, order.getPrice());
+            addOrder.setString(5, order.getOrderType());
+            addOrder.setDouble(6, order.getQuantity());
+            addOrder.setInt(7, order.getUserID());
+            addOrder.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Inserts a asset into a org if it doesn't exist or updates it instead
      *
      * @param orgID    The ID of the org
