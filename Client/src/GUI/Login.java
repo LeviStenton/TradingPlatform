@@ -139,17 +139,18 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_UsernameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
-        //boolean verified = sock.sendLogin(Username.getName(), jPasswordField1.getPassword());
-        System.out.println(Username.getText());
-        System.out.println(jPasswordField1.getPassword());
-//        System.out.println(verified);
-//        if(verified)
-//            new Home().setVisible(true);
-//        else
-//
-//        this.dispose();
+        boolean verified = sock.sendLogin(Username.getText(), jPasswordField1.getText());
+        System.out.println("Username: " + Username.getText());
+        System.out.println("Password: " + jPasswordField1.getText());
+        System.out.println("Login Successful: " + verified);
+        if(verified){
+            this.dispose();
+            new Home().setVisible(true);
+        }
+        //else
+            // Invalid username or password text
+
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
