@@ -4,13 +4,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
+import java.sql.Array;
 import java.sql.SQLException;
 
 public class ServerTests {
     DBTestSource source = new DBTestSource();
     @Before
     public void init() {
+
         this.source = new DBTestSource();
+
+        //source.CreateAccount("LeviStenton","password1",2);
     }
 
     @Test
@@ -18,9 +22,7 @@ public class ServerTests {
         String userName = "LeviStenton";
         String password = "password1";
         String getUserName;
-
-        source.CreateAccount(userName, password, 1);
-
+        source.CreateAccount(userName,password,1);
         for(AccountDetails account: source.getAccountDetailsList()){
             getUserName = account.getUserName();
             assertTrue(getUserName.equals(userName));
@@ -30,9 +32,26 @@ public class ServerTests {
     }
 
     @Test
-    void LoginVerify(){
-        source.CreateAccount("Alexander","1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b",1);
-        assertTrue(source.loginAttempt("Alexander", "1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b"));
+    void LoginVerifyMatch(){
+        source.CreateAccount("Alexander","123",1);
+        assertTrue(source.loginAttempt("Alexander", "123"));
+    }
+
+    @Test
+    void LoginVerifyWrongUserName(){
+        source.CreateAccount("Alexander","123",1);
+        assertFalse(source.loginAttempt("alex", "123"));
+    }
+
+    @Test
+    void LoginVerifyWrongPassword(){
+        source.CreateAccount("Alexander","123",1);
+        assertFalse(source.loginAttempt("Alexander", "321"));
+    }
+
+    @Test
+    void LoginVerifyNoAccounts(){
+        assertFalse(source.loginAttempt("Alexander", "321"));
     }
 
     @Test
@@ -170,6 +189,14 @@ public class ServerTests {
         }
         assertTrue(source.orderList.size() == 2, "Orders were removed from orderList");
         assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
+    }
+
+    @Test
+    void assetCount(){
+        source.AddNewAsset("Test");
+        int[] result = new int[1];
+        result[0] = 1;
+        assertEquals(result[0], source.GetAssetCount().get(0));
     }
 
 }
