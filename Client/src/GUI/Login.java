@@ -7,6 +7,8 @@ package GUI;
 
 import Network.ClientSocket;
 
+import javax.swing.*;
+
 /**
  *
  * @author Joshua
@@ -18,6 +20,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        jLabel2.setVisible(false);
     }
 
     /**
@@ -154,8 +157,8 @@ public class Login extends javax.swing.JFrame {
             this.dispose();
             new Home().setVisible(true);
         }
-        //else
-            // Invalid username or password text
+        else
+            jLabel2.setVisible(true);
 
         
     }//GEN-LAST:event_jButton1ActionPerformed

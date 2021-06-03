@@ -1,4 +1,4 @@
-import Database.AccountDetails;
+import Database.Asset;
 import Database.Order;
 import Network.ClientSocket;
 import org.junit.jupiter.api.Test;
@@ -19,5 +19,13 @@ public class ClientTesting {
         String password = "test";
 
         assertTrue(sock.sendLogin(username, password));
+    }
+
+    @Test
+    void getAllAssets(){
+        Asset[] assets = sock.getAssets();
+        for(int i = 0; i < assets.length; ++i){
+            System.out.println(assets[i].getAssetName());
+        }
     }
 }

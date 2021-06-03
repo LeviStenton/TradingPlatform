@@ -20,6 +20,7 @@ public class ServerConnection {
      */
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
+    public static final String GETASSETS = "GETASSETS";
 
     // Database connection
     DBSource db;
@@ -48,9 +49,15 @@ public class ServerConnection {
             else if(command.equals(LOGIN)){
                 String username = (String) objInStream.readObject();
                 String password = (String) objInStream.readObject();
-                System.out.println(username + "" + password);
+                System.out.println("Attempted login with: " +  username + " " + password);
                 try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                     outStream.writeBoolean(db.loginAttempt(username, password));
+                }
+            }
+            else if(command.equals(GETASSETS)){
+                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+
+                    outStream.writeObject(db.GetAllAssets());
                 }
             }
 //            else if(command.equals(RETRIEVE))

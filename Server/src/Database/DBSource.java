@@ -1,9 +1,5 @@
 package Database;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +21,7 @@ public class DBSource {
     private final String INSERTORGASSET = "INSERT INTO OrganizationAssets(OrganizationID, AssetID, Quantity) VALUES (?,?,?)";
     private final String UPDATEORGASSET = "UPDATE OrganizationAssets SET Quantity = ? WHERE OrganizationID = ? AND AssetID = ?";
     private final String GETORGASSETQUANTITY = "SELECT Quantity FROM OrganizationAssets WHERE OrganizationID = ? AND AssetID = ?";
+    private final String GETALLASSETS = "SELECT * FROM Assets";
     private final String DELETEORDER = "DELETE FROM Orders WHERE OrderID = ?";
     private final String ADDORDER = "INSERT INTO Orders(OrderID, DatePlaced, AssetID, Price, OrderType,Quantity,UserID) VALUES (?,?,?,?,?,?,?)";
     private final String CHANGEORDERQUANTITY = "UPDATE Orders SET Quantity = ? WHERE OrderID = ?";
@@ -42,6 +39,7 @@ public class DBSource {
     private PreparedStatement accountCreation;
     private PreparedStatement getOrders;
     private PreparedStatement getAssetCount;
+    private PreparedStatement getAllAssets;
     private PreparedStatement addOrderHistory;
     private PreparedStatement changeOrgCredits;
     private PreparedStatement getOrgCredits;
@@ -70,6 +68,7 @@ public class DBSource {
             accountCreation = connection.prepareStatement(CREATE_ACCOUNT);
             getOrders = connection.prepareStatement(ORDERS);
             getAssetCount = connection.prepareStatement(ASSETCOUNT);
+            getAllAssets = connection.prepareStatement(GETALLASSETS);
             addOrderHistory = connection.prepareStatement(ADDORDERHISTORY);
             changeOrgCredits = connection.prepareStatement(CHANGEORGCREDITS);
             getOrgCredits = connection.prepareStatement(GETORGCREDITS);
@@ -602,5 +601,30 @@ public class DBSource {
         }
 
         return id;
+    }
+
+    /**
+     * Returns all assets in the database
+     *
+     * @return A list of Assets objects
+     */
+    public Asset[] GetAllAssets() {
+        ResultSet rs;
+        List<Asset> assets = new ArrayList<Asset>();
+
+        try {
+            rs = getAllAssets.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                Asset asset = new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName"));
+                assets.add(asset);
+                ++i;
+            }
+            return assets.toArray(new Asset[assets.size()]);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return assets.toArray(new Asset[assets.size()]);
     }
 }

@@ -1,6 +1,6 @@
 package Network;
 
-import Database.AccountDetails;
+import Database.Asset;
 import Database.Order;
 
 import java.io.IOException;
@@ -21,6 +21,7 @@ public class ClientSocket {
     //public static final String STORE = "Store";
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
+    public static final String GETASSETS = "GETASSETS";
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -56,6 +57,24 @@ public class ClientSocket {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public Asset[] getAssets(){
+        Asset[] assets;
+        try {
+            Socket socket = new Socket(HOSTNAME, PORT);
+            try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
+                objOutStream.writeObject(GETASSETS);
+                objOutStream.flush();
+                try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
+                    return (Asset[]) objInputStream.readObject();
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            assets = new Asset[0];
+            return assets;
         }
     }
 

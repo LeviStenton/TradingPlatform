@@ -1,10 +1,12 @@
 package Database;
 
-public class Assets {
+import java.io.Serializable;
+
+public class Asset implements Serializable {
     private int assetID;
     private String assetName;
 
-    public Assets(int assetID, String assetName){
+    public Asset(int assetID, String assetName){
         this.assetID = assetID;
         this.assetName = assetName;
     }

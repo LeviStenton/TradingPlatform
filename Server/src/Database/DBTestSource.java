@@ -1,20 +1,18 @@
 package Database;
 
-import Database.DBInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class DBTestSource implements DBInterface {
 
-    List<Assets> assetsList = new ArrayList<Assets>();
+    List<Asset> assetList = new ArrayList<Asset>();
     List<AccountDetails> accountDetailsList = new ArrayList<AccountDetails>();
     List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
     List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
     List<Order> orderList = new ArrayList<Order>();
     List<Order> orderHistoryList = new ArrayList<Order>();
 
-    public List<Assets> getAssetsList(){return this.assetsList;};
+    public List<Asset> getAssetsList(){return this.assetList;};
     public List<AccountDetails> getAccountDetailsList(){return this.accountDetailsList;};
     public List<OrgAssets> getOrgAssetsList(){return this.orgAssetsList;};
     public List<OrgDetails> getOrgDetailsList(){return this.orgDetailsList;};
@@ -36,12 +34,12 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void DeleteAsset(int assetID) {
-        assetsList.removeIf(t -> t.getAssetID() == assetID);
+        assetList.removeIf(t -> t.getAssetID() == assetID);
     }
 
     @Override
     public void AddNewAsset(String assetName) {
-        assetsList.add(new Assets(assetsList.size() + 1,assetName));
+        assetList.add(new Asset(assetList.size() + 1,assetName));
     }
 
     @Override
@@ -230,7 +228,7 @@ public class DBTestSource implements DBInterface {
     @Override
     public List<Integer> GetAssetCount() {
         List<Integer> toReturn = new ArrayList<Integer>();
-        for(Assets asset:assetsList){
+        for(Asset asset: assetList){
             toReturn.add(asset.getAssetID());
         }
         return toReturn;

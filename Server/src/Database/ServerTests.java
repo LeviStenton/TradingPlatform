@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServerTests {
     DBTestSource source = new DBTestSource();
+    DBSource db = new DBSource();
     @Before
     public void init() {
         this.source = new DBTestSource();
@@ -116,5 +117,13 @@ public class ServerTests {
     void InsertAsset(){
         DBSource source = new DBSource();
         //source.InsertOrgAsset(1,1,10);
+    }
+
+    @Test
+    void getAllAssets(){
+        Asset[] assets = db.GetAllAssets();
+        for(int i = 0; i < assets.length; ++i){
+            System.out.println(assets[i].getAssetName());
+        }
     }
 }
