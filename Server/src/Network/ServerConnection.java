@@ -1,9 +1,6 @@
 package Network;
 
-import Database.DBInterface;
-import Database.DBSource;
-import Database.DBTestSource;
-import Database.Order;
+import Database.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,8 +18,8 @@ public class ServerConnection {
     /**
      * Commands to issue to the server
      */
-    //public static final String STORE = "Store";
     public static final String ORDER = "ORDER";
+    public static final String LOGIN = "LOGIN";
 
     // Database connection
     DBSource db;
@@ -44,13 +41,25 @@ public class ServerConnection {
     private void handleConnection(Socket socket) throws Exception {
         try (ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream())) {
             String command = (String) objInStream.readObject();
-            Order order = (Order) objInStream.readObject();
-            if(command.equals(ORDER))
+            if(command.equals(ORDER)){
+                Order order = (Order) objInStream.readObject();
                 db.AddOrder(order);
+            }
+            else if(command.equals(LOGIN)){
+                String username = (String) objInStream.readObject();
+                String password = (String) objInStream.readObject();
+                System.out.println(username + "" + password);
+                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                    outStream.writeBoolean(db.loginAttempt(username, password));
+                }
+            }
 //            else if(command.equals(RETRIEVE))
 //                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
 //                    // send information to the client through here
 //                }
+        }
+        catch (ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 

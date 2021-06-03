@@ -1,10 +1,9 @@
 package Database;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
 
-import java.sql.SQLException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ServerTests {
     DBTestSource source = new DBTestSource();

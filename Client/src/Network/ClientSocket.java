@@ -1,6 +1,7 @@
 package Network;
 
-import Orders.Order;
+import Database.AccountDetails;
+import Database.Order;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +20,7 @@ public class ClientSocket {
      */
     //public static final String STORE = "Store";
     public static final String ORDER = "ORDER";
+    public static final String LOGIN = "LOGIN";
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -36,6 +38,24 @@ public class ClientSocket {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean sendLogin(String login, String password){
+        try {
+            Socket socket = new Socket(HOSTNAME, PORT);
+            try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
+                objOutStream.writeObject(LOGIN);
+                objOutStream.writeObject(login);
+                objOutStream.writeObject(password);
+                objOutStream.flush();
+                try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
+                    return objInputStream.readBoolean();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

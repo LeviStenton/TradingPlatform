@@ -1,6 +1,8 @@
 package Database;
 
-public class AccountDetails {
+import java.io.Serializable;
+
+public class AccountDetails implements Serializable {
     private int userID;
     private String userName;
     private String password;
