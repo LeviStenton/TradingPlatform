@@ -5,9 +5,8 @@
  */
 package GUI;
 
+import Database.Profile;
 import Network.ClientSocket;
-
-import javax.swing.*;
 
 /**
  *
@@ -149,13 +148,14 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ClientSocket sock = new ClientSocket();
-        boolean verified = sock.sendLogin(Username.getText(), jPasswordField1.getText());
+        Profile user = sock.sendLogin(Username.getText(), jPasswordField1.getText());
+        boolean loginVerify = user != null;
         System.out.println("Username: " + Username.getText());
         System.out.println("Password: " + jPasswordField1.getText());
-        System.out.println("Login Successful: " + verified);
-        if(verified){
+        System.out.println("Login Successful: " + loginVerify);
+        if(loginVerify){
             this.dispose();
-            new Home().setVisible(true);
+            new Home(user).setVisible(true);
         }
         else
             jLabel2.setVisible(true);

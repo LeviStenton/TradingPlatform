@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import Database.Profile;
+
 import javax.swing.JFrame;
 
 /**
@@ -13,10 +15,12 @@ import javax.swing.JFrame;
  */
 public class Home extends javax.swing.JFrame {
 
+    private Database.Profile user;
     /**
      * Creates new form Home
      */
-    public Home() {
+    public Home(Database.Profile user) {
+        this.user = user;
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
@@ -564,7 +568,7 @@ public class Home extends javax.swing.JFrame {
         );
 
         MenuBar.setOpaque(true);
-        MenuBar.setBackground(new java.awt.Color(31, 31, 35));
+        MenuBar.setBackground(new java.awt.Color(255, 255, 255));
         MenuBar.setBorder(null);
         MenuBar.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -636,7 +640,7 @@ public class Home extends javax.swing.JFrame {
 
     private void ProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileActionPerformed
         // TODO add your handling code here:
-        new Profile().setVisible(true);
+        new GUI.Profile(user).setVisible(true);
         
     }//GEN-LAST:event_ProfileActionPerformed
 
@@ -647,7 +651,7 @@ public class Home extends javax.swing.JFrame {
 
     private void SignoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignoutActionPerformed
         // TODO add your handling code here:
-        new SignoutConfirmation().setVisible(true);
+        new SignoutConfirmation(this).setVisible(true);
     }//GEN-LAST:event_SignoutActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -713,11 +717,11 @@ public class Home extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        Database.Profile test = new Profile(10419667, "LeviStenton", "test", 01, false);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                new Home(test).setVisible(true);
             }
         });
         

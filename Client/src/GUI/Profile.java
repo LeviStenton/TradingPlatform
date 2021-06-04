@@ -11,10 +11,12 @@ package GUI;
  */
 public class Profile extends javax.swing.JFrame {
 
+    private Database.Profile user;
     /**
      * Creates new form Profile
      */
-    public Profile() {
+    public Profile(Database.Profile user) {
+        this.user = user;
         initComponents();
     }
 
@@ -50,7 +52,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("INSERT NAME");
+        jLabel8.setText(user.getUserName());
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -62,7 +64,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("INSERT DEPARTMENT");
+        jLabel11.setText(user.getOrgID()+"");
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -74,7 +76,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("ADMIN / USER");
+        jLabel14.setText(user.getAdmin() ? "Admin" : "User");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -153,41 +155,6 @@ public class Profile extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Profile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Profile().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;

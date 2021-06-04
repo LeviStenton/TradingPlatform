@@ -1,5 +1,6 @@
 package Network;
 
+import Database.Profile;
 import Database.Asset;
 import Database.Order;
 
@@ -42,7 +43,7 @@ public class ClientSocket {
         }
     }
 
-    public boolean sendLogin(String login, String password){
+    public Profile sendLogin(String login, String password){
         try {
             Socket socket = new Socket(HOSTNAME, PORT);
             try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
@@ -51,12 +52,12 @@ public class ClientSocket {
                 objOutStream.writeObject(password);
                 objOutStream.flush();
                 try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
-                    return objInputStream.readBoolean();
+                    return (Profile)objInputStream.readObject();
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

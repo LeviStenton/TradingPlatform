@@ -1,3 +1,4 @@
+import Database.Profile;
 import Database.Asset;
 import Database.Order;
 import Network.ClientSocket;
@@ -17,8 +18,8 @@ public class ClientTesting {
     void loginVerification(){
         String username = "LeviStenton";
         String password = "test";
-
-        assertTrue(sock.sendLogin(username, password));
+        Profile user = sock.sendLogin(username, password);
+        System.out.println(user.getUserName() + " " + user.getAdmin());
     }
 
     @Test

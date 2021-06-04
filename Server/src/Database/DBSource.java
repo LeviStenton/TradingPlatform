@@ -10,7 +10,7 @@ public class DBSource {
 
     private final Connection connection;
 
-    private final String LOGIN_DETAILS = "SELECT Username, Password FROM AccountDetails WHERE Username=?";
+    private final String LOGIN_DETAILS = "SELECT * FROM AccountDetails WHERE Username=? AND Password=?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
     private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
@@ -355,18 +355,20 @@ public class DBSource {
         }
     }
 
-    public boolean loginAttempt(String userName, String password) {
+    public Profile loginAttempt(String userName, String password) {
         ResultSet rs;
         try {
             loginVerification.setString(1, userName);
+            loginVerification.setString(2, password);
             rs = loginVerification.executeQuery();
             rs.next();
-            boolean passwordMatch = rs.getString("Password").equals(password);
-            return rs.getString("Username").equals(userName) && passwordMatch;
+            Profile user = new Profile(rs.getInt("UserID"), rs.getString("Username"),
+                    rs.getString("Password"), rs.getInt("OrganizationID"), rs.getBoolean("Admin"));
+            return user;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

@@ -2,17 +2,19 @@ package Database;
 
 import java.io.Serializable;
 
-public class AccountDetails implements Serializable {
+public class Profile implements Serializable {
     private int userID;
     private String userName;
     private String password;
     private int orgID;
+    private boolean admin;
 
-    public AccountDetails(int userID, String userName, String password, int orgID){
+    public Profile(int userID, String userName, String password, int orgID, boolean admin){
         this.userID = userID;
         this.userName = userName;
         this.password = password;
         this.orgID = orgID;
+        this.admin = admin;
     }
 
 
@@ -32,6 +34,8 @@ public class AccountDetails implements Serializable {
         return this.orgID;
     }
 
+    public boolean getAdmin() { return this.admin; }
+
     public void setUserID(int id) {
         this.userID = id;
     }
@@ -46,6 +50,10 @@ public class AccountDetails implements Serializable {
 
     public void setOrgID(int id) {
         this.orgID = id;
+    }
+
+    public void setAdmin(boolean admin){
+        this.admin = admin;
     }
 
 }

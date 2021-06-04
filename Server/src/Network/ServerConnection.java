@@ -51,12 +51,11 @@ public class ServerConnection {
                 String password = (String) objInStream.readObject();
                 System.out.println("Attempted login with: " +  username + " " + password);
                 try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                    outStream.writeBoolean(db.loginAttempt(username, password));
+                    outStream.writeObject(db.loginAttempt(username, password));
                 }
             }
             else if(command.equals(GETASSETS)){
                 try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-
                     outStream.writeObject(db.GetAllAssets());
                 }
             }
