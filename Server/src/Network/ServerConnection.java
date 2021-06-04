@@ -21,6 +21,7 @@ public class ServerConnection {
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
     public static final String GETASSETS = "GETASSETS";
+    public static final String PASSWORD = "PASSWORD";
 
     // Database connection
     DBSource db;
