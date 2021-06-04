@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.idea",
+    "\\Client",
+    "\\Client\\.idea",
+    "\\Client\\src",
+    "\\Client\\src\\GUI",
+    "\\Server"
+  ],
+  "SelectedNode": "\\Client\\src\\GUI\\Login.java",
+  "PreviewInSolutionExplorer": false
+}
