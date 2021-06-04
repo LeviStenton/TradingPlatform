@@ -1,9 +1,5 @@
 package Database;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +10,7 @@ public class DBSource {
 
     private final Connection connection;
 
-    private final String LOGIN_DETAILS = "SELECT Username, Password FROM AccountDetails WHERE Username=?";
+    private final String LOGIN_DETAILS = "SELECT * FROM AccountDetails WHERE Username=? AND Password=?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
     private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
@@ -25,6 +21,7 @@ public class DBSource {
     private final String INSERTORGASSET = "INSERT INTO OrganizationAssets(OrganizationID, AssetID, Quantity) VALUES (?,?,?)";
     private final String UPDATEORGASSET = "UPDATE OrganizationAssets SET Quantity = ? WHERE OrganizationID = ? AND AssetID = ?";
     private final String GETORGASSETQUANTITY = "SELECT Quantity FROM OrganizationAssets WHERE OrganizationID = ? AND AssetID = ?";
+    private final String GETALLASSETS = "SELECT * FROM Assets";
     private final String DELETEORDER = "DELETE FROM Orders WHERE OrderID = ?";
     private final String ADDORDER = "INSERT INTO Orders(OrderID, DatePlaced, AssetID, Price, OrderType,Quantity,UserID) VALUES (?,?,?,?,?,?,?)";
     private final String CHANGEORDERQUANTITY = "UPDATE Orders SET Quantity = ? WHERE OrderID = ?";
@@ -42,6 +39,7 @@ public class DBSource {
     private PreparedStatement accountCreation;
     private PreparedStatement getOrders;
     private PreparedStatement getAssetCount;
+    private PreparedStatement getAllAssets;
     private PreparedStatement addOrderHistory;
     private PreparedStatement changeOrgCredits;
     private PreparedStatement getOrgCredits;
@@ -70,6 +68,7 @@ public class DBSource {
             accountCreation = connection.prepareStatement(CREATE_ACCOUNT);
             getOrders = connection.prepareStatement(ORDERS);
             getAssetCount = connection.prepareStatement(ASSETCOUNT);
+            getAllAssets = connection.prepareStatement(GETALLASSETS);
             addOrderHistory = connection.prepareStatement(ADDORDERHISTORY);
             changeOrgCredits = connection.prepareStatement(CHANGEORGCREDITS);
             getOrgCredits = connection.prepareStatement(GETORGCREDITS);
@@ -176,17 +175,19 @@ public class DBSource {
      *
      * @param password The new password to set
      * @param userID   The user password to change
+     * @return The success of the operation
      */
-    public void ChangeUserPassword(String password, int userID) {
+    public boolean ChangeUserPassword(String password, int userID) {
         ResultSet rs;
         try {
             changeUserPassword.setString(1, password);
             changeUserPassword.setInt(2, userID);
             changeUserPassword.executeUpdate();
+            return true;
         } catch (SQLException e) {
-
             System.out.println(e.getErrorCode());
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -286,6 +287,32 @@ public class DBSource {
     }
 
     /**
+     * Adds a order to the Orders database
+     *
+     * @param order The order to add to the database
+     */
+    public void AddOrder(Order order) {
+        ResultSet rs;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+
+        try {
+            if (order.getOrderID() != -1) {
+                addOrder.setInt(1, order.getOrderID());
+            }
+            addOrder.setString(2, formatter.format(date));
+            addOrder.setInt(3, order.getAssetID());
+            addOrder.setDouble(4, order.getPrice());
+            addOrder.setString(5, order.getOrderType());
+            addOrder.setDouble(6, order.getQuantity());
+            addOrder.setInt(7, order.getUserID());
+            addOrder.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Inserts a asset into a org if it doesn't exist or updates it instead
      *
      * @param orgID    The ID of the org
@@ -330,18 +357,29 @@ public class DBSource {
         }
     }
 
-    public boolean loginAttempt(String userName, String password) {
+    /**
+     * Given a username and password, will attempt to verify it against
+     * the database to determine whether there is an account associated
+     * with them.
+     *
+     * @param userName
+     * @param password
+     * @return The User class with their details
+     */
+    public User loginAttempt(String userName, String password) {
         ResultSet rs;
         try {
             loginVerification.setString(1, userName);
+            loginVerification.setString(2, password);
             rs = loginVerification.executeQuery();
             rs.next();
-            boolean passwordMatch = rs.getString("Password").equals(password);
-            return rs.getString("Username").equals(userName) && passwordMatch;
+            User user = new User(rs.getInt("UserID"), rs.getString("Username"),
+                    rs.getString("Password"), rs.getInt("OrganizationID"), rs.getBoolean("Admin"));
+            return user;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -576,5 +614,30 @@ public class DBSource {
         }
 
         return id;
+    }
+
+    /**
+     * Returns all assets in the database
+     *
+     * @return A list of Assets objects
+     */
+    public Asset[] GetAllAssets() {
+        ResultSet rs;
+        List<Asset> assets = new ArrayList<Asset>();
+
+        try {
+            rs = getAllAssets.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                Asset asset = new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName"));
+                assets.add(asset);
+                ++i;
+            }
+            return assets.toArray(new Asset[assets.size()]);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return assets.toArray(new Asset[assets.size()]);
     }
 }

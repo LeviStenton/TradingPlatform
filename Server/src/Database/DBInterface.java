@@ -1,6 +1,5 @@
 package Database;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface DBInterface {
@@ -26,11 +25,13 @@ public interface DBInterface {
 
     void AddOrder(int orderID, int assetID, double price, String type, double quantity, int userID);
 
+    void AddOrder(Order order);
+
     void InsertOrgAsset(int orgID, int assetID, double quantity, String operator);
 
     void DeleteOrder(int orderID);
 
-    boolean loginAttempt(String userName, String password);
+    User loginAttempt(String userName, String password);
 
     int OrderJoinOrgID(int orderID);
 
@@ -46,7 +47,7 @@ public interface DBInterface {
 
     void ChangeOrgCredits(double credits, int orgID, String operator);
 
-    void CreateAccount(String userName, String password, Integer orgID);
+    void CreateAccount(String userName, String password, Integer orgID, boolean admin);
 
     List<Order> GetOrders(int assetID, String orderType);
 

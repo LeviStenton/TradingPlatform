@@ -9,6 +9,7 @@ import java.io.IOException;
 public class ServerStartup {
     public static void main(String[] args) throws IOException {
         ServerConnection server = new ServerConnection();
+
         SwingUtilities.invokeLater(() -> createAndShowGUI(server));
         try {
             server.start();
