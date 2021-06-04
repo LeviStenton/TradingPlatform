@@ -21,7 +21,7 @@ public class ServerTests {
 
         source.CreateAccount(userName, password, 1, false);
 
-        for(Profile account: source.getAccountDetailsList()){
+        for(User account: source.getAccountDetailsList()){
             getUserName = account.getUserName();
             assertTrue(getUserName.equals(userName));
             return;
@@ -130,7 +130,7 @@ public class ServerTests {
     void loginVerification(){
         String username = "LeviStenton";
         String password = "test";
-        Profile user = db.loginAttempt(username, password);
+        User user = db.loginAttempt(username, password);
         System.out.println(user.getUserName() + " " + user.getAdmin());
     }
 }

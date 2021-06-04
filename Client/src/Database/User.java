@@ -2,14 +2,14 @@ package Database;
 
 import java.io.Serializable;
 
-public class Profile implements Serializable {
+public class User implements Serializable {
     private int userID;
     private String userName;
     private String password;
     private int orgID;
     private boolean admin;
 
-    public Profile(int userID, String userName, String password, int orgID, boolean admin){
+    public User(int userID, String userName, String password, int orgID, boolean admin){
         this.userID = userID;
         this.userName = userName;
         this.password = password;
@@ -56,4 +56,6 @@ public class Profile implements Serializable {
         this.admin = admin;
     }
 
+    public String toString(){
+        return "Username: " + userName + "\nUser ID: " + userID + "\nOrganization ID: " + Integer.toString(orgID);    }
 }

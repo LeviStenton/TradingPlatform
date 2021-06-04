@@ -5,17 +5,19 @@
  */
 package GUI;
 
+import Database.User;
+
 /**
  *
  * @author Joshua
  */
 public class Profile extends javax.swing.JFrame {
 
-    private Database.Profile user;
+    private User user;
     /**
      * Creates new form Profile
      */
-    public Profile(Database.Profile user) {
+    public Profile(User user) {
         this.user = user;
         initComponents();
     }
@@ -52,7 +54,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("INSERT NAME");
+        jLabel8.setText(user.getUserName());
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -64,7 +66,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("INSERT DEPARTMENT");
+        jLabel11.setText(Integer.toString(user.getOrgID()));
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -76,7 +78,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel14.setText("ADMIN / USER");
+        jLabel14.setText(user.getAdmin() ? "Admin" : "User");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

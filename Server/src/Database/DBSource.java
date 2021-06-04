@@ -175,17 +175,19 @@ public class DBSource {
      *
      * @param password The new password to set
      * @param userID   The user password to change
+     * @return The success of the operation
      */
-    public void ChangeUserPassword(String password, int userID) {
+    public boolean ChangeUserPassword(String password, int userID) {
         ResultSet rs;
         try {
             changeUserPassword.setString(1, password);
             changeUserPassword.setInt(2, userID);
             changeUserPassword.executeUpdate();
+            return true;
         } catch (SQLException e) {
-
             System.out.println(e.getErrorCode());
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -355,14 +357,23 @@ public class DBSource {
         }
     }
 
-    public Profile loginAttempt(String userName, String password) {
+    /**
+     * Given a username and password, will attempt to verify it against
+     * the database to determine whether there is an account associated
+     * with them.
+     *
+     * @param userName
+     * @param password
+     * @return The User class with their details
+     */
+    public User loginAttempt(String userName, String password) {
         ResultSet rs;
         try {
             loginVerification.setString(1, userName);
             loginVerification.setString(2, password);
             rs = loginVerification.executeQuery();
             rs.next();
-            Profile user = new Profile(rs.getInt("UserID"), rs.getString("Username"),
+            User user = new User(rs.getInt("UserID"), rs.getString("Username"),
                     rs.getString("Password"), rs.getInt("OrganizationID"), rs.getBoolean("Admin"));
             return user;
 

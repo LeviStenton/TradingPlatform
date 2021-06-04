@@ -6,14 +6,14 @@ import java.util.List;
 public class DBTestSource implements DBInterface {
 
     List<Asset> assetList = new ArrayList<Asset>();
-    List<Profile> profileList = new ArrayList<Profile>();
+    List<User> profileList = new ArrayList<User>();
     List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
     List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
     List<Order> orderList = new ArrayList<Order>();
     List<Order> orderHistoryList = new ArrayList<Order>();
 
     public List<Asset> getAssetsList(){return this.assetList;};
-    public List<Profile> getAccountDetailsList(){return this.profileList;};
+    public List<User> getAccountDetailsList(){return this.profileList;};
     public List<OrgAssets> getOrgAssetsList(){return this.orgAssetsList;};
     public List<OrgDetails> getOrgDetailsList(){return this.orgDetailsList;};
     public List<Order> getOrderList(){return this.orderList;};
@@ -49,7 +49,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void ChangeUserPassword(String password, int userID) {
-        for(Profile account: profileList){
+        for(User account: profileList){
             if(account.getUserID() == userID){
                 account.setPassword(password);
             }
@@ -58,7 +58,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void ChangeUserOrg(int orgID, int userID) {
-        for(Profile account: profileList){
+        for(User account: profileList){
             if(account.getUserID() == userID){
                 account.setOrgID(orgID);
             }
@@ -114,8 +114,8 @@ public class DBTestSource implements DBInterface {
     }
 
     @Override
-    public Profile loginAttempt(String userName, String password) {
-        for(Profile account: profileList){
+    public User loginAttempt(String userName, String password) {
+        for(User account: profileList){
             if(account.getUserName() == userName && account.getPassword().equals(password)){
                 return  account;
             }
@@ -126,7 +126,7 @@ public class DBTestSource implements DBInterface {
     @Override
     public int OrderJoinOrgID(int orderID) {
         for(Order order: orderList){
-            for(Profile account: profileList){
+            for(User account: profileList){
                 if(order.getOrderID() == orderID){
                     if(account.getUserID() == order.getUserID()){
                         return account.getOrgID();
@@ -206,7 +206,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void CreateAccount(String userName, String password, Integer orgID, boolean admin) {
-        profileList.add(new Profile(profileList.size() + 1,userName,password,orgID,admin));
+        profileList.add(new User(profileList.size() + 1,userName,password,orgID,admin));
     }
 
     @Override

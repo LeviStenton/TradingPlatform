@@ -1,6 +1,6 @@
 package Network;
 
-import Database.Profile;
+import Database.User;
 import Database.Asset;
 import Database.Order;
 
@@ -23,6 +23,7 @@ public class ClientSocket {
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
     public static final String GETASSETS = "GETASSETS";
+    public static final String PASSWORD = "PASSWORD";
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -43,7 +44,7 @@ public class ClientSocket {
         }
     }
 
-    public Profile sendLogin(String login, String password){
+    public User sendLogin(String login, String password){
         try {
             Socket socket = new Socket(HOSTNAME, PORT);
             try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
@@ -52,7 +53,7 @@ public class ClientSocket {
                 objOutStream.writeObject(password);
                 objOutStream.flush();
                 try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
-                    return (Profile)objInputStream.readObject();
+                    return (User)objInputStream.readObject();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

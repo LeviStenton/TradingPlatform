@@ -31,7 +31,7 @@ public interface DBInterface {
 
     void DeleteOrder(int orderID);
 
-    Profile loginAttempt(String userName, String password);
+    User loginAttempt(String userName, String password);
 
     int OrderJoinOrgID(int orderID);
 

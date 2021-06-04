@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import Database.Profile;
+import Database.User;
 
 import javax.swing.JFrame;
 
@@ -15,11 +15,11 @@ import javax.swing.JFrame;
  */
 public class Home extends javax.swing.JFrame {
 
-    private Database.Profile user;
+    private User user;
     /**
      * Creates new form Home
      */
-    public Home(Database.Profile user) {
+    public Home(User user) {
         this.user = user;
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -436,7 +436,7 @@ public class Home extends javax.swing.JFrame {
 
     private void ProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileActionPerformed
         // TODO add your handling code here:
-        new GUI.Profile(user).setVisible(true);
+        new Profile(user).setVisible(true);
         
     }//GEN-LAST:event_ProfileActionPerformed
 
@@ -497,7 +497,7 @@ public class Home extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        Database.Profile test = new Profile(10419667, "LeviStenton", "test", 01, false);
+        User test = new User(10419667, "LeviStenton", "test", 01, false);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
