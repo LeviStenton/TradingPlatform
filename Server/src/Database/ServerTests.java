@@ -17,6 +17,10 @@ public class ServerTests {
         this.source = new DBTestSource();
     }
 
+    /**
+     * BLACK BOX TESTS --------------------------------------------------------------------------
+     */
+
     @Test
     void CreateAccount(){
         String userName = "Eggs";
@@ -245,6 +249,10 @@ public class ServerTests {
     void getOrgAssetQuantity(){
         int orgID = 2;
         int assetID = 1;
-        assertEquals(db.GetOrgAssetQuantity(orgID, assetID), 1);
+        assertEquals(1, db.GetOrgAssetQuantity(orgID, assetID));
     }
+
+    /**
+     * GLASS BOX TESTS ------------------------------------------------------------------
+     */
 }
