@@ -26,14 +26,16 @@ public class ClientStart extends Thread{
             DatabaseStorage.setAssetList(socket.getAssets());
             socket = new ClientSocket();
             DatabaseStorage.setOrderHistory(socket.getOrderHistory());
-
+            GUI.Home.UpdateOrderHistory();
 //            for(Asset asset : DatabaseStorage.getAssetList()){
 //                System.out.println(asset.getAssetName());
 //            }
-            for(Order order : DatabaseStorage.getOrderHistory()){
-                System.out.println(order.getAssetID());
-            }
-            System.out.println("");
+
+
+//            for(Order order : DatabaseStorage.getOrderHistory()){
+//                System.out.println(order.getPrice());
+//            }
+//            System.out.println("");
             try {
                 sleep(2000);
             } catch (InterruptedException e) {
