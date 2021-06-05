@@ -26,6 +26,7 @@ public class ClientSocket {
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
     public static final String GETASSETS = "GETASSETS";
+    public static final String GETORDERHISTORY = "GETORDERHISTORY";
     public static final String PASSWORD = "PASSWORD";
     public static final String CREATEACC = "CREATEACC";
     public static final String REMOVEACC = "REMOVEACC";
@@ -80,7 +81,24 @@ public class ClientSocket {
             objOutStream.writeObject(GETASSETS);
             objOutStream.flush();
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
                 return (List<Asset>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return assets;
+        }
+    }
+
+    public List<Order> getOrderHistory(){
+        List<Order> assets = new ArrayList<Order>();
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETORDERHISTORY);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
+                return (List<Order>) objInputStream.readObject();
             }
         }
         catch (IOException | ClassNotFoundException e) {

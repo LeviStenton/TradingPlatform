@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * Hold details about a order so they can be changed or referenced
  */
 public class Order implements Serializable {
-    private int orderID;
+    private int orderID = -1;
     private String datePlaced;
     private int assetID;
     private double price;
