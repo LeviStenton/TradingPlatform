@@ -8,17 +8,24 @@ package GUI;
 // Imports
 
 
+import Database.User;
+import Network.ClientSocket;
+
 /**
  *
  * @author Joshua
  */
 public class Settings extends javax.swing.JFrame {
 
+    private User user;
+
     /**
      * Creates new form Settings
      */
-    public Settings() {
+    public Settings(User user) {
+        this.user = user;
         initComponents();
+        jLabel2.setVisible(false);
     }
 
     /**
@@ -68,7 +75,7 @@ public class Settings extends javax.swing.JFrame {
 
         jPasswordField1.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setText("Password");
+        jPasswordField1.setText("");
         jPasswordField1.setBorder(null);
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,7 +85,7 @@ public class Settings extends javax.swing.JFrame {
 
         jPasswordField2.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField2.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField2.setText("Password");
+        jPasswordField2.setText("");
         jPasswordField2.setBorder(null);
         jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,10 +95,15 @@ public class Settings extends javax.swing.JFrame {
 
         PasswordConfirmChange.setText("Confirm Change");
         PasswordConfirmChange.setBorder(null);
+        PasswordConfirmChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PasswordConfirmChangeActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(200, 9, 0));
-        jLabel2.setText("Incorrect Current Password");
+//        jLabel2.setForeground(new java.awt.Color(200, 9, 0));
+//        jLabel2.setText("Incorrect Current Password");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -190,46 +202,28 @@ public class Settings extends javax.swing.JFrame {
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Settings.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void PasswordConfirmChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordConfirmChangeActionPerformed
+        // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        boolean passChanged = sock.changePassword(jPasswordField2.getText(), jPasswordField1.getText(), user.getUserID());
+        System.out.println(jPasswordField2.getText() + ", " + jPasswordField1.getText() + ", " + user.getUserID());
+        if(passChanged){
+            jLabel2.setText("Password change successful.");
+            jLabel2.setForeground(new java.awt.Color(0, 153, 40));
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Settings().setVisible(true);
-            }
-        });
-    }
+        else if (!passChanged){
+            jLabel2.setText("Invalid current password.");
+            jLabel2.setForeground(new java.awt.Color(153, 0, 0));
+        }
+        jLabel2.setVisible(true);
+    }//GEN-LAST:event_PasswordConfirmChangeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton PasswordConfirmChange;

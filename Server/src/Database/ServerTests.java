@@ -218,4 +218,12 @@ public class ServerTests {
         User user = db.loginAttempt(username, password);
         System.out.println(user.getUserName() + " " + user.getAdmin());
     }
+
+    @Test
+    void changePassword(){
+        int userID = 1;
+        String currentPass = "test";
+        String newPass = "test123";
+        db.ChangeUserPassword(currentPass, newPass, userID);
+    }
 }

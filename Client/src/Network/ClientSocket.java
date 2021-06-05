@@ -80,23 +80,22 @@ public class ClientSocket {
         }
     }
 
-//    public Object retrieve(String command){
-//        try{
-//            Socket socket = new Socket(HOSTNAME, PORT);
-//            Object returnObj;
-//            try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
-//                objOutStream.writeObject(command);
-//                objOutStream.flush();
-//                try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
-//                    if(command == ORDER)
-//                        return (Order)objInputStream.readObject();
-//                    else
-//                        return "Nothing to return";
-//                }
-//            }
-//        } catch (IOException | ClassNotFoundException e) {
-//            e.printStackTrace();
-//            return e.toString();
-//        }
-//    }
+    public boolean changePassword(String currentPass, String newPass, int userID){
+        try {
+            Socket socket = new Socket(HOSTNAME, PORT);
+            try (ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream())) {
+                objOutStream.writeObject(PASSWORD);
+                objOutStream.writeObject(currentPass);
+                objOutStream.writeObject(newPass);
+                objOutStream.writeInt(userID);
+                objOutStream.flush();
+                try(ObjectInputStream objInputStream = new ObjectInputStream(socket.getInputStream())){
+                    return objInputStream.readBoolean();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

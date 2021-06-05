@@ -29,4 +29,12 @@ public class ClientTesting {
             System.out.println(assets[i].getAssetName());
         }
     }
+
+    @Test
+    void changePassword(){
+        int userID = 1;
+        String currentPass = "test123";
+        String newPass = "test";
+        assertTrue(sock.changePassword(currentPass, newPass, userID));
+    }
 }

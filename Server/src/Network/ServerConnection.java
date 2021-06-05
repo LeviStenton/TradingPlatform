@@ -60,10 +60,14 @@ public class ServerConnection {
                     outStream.writeObject(db.GetAllAssets());
                 }
             }
-//            else if(command.equals(RETRIEVE))
-//                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-//                    // send information to the client through here
-//                }
+            else if(command.equals(PASSWORD)){
+                String currentPass = (String) objInStream.readObject();
+                String newPass = (String) objInStream.readObject();
+                int userID = objInStream.readInt();
+                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                    outStream.writeBoolean(db.ChangeUserPassword(currentPass, newPass, userID));
+                }
+            }
         }
         catch (ClassNotFoundException e){
             e.printStackTrace();
