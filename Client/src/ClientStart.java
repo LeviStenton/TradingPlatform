@@ -26,7 +26,7 @@ public class ClientStart extends Thread{
             DatabaseStorage.setAssetList(socket.getAssets());
             socket = new ClientSocket();
             DatabaseStorage.setOrderHistory(socket.getOrderHistory());
-
+            GUI.Home.UpdateOrderHistory();
 //            for(Asset asset : DatabaseStorage.getAssetList()){
 //                System.out.println(asset.getAssetName());
 //            }
