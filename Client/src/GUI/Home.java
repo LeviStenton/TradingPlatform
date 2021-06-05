@@ -282,7 +282,7 @@ public class Home extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Current Trades");
 
-        jTable2.setBackground(new java.awt.Color(39, 39, 45));
+        jTable2.setBackground(new java.awt.Color(255, 255, 255));
         jTable2.setModel(historyOrdersModel);
         historyOrdersModel.addColumn("Asset name");
         historyOrdersModel.addColumn("Price");
@@ -346,7 +346,7 @@ public class Home extends javax.swing.JFrame {
                             .addGroup(BackLayout.createSequentialGroup()
                                 .addGap(84, 84, 84)
                                 .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                                 .addContainerGap(37, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BackLayout.createSequentialGroup()
@@ -494,10 +494,12 @@ public class Home extends javax.swing.JFrame {
 
     public static void UpdateOrderHistory(){
         Object[] arr = new Object[7];
-        for(int i = 0; i < historyOrdersModel.getRowCount(); i++){
-            historyOrdersModel.removeRow(i);
+        while(historyOrdersModel.getRowCount() > 0)
+        {
+            historyOrdersModel.removeRow(0);
         }
         for(Order order : DatabaseStorage.getOrderHistory()){
+            //if(jLabel3.getText().equals(order.get())) {
             arr[0] = order.getAssetID();
             arr[1] = order.getPrice();
             arr[2] = order.getQuantity();
@@ -506,6 +508,7 @@ public class Home extends javax.swing.JFrame {
             arr[5] = order.getDatePlaced();
             arr[6] = order.getCompleted();
             historyOrdersModel.addRow(arr);
+            //}
         }
     }
 
@@ -622,7 +625,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private static javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
