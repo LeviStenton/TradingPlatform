@@ -7,6 +7,8 @@ package GUI;
 
 import Network.ClientSocket;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  *
  * @author Joshua
@@ -18,6 +20,8 @@ public class AdminControls extends javax.swing.JFrame {
      */
     public AdminControls() {
         initComponents();
+        jLabel2.setVisible(false);
+        jLabel3.setVisible(false);
     }
 
     /**
@@ -215,7 +219,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel25.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel25.setText("ASSET");
+        jLabel25.setText("-");
 
         jLabel26.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(255, 255, 255));
@@ -223,7 +227,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("AMOUNT");
+        jLabel27.setText("-");
 
         jTextField6.setBackground(new java.awt.Color(48, 48, 56));
         jTextField6.setForeground(new java.awt.Color(255, 255, 255));
@@ -408,7 +412,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField3.setBackground(new java.awt.Color(48, 48, 56));
         jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setText("Username");
+        jTextField3.setText("AUsername");
         jTextField3.setBorder(null);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -438,7 +442,6 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("ADMIN/USER");
 
         AdminOn1.setText("Remove Account");
         AdminOn1.setBorder(null);
@@ -547,7 +550,7 @@ public class AdminControls extends javax.swing.JFrame {
             }
         });
 
-        ConfirmAccountCreation2.setText("Add Asset");
+        ConfirmAccountCreation2.setText("Remove Asset");
         ConfirmAccountCreation2.setBorder(null);
         ConfirmAccountCreation2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -626,7 +629,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel30.setText("ORG");
+        jLabel30.setText("-");
 
         jTextField7.setBackground(new java.awt.Color(48, 48, 56));
         jTextField7.setForeground(new java.awt.Color(255, 255, 255));
@@ -656,7 +659,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setText("AMOUNT");
+        jLabel33.setText("-");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -813,10 +816,16 @@ public class AdminControls extends javax.swing.JFrame {
 
     private void UserOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserOnActionPerformed
         // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        sock.promoteAccount(jTextField3.getText(), false);
+        jLabel18.setText("User");
     }//GEN-LAST:event_UserOnActionPerformed
 
     private void AdminOnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminOnActionPerformed
         // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        sock.promoteAccount(jTextField3.getText(), true);
+        jLabel18.setText("Admin");
     }//GEN-LAST:event_AdminOnActionPerformed
 
     private void ChangeOrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChangeOrgActionPerformed
@@ -835,6 +844,11 @@ public class AdminControls extends javax.swing.JFrame {
 
     private void ConfirmAccountCreation1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation1ActionPerformed
         // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        if(!sock.addAsset(jTextField4.getText()))
+            jLabel2.setVisible(true);
+        else
+            jLabel2.setVisible(false);
     }//GEN-LAST:event_ConfirmAccountCreation1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -843,6 +857,11 @@ public class AdminControls extends javax.swing.JFrame {
 
     private void ConfirmAccountCreation2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation2ActionPerformed
         // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        if(!sock.removeAsset(jTextField5.getText()))
+            jLabel3.setVisible(true);
+        else
+            jLabel3.setVisible(false);
     }//GEN-LAST:event_ConfirmAccountCreation2ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -863,43 +882,9 @@ public class AdminControls extends javax.swing.JFrame {
 
     private void AdminOn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminOn1ActionPerformed
         // TODO add your handling code here:
+        ClientSocket sock = new ClientSocket();
+        sock.removeAccount(jTextField3.getText());
     }//GEN-LAST:event_AdminOn1ActionPerformed
-
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminControls.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminControls.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminControls.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminControls.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdminControls().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AdminOn;

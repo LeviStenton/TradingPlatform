@@ -26,7 +26,12 @@ public class ClientSocket {
     public static final String GETASSETS = "GETASSETS";
     public static final String PASSWORD = "PASSWORD";
     public static final String CREATEACC = "CREATEACC";
+    public static final String REMOVEACC = "REMOVEACC";
     public static final String ADMINPASS = "ADMINPASS";
+    public static final String PROMOTE = "PROMOTE";
+    public static final String REMOVEASSET = "REMOVEASSET";
+    public static final String ADDASSET = "ADDASSET";
+    public static final String CREDITS = "CREDITS";
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -129,5 +134,70 @@ public class ClientSocket {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean removeAccount(String username){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(REMOVEACC);
+            objOutStream.writeObject(username);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return objInputStream.readBoolean();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean promoteAccount(String username, boolean admin){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(PROMOTE);
+            objOutStream.writeObject(username);
+            objOutStream.writeBoolean(admin);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return objInputStream.readBoolean();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean addAsset(String assetName){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(ADDASSET);
+            objOutStream.writeObject(assetName);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return objInputStream.readBoolean();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean removeAsset(String assetName){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(REMOVEASSET);
+            objOutStream.writeObject(assetName);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return objInputStream.readBoolean();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int credits(String ){
+
     }
 }

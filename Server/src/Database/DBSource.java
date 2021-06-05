@@ -14,6 +14,7 @@ public class DBSource {
     private final String GET_PASSWORD = "SELECT Password FROM AccountDetails WHERE UserID=?";
     private final String ADMINCHANGE_PASSWORD = "UPDATE AccountDetails SET Password = ? WHERE Username = ?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
+    private final String PROMOTE_ACCOUNT = "UPDATE AccountDetails SET Admin = ? WHERE Username = ?";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
     private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
     private final String ADDORDERHISTORY = "INSERT INTO OrderHistory(OrderID, DatePlaced, AssetID, Price, OrderType, Quantity, UserID, Completed) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -31,8 +32,8 @@ public class DBSource {
     private final String CHANGEUSERORG = "UPDATE AccountDetails SET OrganizationID = ? WHERE UserID = ?";
     private final String CHANGEUSERPASSWORD = "UPDATE AccountDetails SET Password = ? WHERE UserID = ?";
     private final String ADDNEWASSET = "INSERT INTO Assets(AssetName) VALUES (?)";
-    private final String DELETEASSET = "DELETE FROM Assets WHERE AssetID = ?";
-    private final String DELETEUSER = "DELETE FROM AccountDetails WHERE UserID = ?";
+    private final String DELETEASSET = "DELETE FROM Assets WHERE AssetName = ?";
+    private final String DELETEUSER = "DELETE FROM AccountDetails WHERE Username = ?";
     private final String INSERTNEWORGINTOORGDETAILS = "INSERT INTO OrganizationDetails(CreditQuantity,OrganizationName) VALUES (?,?)";
     private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
@@ -40,6 +41,7 @@ public class DBSource {
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;
     private PreparedStatement accountCreation;
+    private PreparedStatement promoteAccount;
     private PreparedStatement getOrders;
     private PreparedStatement getAssetCount;
     private PreparedStatement getAllAssets;
@@ -71,6 +73,7 @@ public class DBSource {
             loginVerification = connection.prepareStatement(LOGIN_DETAILS);
             getPassword = connection.prepareStatement(GET_PASSWORD);
             accountCreation = connection.prepareStatement(CREATE_ACCOUNT);
+            promoteAccount = connection.prepareStatement(PROMOTE_ACCOUNT);
             getOrders = connection.prepareStatement(ORDERS);
             getAssetCount = connection.prepareStatement(ASSETCOUNT);
             getAllAssets = connection.prepareStatement(GETALLASSETS);
@@ -635,7 +638,6 @@ public class DBSource {
     public List<Integer> GetAssetCount() {
         ResultSet rs;
         List<Integer> id = new ArrayList<Integer>();
-
         try {
             rs = getAssetCount.executeQuery();
             while (rs.next()) {
@@ -645,7 +647,6 @@ public class DBSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return id;
     }
 
@@ -657,7 +658,6 @@ public class DBSource {
     public Asset[] GetAllAssets() {
         ResultSet rs;
         List<Asset> assets = new ArrayList<Asset>();
-
         try {
             rs = getAllAssets.executeQuery();
             int i = 0;
@@ -670,7 +670,51 @@ public class DBSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return assets.toArray(new Asset[assets.size()]);
+    }
+
+    public boolean PromoteAccount(String username, boolean admin){
+        try {
+            promoteAccount.setBoolean(1, admin);
+            promoteAccount.setString(2, username);
+            promoteAccount.executeUpdate();
+            return  true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean RemoveAccount(String username){
+        try {
+            deleteUser.setString(1, username);
+            deleteUser.executeUpdate();
+            return  true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean AddAsset(String assetName){
+        try {
+            addNewAsset.setString(1, assetName);
+            addNewAsset.executeUpdate();
+            return  true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean RemoveAsset(String assetName){
+        try {
+            deleteAsset.setString(1, assetName);
+            deleteAsset.executeUpdate();
+            return  true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

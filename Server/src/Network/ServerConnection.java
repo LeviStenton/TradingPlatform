@@ -23,7 +23,11 @@ public class ServerConnection {
     public static final String GETASSETS = "GETASSETS";
     public static final String PASSWORD = "PASSWORD";
     public static final String CREATEACC = "CREATEACC";
+    public static final String REMOVEACC = "REMOVEACC";
     public static final String ADMINPASS = "ADMINPASS";
+    public static final String PROMOTE = "PROMOTE";
+    public static final String REMOVEASSET = "REMOVEASSET";
+    public static final String ADDASSET = "ADDASSET";
 
     // Database connection
     DBSource db;
@@ -74,9 +78,29 @@ public class ServerConnection {
                 case ADMINPASS:
                     String aUsername = (String) objInStream.readObject();
                     String aNewPass = (String) objInStream.readObject();
-                    db.AdminChangeUserPassword(aUsername, aNewPass);
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                        outStream.writeBoolean(true);
+                        outStream.writeBoolean(db.AdminChangeUserPassword(aUsername, aNewPass));
+                    } break;
+                case PROMOTE:
+                    String pUsername = (String) objInStream.readObject();
+                    boolean pAdmin = objInStream.readBoolean();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(db.PromoteAccount(pUsername, pAdmin));
+                    } break;
+                case REMOVEACC:
+                    String rUsername = (String) objInStream.readObject();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(db.RemoveAccount(rUsername));
+                    } break;
+                case ADDASSET:
+                    String aAssetName = (String) objInStream.readObject();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(db.AddAsset(aAssetName));
+                    } break;
+                case REMOVEASSET:
+                    String rAssetName = (String) objInStream.readObject();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(db.RemoveAsset(rAssetName));
                     } break;
             }
         }

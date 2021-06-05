@@ -45,9 +45,28 @@ public class ClientTesting {
         assertTrue(sock.adminChangePassword(username, newPass));
     }
 
-//    @Test
-//    void accountPromotion(){
-//        String username = "LeviStenton";
-//        assertTrue();
-//    }
+    @Test
+    void accountPromotion(){
+        String username = "LeviStenton";
+        boolean admin = true;
+        assertTrue(sock.promoteAccount(username, admin));
+    }
+
+    @Test
+    void removeAccount(){
+        String username = "Eggs";
+        assertTrue(sock.removeAccount(username));
+    }
+
+    @Test
+    void removeAsset(){
+        String assetName = "test";
+        assertTrue(sock.removeAsset(assetName));
+    }
+
+    @Test
+    void addAsset(){
+        String assetName = "test";
+        assertTrue(sock.addAsset(assetName));
+    }
 }

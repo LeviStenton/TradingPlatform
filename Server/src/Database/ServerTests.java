@@ -17,17 +17,9 @@ public class ServerTests {
 
     @Test
     void CreateAccount(){
-        String userName = "LeviStenton";
-        String password = "password1";
-        String getUserName;
-
-        source.CreateAccount(userName,password,1, false);
-        for(User account: source.getAccountDetailsList()){
-            getUserName = account.getUserName();
-            assertTrue(getUserName.equals(userName));
-            return;
-
-        }
+        String userName = "Eggs";
+        String password = "Bacon";
+        db.CreateAccount(userName,password,1);
     }
 
     @Test
@@ -226,5 +218,24 @@ public class ServerTests {
         String username = "LeviStenton";
         String newPass = "test";
         assertTrue(db.AdminChangeUserPassword(username, newPass));
+    }
+
+    @Test
+    void promoteAccount(){
+        String username = "LeviStenton";
+        boolean admin = false;
+        assertTrue(db.PromoteAccount(username, admin));
+    }
+
+    @Test
+    void removeAsset(){
+        String assetName = "test";
+        assertTrue(db.RemoveAsset(assetName));
+    }
+
+    @Test
+    void addAsset(){
+        String assetName = "test";
+        assertTrue(db.AddAsset(assetName));
     }
 }
