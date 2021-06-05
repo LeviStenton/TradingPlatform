@@ -688,12 +688,7 @@ public class DBSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-        return assets.toArray(new Asset[assets.size()]);
-=======
-
         return assets;
->>>>>>> origin/Marketplace_Loop
     }
 
     public boolean PromoteAccount(String username, boolean admin){

@@ -25,13 +25,10 @@ public class ServerConnection {
     public static final String CREATEACC = "CREATEACC";
     public static final String REMOVEACC = "REMOVEACC";
     public static final String ADMINPASS = "ADMINPASS";
-<<<<<<< HEAD
     public static final String PROMOTE = "PROMOTE";
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
-=======
     public static final String GETORDERHISTORY = "GETORDERHISTORY";
->>>>>>> origin/Marketplace_Loop
 
     // Database connection
     DBSource db;

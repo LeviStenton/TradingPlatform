@@ -198,7 +198,7 @@ public class ClientSocket {
         }
     }
 
-    public int credits(String ){
+    public int credits(String orgName){
 
     }
 }
