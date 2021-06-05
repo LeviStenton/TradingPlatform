@@ -14,7 +14,7 @@ public class ClientTesting {
 
     @Test
     void addingOrder(){
-        Order order = new Order(1, 1, 1, "1", 1, 1);
+        Order order = new Order(1,1, 1, "1", 1, 1);
         sock.sendOrder(order);
     }
     @Test

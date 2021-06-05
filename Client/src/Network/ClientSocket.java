@@ -199,6 +199,6 @@ public class ClientSocket {
     }
 
     public int credits(String orgName){
-
+        return 1;
     }
 }

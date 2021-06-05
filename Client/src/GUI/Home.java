@@ -6,6 +6,7 @@
 package GUI;
 
 import Database.Asset;
+import Database.Order;
 import Database.User;
 import Network.ClientSocket;
 
@@ -508,10 +509,22 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        ClientSocket socket = new ClientSocket();
+        for(Asset list : assetList.getAssetList()){
+            if(jLabel3.getText().equals(list.getAssetName())){
+                socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        ClientSocket socket = new ClientSocket();
+        for(Asset list : assetList.getAssetList()){
+            if(jLabel3.getText().equals(list.getAssetName())){
+                socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
