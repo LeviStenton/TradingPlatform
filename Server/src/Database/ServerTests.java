@@ -245,6 +245,6 @@ public class ServerTests {
     void getOrgAssetQuantity(){
         int orgID = 2;
         int assetID = 1;
-        assertEquals(db.GetOrgAssetQuantity(orgID, assetID), 1);
+        assertEquals(1, db.GetOrgAssetQuantity(orgID, assetID));
     }
 }
