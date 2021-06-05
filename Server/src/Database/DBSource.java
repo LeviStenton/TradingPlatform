@@ -34,6 +34,7 @@ public class DBSource {
     private final String INSERTNEWORGINTOORGDETAILS = "INSERT INTO OrganizationDetails(CreditQuantity,OrganizationName) VALUES (?,?)";
     private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
+    private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
 
     private PreparedStatement loginVerification;
     private PreparedStatement accountCreation;
@@ -59,6 +60,7 @@ public class DBSource {
     private PreparedStatement insetNewOrgIntoOrgDetails;
     private PreparedStatement deleteOrgFromOrgDetails;
     private PreparedStatement deleteOrgFromOrgAssets;
+    private PreparedStatement getOrderHistory;
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -88,8 +90,23 @@ public class DBSource {
             insetNewOrgIntoOrgDetails = connection.prepareStatement(INSERTNEWORGINTOORGDETAILS);
             deleteOrgFromOrgDetails = connection.prepareStatement(DELETEORGFROMORGDETAILS);
             deleteOrgFromOrgAssets = connection.prepareStatement(DELETEORGFROMORGASSETS);
+            getOrderHistory = connection.prepareStatement(GETORDERHISTORY);
 
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Order> GetOrderHistory(){
+        ResultSet rs;
+        List<Order> orderHistory = new ArrayList<Order>();
+        try{
+            rs = getOrderHistory.executeQuery();
+            while (rs.next()){
+                orderHistory.add(rs);
+            }
+        }
+        catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -178,7 +195,6 @@ public class DBSource {
      * @return The success of the operation
      */
     public boolean ChangeUserPassword(String password, int userID) {
-        ResultSet rs;
         try {
             changeUserPassword.setString(1, password);
             changeUserPassword.setInt(2, userID);
@@ -198,7 +214,6 @@ public class DBSource {
      * @param userID The user to change
      */
     public void ChangeUserOrg(int orgID, int userID) {
-        ResultSet rs;
         try {
             changeUserOrg.setInt(1, orgID);
             changeUserOrg.setInt(2, userID);
