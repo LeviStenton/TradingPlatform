@@ -38,6 +38,7 @@ public class DBSource {
     private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
     private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
+    private final String GETORGASSETS = "SELECT * FROM OrganizationAssets";
 
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;

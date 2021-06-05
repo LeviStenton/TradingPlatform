@@ -55,7 +55,7 @@ public class Login extends javax.swing.JFrame {
 
         Username.setBackground(new java.awt.Color(48, 48, 56));
         Username.setForeground(new java.awt.Color(255, 255, 255));
-        Username.setText("Username");
+        Username.setText("");
         Username.setBorder(null);
         Username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,7 +65,7 @@ public class Login extends javax.swing.JFrame {
 
         jPasswordField1.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.setText("");
         jPasswordField1.setBorder(null);
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));

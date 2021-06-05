@@ -34,6 +34,7 @@ public class ClientSocket {
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
     public static final String CREDITS = "CREDITS";
+    public static final String GETORGASSETS = "GETORGASSETS";
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -198,7 +199,23 @@ public class ClientSocket {
         }
     }
 
-    public int credits(String orgName){
+    public double getOrgAssetQuantity(int orgID, int assetID){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETORGASSETS);
+            objOutStream.writeInt(orgID);
+            objOutStream.writeInt(assetID);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return objInputStream.readDouble();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
+    public int credits(String orgName){
+        return 0;
     }
 }

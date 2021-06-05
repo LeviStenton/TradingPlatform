@@ -240,4 +240,11 @@ public class ServerTests {
         String assetName = "test";
         assertTrue(db.AddAsset(assetName));
     }
+
+    @Test
+    void getOrgAssetQuantity(){
+        int orgID = 2;
+        int assetID = 1;
+        assertEquals(db.GetOrgAssetQuantity(orgID, assetID), 1);
+    }
 }
