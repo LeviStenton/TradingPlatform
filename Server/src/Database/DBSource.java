@@ -11,6 +11,8 @@ public class DBSource {
     private final Connection connection;
 
     private final String LOGIN_DETAILS = "SELECT * FROM AccountDetails WHERE Username=? AND Password=?";
+    private final String GET_PASSWORD = "SELECT Password FROM AccountDetails WHERE UserID=?";
+    private final String ADMINCHANGE_PASSWORD = "UPDATE AccountDetails SET Password = ? WHERE Username = ?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
     private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
@@ -37,6 +39,7 @@ public class DBSource {
     private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
 
     private PreparedStatement loginVerification;
+    private PreparedStatement getPassword;
     private PreparedStatement accountCreation;
     private PreparedStatement getOrders;
     private PreparedStatement getAssetCount;
@@ -54,6 +57,7 @@ public class DBSource {
     private PreparedStatement getOrderFromOrderID;
     private PreparedStatement changeUserOrg;
     private PreparedStatement changeUserPassword;
+    private PreparedStatement adminChangeUserPassword;
     private PreparedStatement addNewAsset;
     private PreparedStatement deleteUser;
     private PreparedStatement deleteAsset;
@@ -67,6 +71,7 @@ public class DBSource {
 
         try {
             loginVerification = connection.prepareStatement(LOGIN_DETAILS);
+            getPassword = connection.prepareStatement(GET_PASSWORD);
             accountCreation = connection.prepareStatement(CREATE_ACCOUNT);
             getOrders = connection.prepareStatement(ORDERS);
             getAssetCount = connection.prepareStatement(ASSETCOUNT);
@@ -84,6 +89,7 @@ public class DBSource {
             getOrderFromOrderID = connection.prepareStatement(GETORDERFROMORDERID);
             changeUserOrg = connection.prepareStatement(CHANGEUSERORG);
             changeUserPassword = connection.prepareStatement(CHANGEUSERPASSWORD);
+            adminChangeUserPassword = connection.prepareStatement(ADMINCHANGE_PASSWORD);
             addNewAsset = connection.prepareStatement(ADDNEWASSET);
             deleteUser = connection.prepareStatement(DELETEUSER);
             deleteAsset = connection.prepareStatement(DELETEASSET);
@@ -190,21 +196,54 @@ public class DBSource {
      * Used to change a users password
      * Hashing is done client side
      *
-     * @param password The new password to set
+     * @param currentPass The user's current password
+     * @param newPass The new password to set
      * @param userID   The user password to change
      * @return The success of the operation
      */
+<<<<<<< HEAD
     public boolean ChangeUserPassword(String password, int userID) {
+=======
+    public boolean ChangeUserPassword(String currentPass, String newPass, int userID) {
+        ResultSet rs;
+>>>>>>> Client_GUI
         try {
-            changeUserPassword.setString(1, password);
-            changeUserPassword.setInt(2, userID);
-            changeUserPassword.executeUpdate();
+            getPassword.setInt(1, userID);
+            rs = getPassword.executeQuery();
+            rs.next();
+            String dbPass = rs.getString("Password");
+            if(currentPass.equals(dbPass)){
+                changeUserPassword.setString(1, newPass);
+                changeUserPassword.setInt(2, userID);
+                changeUserPassword.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Used to change a users password
+     * Hashing is done client side
+     *
+     * @param username The username of the user to be changed
+     * @param newPass The new password to set
+     * @return The success of the operation
+     */
+    public boolean AdminChangeUserPassword(String username, String newPass) {
+        try {
+            adminChangeUserPassword.setString(1, newPass);
+            adminChangeUserPassword.setString(2, username);
+            adminChangeUserPassword.executeUpdate();
             return true;
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
@@ -387,7 +426,6 @@ public class DBSource {
             loginVerification.setString(1, userName);
             loginVerification.setString(2, password);
             rs = loginVerification.executeQuery();
-            rs.next();
             User user = new User(rs.getInt("UserID"), rs.getString("Username"),
                     rs.getString("Password"), rs.getInt("OrganizationID"), rs.getBoolean("Admin"));
             return user;

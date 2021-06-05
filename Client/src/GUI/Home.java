@@ -23,6 +23,7 @@ public class Home extends javax.swing.JFrame {
         this.user = user;
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        System.out.println("Admin: "+user.getAdmin());
     }
 
     /**
@@ -392,7 +393,8 @@ public class Home extends javax.swing.JFrame {
                 AdminControlsActionPerformed(evt);
             }
         });
-        TopBar.add(AdminControls);
+        if(user.getAdmin())
+            TopBar.add(AdminControls);
 
         Signout.setText("Account Signout");
         Signout.addActionListener(new java.awt.event.ActionListener() {
@@ -430,7 +432,7 @@ public class Home extends javax.swing.JFrame {
 
     private void SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsActionPerformed
         // TODO add your handling code here:
-        new Settings().setVisible(true);
+        new Settings(user).setVisible(true);
         
     }//GEN-LAST:event_SettingsActionPerformed
 
@@ -497,7 +499,7 @@ public class Home extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        User test = new User(10419667, "LeviStenton", "test", 01, false);
+        User test = new User(1, "LeviStenton", "test", 01, true);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

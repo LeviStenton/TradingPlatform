@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import Network.ClientSocket;
+
 /**
  *
  * @author Joshua
@@ -118,7 +120,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField1.setBackground(new java.awt.Color(48, 48, 56));
         jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Username");
+        jTextField1.setText("ACUsername");
         jTextField1.setBorder(null);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -795,12 +797,14 @@ public class AdminControls extends javax.swing.JFrame {
 
     private void SetChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetChangePasswordActionPerformed
         // TODO add your handling code here:
-        // Password Change Set
+        ClientSocket sock = new ClientSocket();
+        sock.adminChangePassword(jTextField2.getText(), jPasswordField2.getText());
     }//GEN-LAST:event_SetChangePasswordActionPerformed
 
     private void ConfirmAccountCreationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreationActionPerformed
         // TODO add your handling code here:
-        // Password Creation Confirm
+        ClientSocket sock = new ClientSocket();
+        sock.createAccount(jTextField1.getText(), jPasswordField1.getText());
     }//GEN-LAST:event_ConfirmAccountCreationActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
