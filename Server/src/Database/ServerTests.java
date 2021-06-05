@@ -3,6 +3,8 @@ package Database;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServerTests {
@@ -200,9 +202,9 @@ public class ServerTests {
 
     @Test
     void getAllAssets(){
-        Asset[] assets = db.GetAllAssets();
-        for(int i = 0; i < assets.length; ++i){
-            System.out.println(assets[i].getAssetName());
+        List<Asset> assets = db.GetAllAssets();
+        for(int i = 0; i < assets.size(); ++i){
+            System.out.println(assets.get(i).getAssetName());
         }
     }
     @Test

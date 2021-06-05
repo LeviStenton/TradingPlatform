@@ -5,22 +5,32 @@
  */
 package GUI;
 
+import Database.Asset;
 import Database.User;
+import Network.ClientSocket;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Joshua
  */
 public class Home extends javax.swing.JFrame {
-
+    private ClientSocket socket;
     private User user;
+
+    private ListModelScreen assetList;
     /**
      * Creates new form Home
      */
     public Home(User user) {
         this.user = user;
+        socket = new ClientSocket();
+        this.assetList =  new ListModelScreen(socket);
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         System.out.println("Admin: "+user.getAdmin());
@@ -38,7 +48,8 @@ public class Home extends javax.swing.JFrame {
         Back = new javax.swing.JPanel();
         Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AssetsList = new javax.swing.JList<>();
+
+        AssetsList = new javax.swing.JList(assetList.getModel());
         WalletBack = new javax.swing.JPanel();
         Wallet = new javax.swing.JPanel();
         WalletLabel = new javax.swing.JLabel();
@@ -69,6 +80,7 @@ public class Home extends javax.swing.JFrame {
         AdminControls = new javax.swing.JMenuItem();
         Signout = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
+        addNameListListener(new NameListListener());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Asset Manager");
@@ -81,11 +93,21 @@ public class Home extends javax.swing.JFrame {
 
         AssetsList.setBackground(new java.awt.Color(62, 62, 71));
         AssetsList.setForeground(new java.awt.Color(255, 255, 255));
-        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+//        AssetsList.addListSelectionListener(new ListSelectionListener() {
+//
+//            @Override
+//            public void valueChanged(ListSelectionEvent arg0) {
+//                if (!arg0.getValueIsAdjusting()) {
+//                    System.out.println(AssetsList.getSelectedValue().toString());
+//                }
+//            }
+//        });
+//        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
+//
+//            List<Asset> strings = socket.getAssets();
+//            public int getSize() { return strings.size(); }
+//            public String getElementAt(int i) { return strings.get(i).getAssetName(); }
+//        });
         jScrollPane1.setViewportView(AssetsList);
 
         WalletBack.setBackground(new java.awt.Color(48, 48, 56));
@@ -430,6 +452,31 @@ public class Home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Adds a listener to the name list
+     */
+    private void addNameListListener(ListSelectionListener listener) {
+        AssetsList.addListSelectionListener(listener);
+    }
+
+    /**
+     * Implements a ListSelectionListener for making the UI respond when a
+     * different name is selected from the list.
+     */
+    private class NameListListener implements ListSelectionListener {
+
+        /**
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent e) {
+            if (AssetsList.getSelectedValue() != null
+                    && !AssetsList.getSelectedValue().equals("")) {
+                jLabel3.setText(AssetsList.getSelectedValue());
+                System.out.println(AssetsList.getSelectedValue());
+            }
+        }
+    }
+
     private void SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsActionPerformed
         // TODO add your handling code here:
         new Settings(user).setVisible(true);
@@ -444,7 +491,9 @@ public class Home extends javax.swing.JFrame {
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        //this.dispose();
+        // TODO change this back to exit the program
+        assetList.Update();
     }//GEN-LAST:event_ExitActionPerformed
 
     private void SignoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignoutActionPerformed

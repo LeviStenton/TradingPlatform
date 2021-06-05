@@ -24,6 +24,7 @@ public class ServerConnection {
     public static final String PASSWORD = "PASSWORD";
     public static final String CREATEACC = "CREATEACC";
     public static final String ADMINPASS = "ADMINPASS";
+    public static final String GETORDERHISTORY = "GETORDERHISTORY";
 
     // Database connection
     DBSource db;
@@ -78,6 +79,9 @@ public class ServerConnection {
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeBoolean(true);
                     } break;
+                case GETORDERHISTORY:
+
+                    break;
             }
         }
         catch (ClassNotFoundException e){

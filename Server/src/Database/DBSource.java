@@ -109,12 +109,14 @@ public class DBSource {
         try{
             rs = getOrderHistory.executeQuery();
             while (rs.next()){
-                orderHistory.add(rs);
+                orderHistory.add( new Order(rs,rs.getString("Completed")));
             }
+            return orderHistory;
         }
         catch (SQLException e){
             e.printStackTrace();
         }
+        return null;
     }
 
     public void DeteteOrgFromOrgDetails(int orgID) {
@@ -198,15 +200,11 @@ public class DBSource {
      *
      * @param currentPass The user's current password
      * @param newPass The new password to set
-     * @param userID   The user password to change
+     * @param userID The user password to change
      * @return The success of the operation
      */
-<<<<<<< HEAD
-    public boolean ChangeUserPassword(String password, int userID) {
-=======
     public boolean ChangeUserPassword(String currentPass, String newPass, int userID) {
         ResultSet rs;
->>>>>>> Client_GUI
         try {
             getPassword.setInt(1, userID);
             rs = getPassword.executeQuery();
@@ -674,7 +672,7 @@ public class DBSource {
      *
      * @return A list of Assets objects
      */
-    public Asset[] GetAllAssets() {
+    public List<Asset> GetAllAssets() {
         ResultSet rs;
         List<Asset> assets = new ArrayList<Asset>();
 
@@ -686,11 +684,11 @@ public class DBSource {
                 assets.add(asset);
                 ++i;
             }
-            return assets.toArray(new Asset[assets.size()]);
+            return assets;
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return assets.toArray(new Asset[assets.size()]);
+        return assets;
     }
 }
