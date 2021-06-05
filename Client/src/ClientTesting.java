@@ -14,7 +14,7 @@ public class ClientTesting {
 
     @Test
     void addingOrder(){
-        Order order = new Order(1, 1, 1, "1", 1, 1);
+        Order order = new Order(1,1, 1, "1", 1, 1);
         sock.sendOrder(order);
     }
     @Test
@@ -71,5 +71,12 @@ public class ClientTesting {
     void addAsset(){
         String assetName = "test";
         assertTrue(sock.addAsset(assetName));
+    }
+
+    @Test
+    void getOrgAssetQuantity(){
+        int orgID = 2;
+        int assetID = 1;
+        assertEquals(1, sock.getOrgAssetQuantity(orgID, assetID));
     }
 }

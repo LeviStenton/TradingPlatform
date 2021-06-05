@@ -29,7 +29,11 @@ public class ServerConnection {
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
     public static final String GETORDERHISTORY = "GETORDERHISTORY";
+<<<<<<< HEAD
 
+=======
+    public static final String GETORGASSETS = "GETORGASSETS";
+>>>>>>> 25f89e639a78c3344c54a2dd8f0e49a61abc3013
 
     // Database connection
     DBSource db;
@@ -104,8 +108,13 @@ public class ServerConnection {
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeBoolean(db.RemoveAsset(rAssetName));
                     } break;
+                case GETORGASSETS:
+                    int orgID = objInStream.readInt();
+                    int assetID = objInStream.readInt();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeDouble(db.GetOrgAssetQuantity(orgID, assetID));
+                    } break;
                 case GETORDERHISTORY:
-
                     break;
             }
         }
