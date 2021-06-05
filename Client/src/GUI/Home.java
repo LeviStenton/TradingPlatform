@@ -49,8 +49,7 @@ public class Home extends javax.swing.JFrame {
         Back = new javax.swing.JPanel();
         Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-
-        AssetsList = new javax.swing.JList(assetList.getModel());
+        AssetsList = new javax.swing.JList<>();
         WalletBack = new javax.swing.JPanel();
         Wallet = new javax.swing.JPanel();
         WalletLabel = new javax.swing.JLabel();
@@ -74,6 +73,8 @@ public class Home extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
         TopBar = new javax.swing.JMenu();
         Settings = new javax.swing.JMenuItem();
@@ -81,7 +82,6 @@ public class Home extends javax.swing.JFrame {
         AdminControls = new javax.swing.JMenuItem();
         Signout = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
-        addNameListListener(new NameListListener());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Asset Manager");
@@ -94,21 +94,11 @@ public class Home extends javax.swing.JFrame {
 
         AssetsList.setBackground(new java.awt.Color(62, 62, 71));
         AssetsList.setForeground(new java.awt.Color(255, 255, 255));
-//        AssetsList.addListSelectionListener(new ListSelectionListener() {
-//
-//            @Override
-//            public void valueChanged(ListSelectionEvent arg0) {
-//                if (!arg0.getValueIsAdjusting()) {
-//                    System.out.println(AssetsList.getSelectedValue().toString());
-//                }
-//            }
-//        });
-//        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
-//
-//            List<Asset> strings = socket.getAssets();
-//            public int getSize() { return strings.size(); }
-//            public String getElementAt(int i) { return strings.get(i).getAssetName(); }
-//        });
+        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
         jScrollPane1.setViewportView(AssetsList);
 
         WalletBack.setBackground(new java.awt.Color(48, 48, 56));
@@ -312,6 +302,14 @@ public class Home extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Trade History");
 
+        jLabel36.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(0, 130, 35));
+        jLabel36.setText("Success Message");
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(200, 9, 0));
+        jLabel13.setText("Fail Message");
+
         javax.swing.GroupLayout BackLayout = new javax.swing.GroupLayout(Back);
         Back.setLayout(BackLayout);
         BackLayout.setHorizontalGroup(
@@ -343,7 +341,11 @@ public class Home extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel36)
+                                            .addComponent(jLabel13))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                         .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -361,29 +363,36 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BackLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(BackLayout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel7))
+                                .addGap(10, 10, 10)
+                                .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(BackLayout.createSequentialGroup()
+                                .addGap(56, 56, 56)
+                                .addComponent(jLabel36)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel13))))
+                    .addGroup(BackLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(8, 8, 8)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(BackLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addGap(10, 10, 10)
-                        .addGroup(BackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -416,8 +425,7 @@ public class Home extends javax.swing.JFrame {
                 AdminControlsActionPerformed(evt);
             }
         });
-        if(user.getAdmin())
-            TopBar.add(AdminControls);
+        TopBar.add(AdminControls);
 
         Signout.setText("Account Signout");
         Signout.addActionListener(new java.awt.event.ActionListener() {
@@ -590,16 +598,16 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

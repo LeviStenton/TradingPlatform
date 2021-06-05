@@ -45,6 +45,7 @@ public class ChangeOrg extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel36 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,6 +90,10 @@ public class ChangeOrg extends javax.swing.JFrame {
             }
         });
 
+        jLabel36.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(0, 130, 35));
+        jLabel36.setText("Changed Successfully");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -111,7 +116,8 @@ public class ChangeOrg extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12)
                                     .addComponent(jLabel11)))
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel36))))
                 .addContainerGap(203, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -133,7 +139,9 @@ public class ChangeOrg extends javax.swing.JFrame {
                             .addComponent(jLabel10)
                             .addComponent(jLabel12))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel36)))
                 .addGap(19, 19, 19))
         );
 
@@ -196,6 +204,7 @@ public class ChangeOrg extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
