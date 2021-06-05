@@ -72,4 +72,11 @@ public class ClientTesting {
         String assetName = "test";
         assertTrue(sock.addAsset(assetName));
     }
+
+    @Test
+    void getOrgAssetQuantity(){
+        int orgID = 2;
+        int assetID = 1;
+        assertEquals(1, sock.getOrgAssetQuantity(orgID, assetID));
+    }
 }
