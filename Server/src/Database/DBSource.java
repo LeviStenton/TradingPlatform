@@ -37,6 +37,7 @@ public class DBSource {
     private final String INSERTNEWORGINTOORGDETAILS = "INSERT INTO OrganizationDetails(CreditQuantity,OrganizationName) VALUES (?,?)";
     private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
+    private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
 
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;
@@ -65,6 +66,7 @@ public class DBSource {
     private PreparedStatement insetNewOrgIntoOrgDetails;
     private PreparedStatement deleteOrgFromOrgDetails;
     private PreparedStatement deleteOrgFromOrgAssets;
+    private PreparedStatement getOrderHistory;
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -97,10 +99,27 @@ public class DBSource {
             insetNewOrgIntoOrgDetails = connection.prepareStatement(INSERTNEWORGINTOORGDETAILS);
             deleteOrgFromOrgDetails = connection.prepareStatement(DELETEORGFROMORGDETAILS);
             deleteOrgFromOrgAssets = connection.prepareStatement(DELETEORGFROMORGASSETS);
+            getOrderHistory = connection.prepareStatement(GETORDERHISTORY);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Order> GetOrderHistory(){
+        ResultSet rs;
+        List<Order> orderHistory = new ArrayList<Order>();
+        try{
+            rs = getOrderHistory.executeQuery();
+            while (rs.next()){
+                orderHistory.add( new Order(rs,rs.getString("Completed")));
+            }
+            return orderHistory;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void DeteteOrgFromOrgDetails(int orgID) {
@@ -184,7 +203,7 @@ public class DBSource {
      *
      * @param currentPass The user's current password
      * @param newPass The new password to set
-     * @param userID   The user password to change
+     * @param userID The user password to change
      * @return The success of the operation
      */
     public boolean ChangeUserPassword(String currentPass, String newPass, int userID) {
@@ -235,7 +254,6 @@ public class DBSource {
      * @param userID The user to change
      */
     public void ChangeUserOrg(int orgID, int userID) {
-        ResultSet rs;
         try {
             changeUserOrg.setInt(1, orgID);
             changeUserOrg.setInt(2, userID);
@@ -655,7 +673,7 @@ public class DBSource {
      *
      * @return A list of Assets objects
      */
-    public Asset[] GetAllAssets() {
+    public List<Asset> GetAllAssets() {
         ResultSet rs;
         List<Asset> assets = new ArrayList<Asset>();
         try {
@@ -666,11 +684,16 @@ public class DBSource {
                 assets.add(asset);
                 ++i;
             }
-            return assets.toArray(new Asset[assets.size()]);
+            return assets;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
         return assets.toArray(new Asset[assets.size()]);
+=======
+
+        return assets;
+>>>>>>> origin/Marketplace_Loop
     }
 
     public boolean PromoteAccount(String username, boolean admin){

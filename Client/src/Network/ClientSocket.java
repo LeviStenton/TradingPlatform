@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientSocket {
     /**
@@ -71,18 +73,17 @@ public class ClientSocket {
         }
     }
 
-    public Asset[] getAssets(){
-        Asset[] assets;
+    public List<Asset> getAssets(){
+        List<Asset> assets = new ArrayList<Asset>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETASSETS);
             objOutStream.flush();
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
-                return (Asset[]) objInputStream.readObject();
+                return (List<Asset>) objInputStream.readObject();
             }
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            assets = new Asset[0];
             return assets;
         }
     }

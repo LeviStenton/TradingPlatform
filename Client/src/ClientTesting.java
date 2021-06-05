@@ -3,6 +3,9 @@ import Database.Asset;
 import Database.Order;
 import Network.ClientSocket;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -24,9 +27,9 @@ public class ClientTesting {
 
     @Test
     void getAllAssets(){
-        Asset[] assets = sock.getAssets();
-        for(int i = 0; i < assets.length; ++i){
-            System.out.println(assets[i].getAssetName());
+        List<Asset> assets = sock.getAssets();
+        for(int i = 0; i < assets.size(); ++i){
+            System.out.println(assets.get(i).getAssetName());
         }
     }
 
