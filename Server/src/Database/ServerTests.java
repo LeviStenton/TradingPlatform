@@ -1,14 +1,9 @@
 package Database;
+
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-<<<<<<< HEAD
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-=======
-import java.sql.Array;
-import java.sql.SQLException;
->>>>>>> Marketplace_Loop
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ServerTests {
     DBTestSource source = new DBTestSource();
@@ -26,15 +21,9 @@ public class ServerTests {
         String userName = "LeviStenton";
         String password = "password1";
         String getUserName;
-<<<<<<< HEAD
 
-        source.CreateAccount(userName, password, 1, false);
-
+        source.CreateAccount(userName,password,1, false);
         for(User account: source.getAccountDetailsList()){
-=======
-        source.CreateAccount(userName,password,1);
-        for(AccountDetails account: source.getAccountDetailsList()){
->>>>>>> Marketplace_Loop
             getUserName = account.getUserName();
             assertTrue(getUserName.equals(userName));
             return;
@@ -42,36 +31,33 @@ public class ServerTests {
         }
     }
 
-<<<<<<< HEAD
 //    @Test
 //    void LoginVerify(){
 //        source.CreateAccount("Alexander","1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b",1);
 //        assertTrue(source.loginAttempt("Alexander", "1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b"));
 //    }
-=======
     @Test
     void LoginVerifyMatch(){
-        source.CreateAccount("Alexander","123",1);
-        assertTrue(source.loginAttempt("Alexander", "123"));
+        source.CreateAccount("Alexander","123",1, false);
+        assertTrue(source.loginAttempt("Alexander", "123") != null);
     }
 
     @Test
     void LoginVerifyWrongUserName(){
-        source.CreateAccount("Alexander","123",1);
-        assertFalse(source.loginAttempt("alex", "123"));
+        source.CreateAccount("Alexander","123",1, false);
+        assertFalse(source.loginAttempt("alex", "123") != null);
     }
 
     @Test
     void LoginVerifyWrongPassword(){
-        source.CreateAccount("Alexander","123",1);
-        assertFalse(source.loginAttempt("Alexander", "321"));
+        source.CreateAccount("Alexander","123",1, false);
+        assertFalse(source.loginAttempt("Alexander", "321") != null);
     }
 
     @Test
     void LoginVerifyNoAccounts(){
-        assertFalse(source.loginAttempt("Alexander", "321"));
+        assertFalse(source.loginAttempt("Alexander", "321") != null);
     }
->>>>>>> Marketplace_Loop
 
     @Test
     void RunMarketPlaceLoopNormalCase(){
@@ -145,8 +131,8 @@ public class ServerTests {
         source.AddNewAsset("pc");
 
 
-        source.CreateAccount("Alex","123",1);
-        source.CreateAccount("Levi","123",2);
+        source.CreateAccount("Alex","123",1, false);
+        source.CreateAccount("Levi","123",2, false);
 
         source.AddOrder(100,1,20,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
@@ -190,8 +176,8 @@ public class ServerTests {
         source.AddNewAsset("hub");
 
 
-        source.CreateAccount("Alex","123",1);
-        source.CreateAccount("Levi","123",2);
+        source.CreateAccount("Alex","123",1, false);
+        source.CreateAccount("Levi","123",2, false);
 
         source.AddOrder(100,1,13,"B",20,1);
         source.AddOrder(101,1,15,"S",10,2);
@@ -218,7 +204,6 @@ public class ServerTests {
         assertEquals(result[0], source.GetAssetCount().get(0));
     }
 
-<<<<<<< HEAD
     @Test
     void getAllAssets(){
         Asset[] assets = db.GetAllAssets();
@@ -233,6 +218,4 @@ public class ServerTests {
         User user = db.loginAttempt(username, password);
         System.out.println(user.getUserName() + " " + user.getAdmin());
     }
-=======
->>>>>>> Marketplace_Loop
 }
