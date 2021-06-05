@@ -8,8 +8,7 @@ import java.security.spec.InvalidKeySpecException;
 /**
  * Code stolen from https://howtodoinjava.com/java/java-security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
  */
-public class Hashing {
-
+public class Hashing{
     public Hashing(String str) throws InvalidKeySpecException, NoSuchAlgorithmException {
         String  originalPassword = str;
         String generatedSecuredPasswordHash = generateStorngPasswordHash(originalPassword);

@@ -25,6 +25,7 @@ public class Home extends javax.swing.JFrame {
     private User user;
 
     private ListModelScreen assetList;
+
     /**
      * Creates new form Home
      */
@@ -49,7 +50,7 @@ public class Home extends javax.swing.JFrame {
         Back = new javax.swing.JPanel();
         Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AssetsList = new javax.swing.JList<>();
+        AssetsList = new javax.swing.JList(assetList.getModel());
         WalletBack = new javax.swing.JPanel();
         Wallet = new javax.swing.JPanel();
         WalletLabel = new javax.swing.JLabel();
@@ -82,6 +83,7 @@ public class Home extends javax.swing.JFrame {
         AdminControls = new javax.swing.JMenuItem();
         Signout = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
+        addNameListListener(new NameListListener());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Asset Manager");
@@ -94,11 +96,7 @@ public class Home extends javax.swing.JFrame {
 
         AssetsList.setBackground(new java.awt.Color(62, 62, 71));
         AssetsList.setForeground(new java.awt.Color(255, 255, 255));
-        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+
         jScrollPane1.setViewportView(AssetsList);
 
         WalletBack.setBackground(new java.awt.Color(48, 48, 56));
@@ -500,9 +498,7 @@ public class Home extends javax.swing.JFrame {
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
         // TODO add your handling code here:
-        //this.dispose();
-        // TODO change this back to exit the program
-        assetList.Update();
+        this.dispose();
     }//GEN-LAST:event_ExitActionPerformed
 
     private void SignoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignoutActionPerformed
@@ -524,9 +520,9 @@ public class Home extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        //DatabaseStorage.getOrderHistory();
         ClientSocket socket = new ClientSocket();
         for(Asset list : assetList.getAssetList()){
             if(jLabel3.getText().equals(list.getAssetName())){
@@ -547,6 +543,7 @@ public class Home extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

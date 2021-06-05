@@ -21,6 +21,7 @@ public class ServerConnection {
     public static final String ORDER = "ORDER";
     public static final String LOGIN = "LOGIN";
     public static final String GETASSETS = "GETASSETS";
+    public static final String GETORDERHISTORY = "GETORDERHISTORY";
     public static final String PASSWORD = "PASSWORD";
     public static final String CREATEACC = "CREATEACC";
     public static final String REMOVEACC = "REMOVEACC";
@@ -28,7 +29,6 @@ public class ServerConnection {
     public static final String PROMOTE = "PROMOTE";
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
-    public static final String GETORDERHISTORY = "GETORDERHISTORY";
     public static final String GETORGASSETS = "GETORGASSETS";
 
     // Database connection
@@ -66,6 +66,11 @@ public class ServerConnection {
                 case GETASSETS:
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeObject(db.GetAllAssets());
+
+                    } break;
+                case GETORDERHISTORY:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetOrderHistory());
                     } break;
                 case PASSWORD:
                     String currentPass = (String) objInStream.readObject();
@@ -110,8 +115,6 @@ public class ServerConnection {
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeDouble(db.GetOrgAssetQuantity(orgID, assetID));
                     } break;
-                case GETORDERHISTORY:
-                    break;
             }
         }
         catch (ClassNotFoundException e){
