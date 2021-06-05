@@ -199,6 +199,10 @@ public class ClientSocket {
         }
     }
 
+<<<<<<< HEAD
+    public int credits(String orgName){
+        return 1;
+=======
     public double getOrgAssetQuantity(int orgID, int assetID){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETORGASSETS);
@@ -217,5 +221,6 @@ public class ClientSocket {
 
     public int credits(String orgName){
         return 0;
+>>>>>>> 2b4933b6cafbb11df09735bdd7afb285400ec094
     }
 }

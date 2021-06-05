@@ -59,6 +59,14 @@ public class Order implements Serializable {
         this.userID = userID;
     }
 
+    public Order(int assetID, double price, String type, double quantity, int userID){
+        this.assetID = assetID;
+        this.price = price;
+        this.orderType = type;
+        this.quantity = quantity;
+        this.userID = userID;
+    }
+
     /**
      * Get the ID of the person who placed the order
      *
