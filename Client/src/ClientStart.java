@@ -20,13 +20,27 @@ public class ClientStart extends Thread{
         updateAssets.start();
     }
     public void run() {
+        ClientSocket socket;
         while (true){
 
-            ClientSocket socket = new ClientSocket();
+            socket = new ClientSocket();
             DatabaseStorage.setAssetList(socket.getAssets());
+
             socket = new ClientSocket();
             DatabaseStorage.setOrderHistory(socket.getOrderHistory());
             GUI.Home.UpdateOrderHistory();
+
+            socket = new ClientSocket();
+            DatabaseStorage.setProfileList(socket.getAllUsers());
+
+            socket = new ClientSocket();
+            DatabaseStorage.setOrders(socket.getAllOrders());
+            GUI.Home.UpdateOrders();
+
+
+            //socket = new ClientSocket();
+            //DatabaseStorage.setOrgAssets(socket.getAllOrgAssets());
+
 //            for(Asset asset : DatabaseStorage.getAssetList()){
 //                System.out.println(asset.getAssetName());
 //            }

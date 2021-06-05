@@ -1,8 +1,6 @@
 package Network;
 
-import Database.User;
-import Database.Asset;
-import Database.Order;
+import Database.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,6 +34,10 @@ public class ClientSocket {
     public static final String ADDASSET = "ADDASSET";
     public static final String CREDITS = "CREDITS";
     public static final String GETORGASSETS = "GETORGASSETS";
+    public static final String GETALLUSERS = "GETALLUSERS";
+    public static final String GETALLORDERS = "GETALLORDERS";
+    public static final String GETALLORGASSETS = "GETALLORGASSETS";
+
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -91,6 +93,22 @@ public class ClientSocket {
         }
     }
 
+    public List<OrgAssets> getAllOrgAssets(){
+        List<OrgAssets> assets = new ArrayList<OrgAssets>();
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETALLORGASSETS);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
+                return (List<OrgAssets>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return assets;
+        }
+    }
+
     public List<Order> getOrderHistory(){
         List<Order> assets = new ArrayList<Order>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -104,6 +122,38 @@ public class ClientSocket {
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return assets;
+        }
+    }
+
+    public List<User> getAllUsers(){
+        List<User> assets = new ArrayList<User>();
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETALLUSERS);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
+                return (List<User>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return assets;
+        }
+    }
+
+    public List<Order> getAllOrders(){
+        List<Order> orders = new ArrayList<Order>();
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETALLORDERS);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
+                return (List<Order>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return orders;
         }
     }
 

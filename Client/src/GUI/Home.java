@@ -5,11 +5,8 @@
  */
 package GUI;
 
-import Database.Asset;
-import Database.Order;
-import Database.User;
+import Database.*;
 import Network.ClientSocket;
-import Database.DatabaseStorage;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -52,7 +49,7 @@ public class Home extends javax.swing.JFrame {
         Back = new javax.swing.JPanel();
         Side = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        AssetsList = new javax.swing.JList<>();
+        AssetsList = new javax.swing.JList(assetList.getModel());
         WalletBack = new javax.swing.JPanel();
         Wallet = new javax.swing.JPanel();
         WalletLabel = new javax.swing.JLabel();
@@ -85,6 +82,7 @@ public class Home extends javax.swing.JFrame {
         AdminControls = new javax.swing.JMenuItem();
         Signout = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
+        addNameListListener(new NameListListener());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Asset Manager");
@@ -97,11 +95,7 @@ public class Home extends javax.swing.JFrame {
 
         AssetsList.setBackground(new java.awt.Color(62, 62, 71));
         AssetsList.setForeground(new java.awt.Color(255, 255, 255));
-        AssetsList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+
         jScrollPane1.setViewportView(AssetsList);
 
         WalletBack.setBackground(new java.awt.Color(48, 48, 56));
@@ -215,7 +209,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 28)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("$ 000.00");
+        jLabel4.setText("Amount owned: ");
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -269,35 +263,34 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable1.setBackground(new java.awt.Color(255, 255, 255));
+        jTable1.setModel(currentOrdersModel);
+        currentOrdersModel.addColumn("Asset name");
+        currentOrdersModel.addColumn("Price");
+        currentOrdersModel.addColumn("Quantity");
+        currentOrdersModel.addColumn("Order Type");
+        currentOrdersModel.addColumn("Placed by");
+        currentOrdersModel.addColumn("Date placed");
+
+
         jScrollPane2.setViewportView(jTable1);
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Current Trades");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable2.setBackground(new java.awt.Color(255, 255, 255));
+        jTable2.setModel(historyOrdersModel);
+        historyOrdersModel.addColumn("Asset name");
+        historyOrdersModel.addColumn("Price");
+        historyOrdersModel.addColumn("Quantity");
+        historyOrdersModel.addColumn("Order Type");
+        historyOrdersModel.addColumn("Placed by");
+        historyOrdersModel.addColumn("Date placed");
+        historyOrdersModel.addColumn("Completed");
+
         jScrollPane3.setViewportView(jTable2);
+
 
         jLabel12.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
@@ -481,29 +474,99 @@ public class Home extends javax.swing.JFrame {
             if (AssetsList.getSelectedValue() != null
                     && !AssetsList.getSelectedValue().equals("")) {
                 jLabel3.setText(AssetsList.getSelectedValue());
-                System.out.println(AssetsList.getSelectedValue());
+                UpdateOrderHistory();
+                UpdateOrders();
+                int assetID = -1;
+                double amountOwn = 0;
+                for(Asset asset : DatabaseStorage.getAssetList()){
+                    if(asset.getAssetName().equals(jLabel3.getText())){
+                        assetID = asset.getAssetID();
+                        break;
+                    }
+                }
+                for(OrgAssets orgAsset : DatabaseStorage.getOrgAssets()){
+                    if(assetID == orgAsset.getAssetID()){
+                        if(user.getOrgID() == orgAsset.getOrgID()){
+                            amountOwn = orgAsset.getQuantity();
+                        }
+                    }
+                    System.out.println(orgAsset.getAssetID() + orgAsset.getQuantity());
+                }
+                jLabel4.setText("Amount owned: " + amountOwn);
+                //System.out.println(AssetsList.getSelectedValue());
             }
         }
     }
 
     public static void UpdateOrderHistory(){
-        Object[] arr = new Object[7];
-        while(historyOrdersModel.getRowCount() > 0)
-        {
-            historyOrdersModel.removeRow(0);
+        if(jLabel3 != null){
+            Object[] arr = new Object[7];
+            int assetID = -1;
+            String userName = "";
+
+            while(historyOrdersModel.getRowCount() > 0)
+            {
+                historyOrdersModel.removeRow(0);
+            }
+            for(Asset asset : DatabaseStorage.getAssetList()){
+                if(asset.getAssetName().equals(jLabel3.getText())){
+                    assetID = asset.getAssetID();
+                }
+            }
+            for(Order order : DatabaseStorage.getOrderHistory()){
+                for(User user : DatabaseStorage.getProfileList()){
+                    if(order.getUserID() == user.getUserID()){
+                        userName = user.getUserName();
+                    }
+                }
+                if(order.getAssetID() == assetID) {
+                    arr[0] = jLabel3.getText();
+                    arr[1] = order.getPrice();
+                    arr[2] = order.getQuantity();
+                    arr[3] = order.getOrderType();
+                    arr[4] = userName;
+                    arr[5] = order.getDatePlaced();
+                    arr[6] = order.getCompleted();
+                    historyOrdersModel.addRow(arr);
+                }
+            }
         }
-        for(Order order : DatabaseStorage.getOrderHistory()){
-            //if(jLabel3.getText().equals(order.get())) {
-            arr[0] = order.getAssetID();
-            arr[1] = order.getPrice();
-            arr[2] = order.getQuantity();
-            arr[3] = order.getOrderType();
-            arr[4] = order.getUserID();
-            arr[5] = order.getDatePlaced();
-            arr[6] = order.getCompleted();
-            historyOrdersModel.addRow(arr);
-            //}
+
+    }
+
+    public static void UpdateOrders(){
+        if(jLabel3 != null){
+            Object[] arr = new Object[6];
+            int assetID = -1;
+            String userName = "";
+
+            while(currentOrdersModel.getRowCount() > 0)
+            {
+                currentOrdersModel.removeRow(0);
+            }
+            for(Asset asset : DatabaseStorage.getAssetList()){
+                if(asset.getAssetName().equals(jLabel3.getText())){
+                    assetID = asset.getAssetID();
+                }
+            }
+            for(Order order : DatabaseStorage.getOrders()){
+                for(User user : DatabaseStorage.getProfileList()){
+                    if(order.getUserID() == user.getUserID()){
+                        userName = user.getUserName();
+                    }
+                }
+                if(order.getAssetID() == assetID) {
+                    arr[0] = jLabel3.getText();
+                    arr[1] = order.getPrice();
+                    arr[2] = order.getQuantity();
+                    arr[3] = order.getOrderType();
+                    arr[4] = userName;
+                    arr[5] = order.getDatePlaced();
+                    currentOrdersModel.addRow(arr);
+                }
+            }
         }
+
     }
 
     private void SettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsActionPerformed
@@ -596,7 +659,7 @@ public class Home extends javax.swing.JFrame {
         });
         
     }
-    DefaultTableModel currentOrdersModel = new DefaultTableModel();
+    static DefaultTableModel currentOrdersModel = new DefaultTableModel();
     static DefaultTableModel historyOrdersModel = new DefaultTableModel();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AdminControls;
@@ -619,7 +682,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private static javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

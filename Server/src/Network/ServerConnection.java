@@ -30,6 +30,10 @@ public class ServerConnection {
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
     public static final String GETORGASSETS = "GETORGASSETS";
+    public static final String GETALLUSERS = "GETALLUSERS";
+    public static final String GETALLORDERS = "GETALLORDERS";
+    public static final String GETALLORGASSETS = "GETALLORGASSETS";
+
 
     // Database connection
     DBSource db;
@@ -71,6 +75,18 @@ public class ServerConnection {
                 case GETORDERHISTORY:
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeObject(db.GetOrderHistory());
+                    } break;
+                case GETALLUSERS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllUsers());
+                    } break;
+                case GETALLORDERS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllOrders());
+                    } break;
+                case GETALLORGASSETS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllOrgAssets());
                     } break;
                 case PASSWORD:
                     String currentPass = (String) objInStream.readObject();

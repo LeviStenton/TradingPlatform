@@ -7,7 +7,7 @@ import java.util.List;
 public class DatabaseStorage {
     private static List<Asset> assetList = new ArrayList<Asset>();
     private static List<User> profileList = new ArrayList<User>();
-    //List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
+    private static List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
     //List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
     private static List<Order> orderList = new ArrayList<Order>();
     private static List<Order> orderHistoryList = new ArrayList<Order>();
@@ -24,5 +24,24 @@ public class DatabaseStorage {
     }
     public static void setOrderHistory(List<Order> orderHistoryList2){
         orderHistoryList = orderHistoryList2;
+    }
+
+    public static List<User> getProfileList(){
+        return profileList;
+    }
+    public static void setProfileList(List<User> profileList2){
+        profileList = profileList2;
+    }
+
+    public static List<Order> getOrders(){
+        return orderList;
+    }
+    public static void setOrders(List<Order> orderList2){
+        orderList = orderList2;
+    }
+
+    public static List<OrgAssets> getOrgAssets(){ return orgAssetsList; }
+    public static void setOrgAssets(List<OrgAssets> orgAssetsList2){
+        orgAssetsList = orgAssetsList2;
     }
 }

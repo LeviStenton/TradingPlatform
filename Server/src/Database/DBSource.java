@@ -38,7 +38,9 @@ public class DBSource {
     private final String DELETEORGFROMORGDETAILS = "DELETE FROM OrganizationDetails WHERE OrganizationID = ?";
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
     private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
-    private final String GETORGASSETS = "SELECT * FROM OrganizationAssets";
+    private final String GETALLORGASSETS = "SELECT * FROM OrganizationAssets";
+    private final String GETALLUSERS = "SELECT * FROM AccountDetails";
+    private final String GETALLORDERS = "SELECT * FROM Orders";
 
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;
@@ -68,6 +70,9 @@ public class DBSource {
     private PreparedStatement deleteOrgFromOrgDetails;
     private PreparedStatement deleteOrgFromOrgAssets;
     private PreparedStatement getOrderHistory;
+    private PreparedStatement getAllUsers;
+    private PreparedStatement getAllOrders;
+    private PreparedStatement getAllOrgAssets;
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -101,6 +106,9 @@ public class DBSource {
             deleteOrgFromOrgDetails = connection.prepareStatement(DELETEORGFROMORGDETAILS);
             deleteOrgFromOrgAssets = connection.prepareStatement(DELETEORGFROMORGASSETS);
             getOrderHistory = connection.prepareStatement(GETORDERHISTORY);
+            getAllUsers = connection.prepareStatement(GETALLUSERS);
+            getAllOrders = connection.prepareStatement(GETALLORDERS);
+            getAllOrgAssets = connection.prepareStatement(GETALLORGASSETS);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -116,6 +124,54 @@ public class DBSource {
                 orderHistory.add( new Order(rs,rs.getString("Completed")));
             }
             return orderHistory;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<OrgAssets> GetAllOrgAssets(){
+        ResultSet rs;
+        List<OrgAssets> assets = new ArrayList<>();
+        try{
+            rs = getAllOrgAssets.executeQuery();
+            while (rs.next()){
+                assets.add( new OrgAssets(rs.getInt("OrganizationID"),rs.getInt("AssetID"),rs.getInt("Quantity")));
+            }
+            return assets;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<User> GetAllUsers(){
+        ResultSet rs;
+        List<User> users = new ArrayList<User>();
+        try{
+            rs = getAllUsers.executeQuery();
+            while (rs.next()){
+                users.add( new User(rs.getInt("UserID"),rs.getString("Username"),rs.getInt("OrganizationID"),rs.getBoolean("Admin")));
+            }
+            return users;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Order> GetAllOrders(){
+        ResultSet rs;
+        List<Order> orders = new ArrayList<Order>();
+        try{
+            rs = getAllOrders.executeQuery();
+            while (rs.next()){
+                orders.add( new Order(rs));
+            }
+            return orders;
         }
         catch (SQLException e){
             e.printStackTrace();
