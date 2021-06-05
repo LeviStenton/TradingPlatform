@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ClientTesting {
     ClientSocket sock = new ClientSocket();
 
+    /**
+     * BLACK BOX TESTS --------------------------------------------------------------------------
+     */
+
     @Test
     void addingOrder(){
         Order order = new Order(1,1, 1, "1", 1, 1);
@@ -79,4 +83,8 @@ public class ClientTesting {
         int assetID = 1;
         assertEquals(1, sock.getOrgAssetQuantity(orgID, assetID));
     }
+
+    /**
+     * GLASS BOX TESTS ------------------------------------------------------------------
+     */
 }
