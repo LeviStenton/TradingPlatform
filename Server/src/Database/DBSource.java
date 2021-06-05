@@ -12,6 +12,7 @@ public class DBSource {
 
     private final String LOGIN_DETAILS = "SELECT * FROM AccountDetails WHERE Username=? AND Password=?";
     private final String GET_PASSWORD = "SELECT Password FROM AccountDetails WHERE UserID=?";
+    private final String ADMINCHANGE_PASSWORD = "UPDATE AccountDetails SET Password = ? WHERE Username = ?";
     private final String CREATE_ACCOUNT = "INSERT INTO AccountDetails(Username, Password, OrganizationID) VALUES (?, ?, ?)";
     private final String ORDERS = "SELECT * FROM Orders WHERE OrderType = ? AND AssetID = ? ORDER BY DatePlaced";
     private final String ASSETCOUNT = "SELECT AssetID FROM Assets";
@@ -55,6 +56,7 @@ public class DBSource {
     private PreparedStatement getOrderFromOrderID;
     private PreparedStatement changeUserOrg;
     private PreparedStatement changeUserPassword;
+    private PreparedStatement adminChangeUserPassword;
     private PreparedStatement addNewAsset;
     private PreparedStatement deleteUser;
     private PreparedStatement deleteAsset;
@@ -85,6 +87,7 @@ public class DBSource {
             getOrderFromOrderID = connection.prepareStatement(GETORDERFROMORDERID);
             changeUserOrg = connection.prepareStatement(CHANGEUSERORG);
             changeUserPassword = connection.prepareStatement(CHANGEUSERPASSWORD);
+            adminChangeUserPassword = connection.prepareStatement(ADMINCHANGE_PASSWORD);
             addNewAsset = connection.prepareStatement(ADDNEWASSET);
             deleteUser = connection.prepareStatement(DELETEUSER);
             deleteAsset = connection.prepareStatement(DELETEASSET);
@@ -194,6 +197,27 @@ public class DBSource {
                 changeUserPassword.executeUpdate();
                 return true;
             }
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Used to change a users password
+     * Hashing is done client side
+     *
+     * @param username The username of the user to be changed
+     * @param newPass The new password to set
+     * @return The success of the operation
+     */
+    public boolean AdminChangeUserPassword(String username, String newPass) {
+        try {
+            adminChangeUserPassword.setString(1, newPass);
+            adminChangeUserPassword.setString(2, username);
+            adminChangeUserPassword.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             e.printStackTrace();

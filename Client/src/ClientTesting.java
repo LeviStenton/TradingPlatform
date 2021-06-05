@@ -31,10 +31,23 @@ public class ClientTesting {
     }
 
     @Test
-    void changePassword(){
+    void ChangePassword(){
         int userID = 1;
-        String currentPass = "test123";
-        String newPass = "test";
+        String currentPass = "test";
+        String newPass = "test123";
         assertTrue(sock.changePassword(currentPass, newPass, userID));
     }
+
+    @Test
+    void AdminChangePassword(){
+        String username = "LeviStenton";
+        String newPass = "test";
+        assertTrue(sock.adminChangePassword(username, newPass));
+    }
+
+//    @Test
+//    void accountPromotion(){
+//        String username = "LeviStenton";
+//        assertTrue();
+//    }
 }

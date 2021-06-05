@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ServerTests {
+
     DBTestSource source = new DBTestSource();
     DBSource db = new DBSource();
+
     @Before
     public void init() {
-
         this.source = new DBTestSource();
-
-        //source.CreateAccount("LeviStenton","password1",2);
     }
 
     @Test
@@ -31,11 +30,6 @@ public class ServerTests {
         }
     }
 
-//    @Test
-//    void LoginVerify(){
-//        source.CreateAccount("Alexander","1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b",1);
-//        assertTrue(source.loginAttempt("Alexander", "1000:2bed40233126488f9226952f04b413a2:540229735fbf3a9885e1469340f3e2d6077cdff016c3322027cb3073dd14efedc85ae7dcbb8bb4abb4a5736fca4c2232d37b99a76faa2c8d0381299366af8b0b"));
-//    }
     @Test
     void LoginVerifyMatch(){
         source.CreateAccount("Alexander","123",1, false);
@@ -214,7 +208,7 @@ public class ServerTests {
     @Test
     void loginVerification(){
         String username = "LeviStenton";
-        String password = "test";
+        String password = "test123";
         User user = db.loginAttempt(username, password);
         System.out.println(user.getUserName() + " " + user.getAdmin());
     }
@@ -224,6 +218,13 @@ public class ServerTests {
         int userID = 1;
         String currentPass = "test";
         String newPass = "test123";
-        db.ChangeUserPassword(currentPass, newPass, userID);
+        assertTrue(db.ChangeUserPassword(currentPass, newPass, userID));
+    }
+
+    @Test
+    void adminChangePassword(){
+        String username = "LeviStenton";
+        String newPass = "test";
+        assertTrue(db.AdminChangeUserPassword(username, newPass));
     }
 }

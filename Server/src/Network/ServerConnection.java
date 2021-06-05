@@ -22,6 +22,8 @@ public class ServerConnection {
     public static final String LOGIN = "LOGIN";
     public static final String GETASSETS = "GETASSETS";
     public static final String PASSWORD = "PASSWORD";
+    public static final String CREATEACC = "CREATEACC";
+    public static final String ADMINPASS = "ADMINPASS";
 
     // Database connection
     DBSource db;
@@ -43,30 +45,39 @@ public class ServerConnection {
     private void handleConnection(Socket socket) throws Exception {
         try (ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream())) {
             String command = (String) objInStream.readObject();
-            if(command.equals(ORDER)){
-                Order order = (Order) objInStream.readObject();
-                db.AddOrder(order);
-            }
-            else if(command.equals(LOGIN)){
-                String username = (String) objInStream.readObject();
-                String password = (String) objInStream.readObject();
-                System.out.println("Attempted login with: " +  username + " " + password);
-                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                    outStream.writeObject(db.loginAttempt(username, password));
-                }
-            }
-            else if(command.equals(GETASSETS)){
-                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                    outStream.writeObject(db.GetAllAssets());
-                }
-            }
-            else if(command.equals(PASSWORD)){
-                String currentPass = (String) objInStream.readObject();
-                String newPass = (String) objInStream.readObject();
-                int userID = objInStream.readInt();
-                try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                    outStream.writeBoolean(db.ChangeUserPassword(currentPass, newPass, userID));
-                }
+            switch (command){
+                case ORDER:
+                    Order order = (Order) objInStream.readObject();
+                    db.AddOrder(order);
+                    break;
+                case LOGIN:
+                    String username = (String) objInStream.readObject();
+                    String password = (String) objInStream.readObject();
+                    System.out.println("Attempted login with: " +  username + " " + password);
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.loginAttempt(username, password));
+                    } break;
+                case GETASSETS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllAssets());
+                    } break;
+                case PASSWORD:
+                    String currentPass = (String) objInStream.readObject();
+                    String newPass = (String) objInStream.readObject();
+                    int userID = objInStream.readInt();
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(db.ChangeUserPassword(currentPass, newPass, userID));
+                    } break;
+                case CREATEACC:
+                    db.CreateAccount((String) objInStream.readObject(), (String) objInStream.readObject(), 0);
+                    break;
+                case ADMINPASS:
+                    String aUsername = (String) objInStream.readObject();
+                    String aNewPass = (String) objInStream.readObject();
+                    db.AdminChangeUserPassword(aUsername, aNewPass);
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(true);
+                    } break;
             }
         }
         catch (ClassNotFoundException e){
