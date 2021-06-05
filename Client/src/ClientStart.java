@@ -1,6 +1,6 @@
 import Database.Asset;
 import Database.Order;
-import Database.User;
+import Database.DatabaseStorage;
 import GUI.Login;
 import Network.ClientSocket;
 

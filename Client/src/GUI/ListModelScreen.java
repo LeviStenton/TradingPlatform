@@ -22,9 +22,7 @@ public class ListModelScreen {
     private ClientSocket socket;
 
     /* BEGIN MISSING CODE */
-    List<Asset> assetList = new ArrayList<Asset>();
     /* END MISSING CODE */
-    public List<Asset> getAssetList(){return this.assetList;}
     /**
      * Constructor initializes the list model that holds names as Strings and
      * attempts to read any data saved from previous invocations of the
@@ -38,7 +36,6 @@ public class ListModelScreen {
         // add the retrieved data to the list model
         for (Asset asset : socket.getAssets()) {
             listModel.addElement(asset.getAssetName());
-            assetList.add(asset);
         }
     }
 
@@ -51,12 +48,10 @@ public class ListModelScreen {
         // check to see if the person is already in the book
         // if not add to the address book and the list model
         listModel.clear();
-        assetList.clear();
         this.socket = new ClientSocket();
 
         for (Asset asset : socket.getAssets()) {
             listModel.addElement(asset.getAssetName());
-            assetList.add(asset);
         }
 
 
@@ -81,10 +76,5 @@ public class ListModelScreen {
         return listModel;
     }
 
-    /**
-     * @return the number of names in the Address Book.
-     */
-    public int getSize() {
-        return assetList.size();
-    }
+
 }

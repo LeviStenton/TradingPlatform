@@ -1,3 +1,4 @@
+package Database;
 import Database.Asset;
 import Database.Order;
 import Database.User;
@@ -20,10 +21,10 @@ public class DatabaseStorage {
         assetList = assetList2;
     }
 
-    static List<Order> getOrderHistory(){
+    public static List<Order> getOrderHistory(){
         return orderHistoryList;
     }
-    static void setOrderHistory(List<Order> orderHistoryList2){
+    public static void setOrderHistory(List<Order> orderHistoryList2){
         orderHistoryList = orderHistoryList2;
     }
 }

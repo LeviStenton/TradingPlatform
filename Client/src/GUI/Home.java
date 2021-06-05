@@ -9,10 +9,12 @@ import Database.Asset;
 import Database.Order;
 import Database.User;
 import Network.ClientSocket;
+import Database.DatabaseStorage;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -275,7 +277,9 @@ public class Home extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
+
         ));
+
         jScrollPane2.setViewportView(jTable1);
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -524,7 +528,7 @@ public class Home extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         ClientSocket socket = new ClientSocket();
-        for(Asset list : assetList.getAssetList()){
+        for(Asset list : DatabaseStorage.getAssetList()){
             if(jLabel3.getText().equals(list.getAssetName())){
                 socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
             }
@@ -532,9 +536,8 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //DatabaseStorage.getOrderHistory();
         ClientSocket socket = new ClientSocket();
-        for(Asset list : assetList.getAssetList()){
+        for(Asset list : DatabaseStorage.getAssetList()){
             if(jLabel3.getText().equals(list.getAssetName())){
                 socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
             }
