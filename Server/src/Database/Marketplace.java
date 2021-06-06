@@ -89,7 +89,7 @@ public class Marketplace {
                 sellPriceTotal = buyOrderQuantity * sellOrderPrice;
 
                 //Removes credits from buyyer
-                source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(buyOrderOrderID), "-");
+                //source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(buyOrderOrderID), "-");
 
                 //Adds credits to seller
                 source.ChangeOrgCredits(sellPriceTotal, source.OrderJoinOrgID(sellOrderOrderID), "+");

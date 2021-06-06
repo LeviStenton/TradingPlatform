@@ -6,7 +6,7 @@ import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DBSource {
+public class DBSource implements DBInterface{
 
     private final Connection connection;
 
@@ -270,6 +270,11 @@ public class DBSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void ChangeUserPassword(String password, int userID) {
+
     }
 
 
@@ -671,6 +676,11 @@ public class DBSource {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void CreateAccount(String userName, String password, Integer orgID, boolean admin) {
 
     }
 

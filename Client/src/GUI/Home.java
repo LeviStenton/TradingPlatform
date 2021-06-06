@@ -613,11 +613,25 @@ public class Home extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         ClientSocket socket = new ClientSocket();
-        for(Asset list : DatabaseStorage.getAssetList()){
-            if(jLabel3.getText().equals(list.getAssetName())){
-                socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+        for(OrgAssets org : DatabaseStorage.getOrgAssets()){
+            if(org.getOrgID() == user.getOrgID()){
+                for(Asset list : DatabaseStorage.getAssetList()){
+                    if(org.getAssetID() == list.getAssetID()){
+                        if(Double.parseDouble(jTextField1.getText()) <= org.getQuantity()){
+                            if(jLabel3.getText().equals(list.getAssetName())){
+                                socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+                                socket = new ClientSocket();
+                                socket.removeOrgAsset(list.getAssetID(),Double.parseDouble(jTextField1.getText()),user);
+                                return;
+                            }
+                        }
+                    }
+
+                }
             }
+
         }
+
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -629,6 +643,9 @@ public class Home extends javax.swing.JFrame {
                     for(Asset list : DatabaseStorage.getAssetList()){
                         if(jLabel3.getText().equals(list.getAssetName())){
                             socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+                            socket = new ClientSocket();
+                            socket.removeCredits(totalCost,user);
+                            return;
                         }
                     }
                 }

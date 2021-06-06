@@ -38,6 +38,8 @@ public class ClientSocket {
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
+    public static final String REMOVECREDITS = "REMOVECREDITS";
+    public static final String REMOVEORGASSET = "REMOVEORGASSET";
 
 
 
@@ -49,6 +51,30 @@ public class ClientSocket {
         try {
             sock = new Socket(HOSTNAME, PORT);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void removeOrgAsset(int assetID,double amount, User user){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(REMOVEORGASSET);
+            objOutStream.writeObject(assetID);
+            objOutStream.writeObject(amount);
+            objOutStream.writeObject(user.getOrgID());
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCredits(double amount, User user){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(REMOVECREDITS);
+            objOutStream.writeObject(amount);
+            objOutStream.writeObject(user.getOrgID());
+
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

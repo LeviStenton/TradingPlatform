@@ -1,18 +1,28 @@
 package Network;
 
+import Database.DBInterface;
+import Database.DBSource;
+import Database.Marketplace;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Console;
 import java.io.IOException;
 
-public class ServerStartup {
+public class ServerStartup extends Thread{
     public static void main(String[] args) throws IOException {
         ServerConnection server = new ServerConnection();
+        ServerStartup marketplaceThread = new ServerStartup();
 
         SwingUtilities.invokeLater(() -> createAndShowGUI(server));
         try {
+            marketplaceThread.start();
+
             server.start();
+
+
         } catch (IOException e) {
             // In the case of an exception, show an error message and terminate
             SwingUtilities.invokeLater(() -> {
@@ -21,6 +31,21 @@ public class ServerStartup {
                         "Error starting server", JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
             });
+        }
+    }
+
+    public void run() {
+        System.out.println("Working1");
+        DBSource source = new DBSource();
+        Marketplace mk = new Marketplace(source);
+        while(true){
+            System.out.println("Working");
+            mk.GroupAssets();
+            try {
+                sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

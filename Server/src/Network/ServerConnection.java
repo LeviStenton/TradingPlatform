@@ -11,7 +11,7 @@ import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ServerConnection {
+public class ServerConnection<handleConnection> {
     private static int PORT;
     private static final int SOCKET_TIMEOUT = 100;
 
@@ -34,6 +34,8 @@ public class ServerConnection {
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
     public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
+    public static final String REMOVECREDITS = "REMOVECREDITS";
+    public static final String REMOVEORGASSET = "REMOVEORGASSET";
 
 
 
@@ -48,6 +50,21 @@ public class ServerConnection {
 
         PORT = config.getPORT();
     }
+
+//    public void run() {
+//        System.out.println("Working1");
+//        DBSource source = new DBSource();
+//        Marketplace mk = new Marketplace(source);
+//        while(true){
+//            System.out.println("Working");
+//            mk.GroupAssets();
+//            try {
+//                sleep(2000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      * Handles the connection received from ServerSocket
@@ -73,6 +90,11 @@ public class ServerConnection {
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeObject(db.GetAllAssets());
                     } break;
+                case REMOVECREDITS:
+                    Double amount = (Double) objInStream.readObject();
+                    int orgID = (int) objInStream.readObject();
+                    db.ChangeOrgCredits(amount,orgID,"-");
+                     break;
                 case GETORDERHISTORY:
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeObject(db.GetOrderHistory());
@@ -131,11 +153,17 @@ public class ServerConnection {
                         outStream.writeBoolean(db.RemoveAsset(rAssetName));
                     } break;
                 case GETORGASSETS:
-                    int orgID = objInStream.readInt();
+                    int orgID2 = objInStream.readInt();
                     int assetID = objInStream.readInt();
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
-                        outStream.writeDouble(db.GetOrgAssetQuantity(orgID, assetID));
+                        outStream.writeDouble(db.GetOrgAssetQuantity(orgID2, assetID));
                     } break;
+                case REMOVEORGASSET:
+                    int assetID2 = (int) objInStream.readObject();
+                    Double amount2 = (Double) objInStream.readObject();
+                    int orgID3 = (int) objInStream.readObject();
+                    db.InsertOrgAsset(orgID3,assetID2,amount2,"-");
+                    break;
             }
         }
         catch (ClassNotFoundException e){
@@ -165,6 +193,8 @@ public class ServerConnection {
                 }
                 try {
                     Socket socket = serverSocket.accept();
+                    //handleConnection thread = new handleConnection();
+                    //thread.start();
                     handleConnection(socket);
                 } catch (SocketTimeoutException ignored) {
                     // Do nothing. A timeout is normal- we just want the socket to
