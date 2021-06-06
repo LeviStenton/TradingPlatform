@@ -87,6 +87,8 @@ public class Home extends javax.swing.JFrame {
         Signout = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
         addNameListListener(new NameListListener());
+        jLabel36.setVisible(false);
+        jLabel13.setVisible(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Asset Manager");
@@ -99,9 +101,9 @@ public class Home extends javax.swing.JFrame {
 
         AssetsList.setBackground(new java.awt.Color(62, 62, 71));
         AssetsList.setForeground(new java.awt.Color(255, 255, 255));
-
         jScrollPane1.setViewportView(AssetsList);
-
+        AssetsList.setSelectedIndex(0);
+        AssetsList.validate();
         WalletBack.setBackground(new java.awt.Color(48, 48, 56));
 
         Wallet.setBackground(new java.awt.Color(31, 31, 35));
@@ -480,26 +482,10 @@ public class Home extends javax.swing.JFrame {
                 jLabel3.setText(AssetsList.getSelectedValue());
                 UpdateHome();
                 int assetID = -1;
-                double amountOwn = 0;
-                for(Asset asset : DatabaseStorage.getAssetList()){
-                    if(asset.getAssetName().equals(jLabel3.getText())){
-                        assetID = asset.getAssetID();
-                        break;
-                    }
-                }
-                for(OrgAssets orgAsset : DatabaseStorage.getOrgAssets()){
-                    if(assetID == orgAsset.getAssetID()){
-                        if(user.getOrgID() == orgAsset.getOrgID()){
-                            amountOwn = orgAsset.getQuantity();
-                        }
-                    }
-                    System.out.println(orgAsset.getAssetID() + orgAsset.getQuantity());
-                }
-                jLabel4.setText("Amount owned: " + amountOwn);
-                //System.out.println(AssetsList.getSelectedValue());
             }
         }
     }
+
 
     public static void UpdateHome(){
         UpdateOrderHistory();
@@ -510,6 +496,24 @@ public class Home extends javax.swing.JFrame {
                 jLabel10.setText(details.getOrgName());
             }
         }
+        double amountOwn = 0;
+
+        int assetID = -1;
+        for(Asset asset : DatabaseStorage.getAssetList()){
+            if(asset.getAssetName().equals(jLabel3.getText())){
+                assetID = asset.getAssetID();
+                break;
+            }
+        }
+
+        for(OrgAssets orgAsset : DatabaseStorage.getOrgAssets()){
+            if(assetID == orgAsset.getAssetID()){
+                if(orgID == orgAsset.getOrgID()){
+                    amountOwn = orgAsset.getQuantity();
+                }
+            }
+        }
+        jLabel4.setText("Amount owned: " + amountOwn);
     }
 
     public static void UpdateOrderHistory(){
@@ -612,6 +616,8 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        jLabel36.setVisible(false);
+        jLabel13.setVisible(false);
         ClientSocket socket = new ClientSocket();
         for(OrgAssets org : DatabaseStorage.getOrgAssets()){
             if(org.getOrgID() == user.getOrgID()){
@@ -622,8 +628,17 @@ public class Home extends javax.swing.JFrame {
                                 socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
                                 socket = new ClientSocket();
                                 socket.removeOrgAsset(list.getAssetID(),Double.parseDouble(jTextField1.getText()),user);
+                                jLabel36.setText("Sell order placed!");
+                                jLabel36.setVisible(true);
+                                jLabel13.setVisible(false);
                                 return;
                             }
+                        }
+                        else {
+                            jLabel13.setText("You do not have enough of this asset!");
+                            jLabel13.setVisible(true);
+                            jLabel36.setVisible(false);
+                            return;
                         }
                     }
 
@@ -631,10 +646,16 @@ public class Home extends javax.swing.JFrame {
             }
 
         }
+        UpdateHome();
+        jLabel13.setText("Sell order failed!");
+        jLabel13.setVisible(true);
+        jLabel36.setVisible(false);
 
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        jLabel36.setVisible(false);
+        jLabel13.setVisible(false);
         ClientSocket socket = new ClientSocket();
         double totalCost = Double.parseDouble(jTextField2.getText()) * Double.parseDouble(jTextField1.getText());
         for(OrgDetails details : DatabaseStorage.getOrgDetails()){
@@ -645,12 +666,23 @@ public class Home extends javax.swing.JFrame {
                             socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
                             socket = new ClientSocket();
                             socket.removeCredits(totalCost,user);
+                            jLabel36 .setText("Buy Order placed!");
+                            jLabel36 .setVisible(true);
                             return;
                         }
                     }
                 }
+                else {
+                    jLabel13.setText("You do not have enough credits!");
+                    jLabel13.setVisible(true);
+                    return;
+                }
             }
+
         }
+        UpdateHome();
+        jLabel13.setText("Buy order failed!");
+        jLabel13.setVisible(true);
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -723,7 +755,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private static javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel4;
+    private static javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
