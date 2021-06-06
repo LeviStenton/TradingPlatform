@@ -43,7 +43,9 @@ public class Home extends javax.swing.JFrame {
         this.assetList =  new ListModelScreen(assets);
 
         initComponents();
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+        updateAssetsList();
+
         System.out.println("Admin: "+user.getAdmin());
     }
 
@@ -277,6 +279,16 @@ public class Home extends javax.swing.JFrame {
 
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(currentOrdersModel);
+//        while(historyOrdersModel.getRowCount() > 0)
+//        {
+//            historyOrdersModel.removeRow(0);
+//        }
+//        while(currentOrdersModel.getRowCount() > 0)
+//        {
+//            currentOrdersModel.removeRow(0);
+//        }
+        //TODO here
+
         currentOrdersModel.addColumn("Asset name");
         currentOrdersModel.addColumn("Price");
         currentOrdersModel.addColumn("Quantity");
@@ -483,12 +495,16 @@ public class Home extends javax.swing.JFrame {
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent e) {
-            if (AssetsList.getSelectedValue() != null
-                    && !AssetsList.getSelectedValue().equals("")) {
-                jLabel3.setText(AssetsList.getSelectedValue());
-                UpdateHome();
-                int assetID = -1;
-            }
+            updateAssetsList();
+
+        }
+    }
+
+    public void updateAssetsList(){
+        if (AssetsList.getSelectedValue() != null
+                && !AssetsList.getSelectedValue().equals("")) {
+            jLabel3.setText(AssetsList.getSelectedValue());
+            UpdateHome();
         }
     }
 
