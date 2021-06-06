@@ -39,7 +39,9 @@ public class Home extends javax.swing.JFrame {
         for (Asset asset : socket.getAssets()){
             assets.add(asset.getAssetName());
         }
+
         this.assetList =  new ListModelScreen(assets);
+
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         System.out.println("Admin: "+user.getAdmin());
@@ -503,12 +505,15 @@ public class Home extends javax.swing.JFrame {
         double amountOwn = 0;
 
         int assetID = -1;
-        for(Asset asset : DatabaseStorage.getAssetList()){
-            if(asset.getAssetName().equals(jLabel3.getText())){
-                assetID = asset.getAssetID();
-                break;
+        if(jLabel3 != null){
+            for(Asset asset : DatabaseStorage.getAssetList()){
+                if(asset.getAssetName().equals(jLabel3.getText())){
+                    assetID = asset.getAssetID();
+                    break;
+                }
             }
         }
+
 
         for(OrgAssets orgAsset : DatabaseStorage.getOrgAssets()){
             if(assetID == orgAsset.getAssetID()){
@@ -517,7 +522,9 @@ public class Home extends javax.swing.JFrame {
                 }
             }
         }
-        jLabel4.setText("Amount owned: " + amountOwn);
+        if(jLabel4 != null){
+            jLabel4.setText("Amount owned: " + amountOwn);
+        }
     }
 
     public static void UpdateOrderHistory(){
@@ -569,12 +576,14 @@ public class Home extends javax.swing.JFrame {
             for(Asset asset : DatabaseStorage.getAssetList()){
                 if(asset.getAssetName().equals(jLabel3.getText())){
                     assetID = asset.getAssetID();
+                    break;
                 }
             }
             for(Order order : DatabaseStorage.getOrders()){
                 for(User user : DatabaseStorage.getProfileList()){
                     if(order.getUserID() == user.getUserID()){
                         userName = user.getUserName();
+                        break;
                     }
                 }
                 if(order.getAssetID() == assetID) {

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ListModelScreen {
 
-    DefaultListModel<String> listModel;
+    DefaultListModel<Object> listModel;
 
     /* BEGIN MISSING CODE */
     /* END MISSING CODE */
@@ -63,7 +63,7 @@ public class ListModelScreen {
      *
      * @return the listModel to display.
      */
-    public ListModel<String> getModel() {
+    public ListModel<Object> getModel() {
         return listModel;
     }
 
