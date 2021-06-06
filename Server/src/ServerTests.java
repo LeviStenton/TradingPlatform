@@ -30,29 +30,29 @@ public class ServerTests {
     @Test
     void LoginVerifyMatch(){
         source.CreateAccount("Alexander","123",1, false);
-        assertTrue(source.loginAttempt("Alexander", "123") != null);
+        assertNotNull(source.loginAttempt("Alexander", "123"));
     }
 
     @Test
     void LoginVerifyWrongUserName(){
         source.CreateAccount("Alexander","123",1, false);
-        assertFalse(source.loginAttempt("alex", "123") != null);
+        assertNull(source.loginAttempt("alex", "123"));
     }
 
     @Test
     void LoginVerifyWrongPassword(){
         source.CreateAccount("Alexander","123",1, false);
-        assertFalse(source.loginAttempt("Alexander", "321") != null);
+        assertNull(source.loginAttempt("Alexander", "321"));
     }
 
     @Test
     void LoginVerifyNoAccounts(){
-        assertFalse(source.loginAttempt("Alexander", "321") != null);
+        assertNull(source.loginAttempt("Alexander", "321"));
     }
 
     @Test
     void RunMarketPlaceLoopNormalCase(){
-        Marketplace mk = new Marketplace(db);
+        Marketplace mk = new Marketplace();
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(0,"1");
 
@@ -77,14 +77,14 @@ public class ServerTests {
                 assertEquals(0,org.getCredits(), "Credits were not removed from org 1");
             }
         }
-        assertTrue(source.orderList.size() == 0, "Orders was not removed from orderList");
-        assertTrue(source.orderHistoryList.size() == 2, "Orders were not added to orderHistoryList");
+        assertEquals(0, source.orderList.size(), "Orders was not removed from orderList");
+        assertEquals(2, source.orderHistoryList.size(), "Orders were not added to orderHistoryList");
 
     }
 
     @Test
     void RunMarketPlaceLoopNoCase(){
-        Marketplace mk = new Marketplace(db);
+        Marketplace mk = new Marketplace();
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(150,"1");
 
@@ -108,13 +108,13 @@ public class ServerTests {
             assertEquals(150,org.getCredits(), "Credits were added to org");
 
         }
-        assertTrue(source.orderList.size() == 2, "Orders were removed from orderList");
-        assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
+        assertEquals(2, source.orderList.size(), "Orders were removed from orderList");
+        assertEquals(0, source.orderHistoryList.size(), "Orders were added to orderHistoryList");
     }
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
-        Marketplace mk = new Marketplace(db);
+        Marketplace mk = new Marketplace();
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(0,"2");
 
@@ -148,10 +148,10 @@ public class ServerTests {
         assertEquals(1,source.orderList.size(), "OrderList should only have one order");
 
         for(Order order:source.orderHistoryList){
-            if(order.getOrderType() == "B"){
+            if(order.getOrderType().equals("B")){
                 assertEquals(10,order.getQuantity(), "Buy order has wrong q");
             }
-            if(order.getOrderType() == "S"){
+            if(order.getOrderType().equals("S")){
                 assertEquals(10,order.getQuantity(), "Sell order has wrong q");
             }
         }
@@ -160,7 +160,7 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
-        Marketplace mk = new Marketplace(db);
+        Marketplace mk = new Marketplace();
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(150,"2");
 
@@ -183,8 +183,8 @@ public class ServerTests {
             assertEquals(150,org.getCredits(), "Credits were added to org");
 
         }
-        assertTrue(source.orderList.size() == 2, "Orders were removed from orderList");
-        assertTrue(source.orderHistoryList.size() == 0, "Orders were added to orderHistoryList");
+        assertEquals(2, source.orderList.size(), "Orders were removed from orderList");
+        assertEquals(0, source.orderHistoryList.size(), "Orders were added to orderHistoryList");
     }
 
     @Test
@@ -198,8 +198,8 @@ public class ServerTests {
     @Test
     void getAllAssets(){
         List<Asset> assets = db.GetAllAssets();
-        for(int i = 0; i < assets.size(); ++i){
-            System.out.println(assets.get(i).getAssetName());
+        for (Asset asset : assets) {
+            System.out.println(asset.getAssetName());
         }
     }
     @Test
@@ -228,8 +228,7 @@ public class ServerTests {
     @Test
     void promoteAccount(){
         String username = "LeviStenton";
-        boolean admin = false;
-        assertTrue(db.PromoteAccount(username, admin));
+        assertTrue(db.PromoteAccount(username, false));
     }
 
     @Test
@@ -254,10 +253,7 @@ public class ServerTests {
     @Test
     void getOrgs(){
         List<OrgDetails> orgs = db.GetAllOrgs();
-        assertTrue(orgs != null);
+        assertNotNull(orgs);
     }
 
-    /**
-     * GLASS BOX TESTS ------------------------------------------------------------------
-     */
 }

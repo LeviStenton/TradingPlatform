@@ -1,6 +1,7 @@
 package Network;
 
-import Database.*;
+import Database.DBSource;
+import Database.Order;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,10 +9,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ServerConnection<handleConnection> {
+public class ServerConnection {
     private static int PORT;
     private static final int SOCKET_TIMEOUT = 100;
 
@@ -41,8 +41,11 @@ public class ServerConnection<handleConnection> {
     // Database connection
     DBSource db;
 
-    private AtomicBoolean running = new AtomicBoolean(true);
+    private final AtomicBoolean running = new AtomicBoolean(true);
 
+    /**
+     * Sets the PORT of the server
+     */
     public ServerConnection() {
         NetworkConfig config = new NetworkConfig();
         db = new DBSource();
@@ -51,7 +54,8 @@ public class ServerConnection<handleConnection> {
     }
 
     /**
-     * Handles the connection received from ServerSocket
+     * Handles the connections received from ServerSocket and
+     * passes them to the DBSource to handle their requests.
      *
      * @param socket The socket used to communicate with the currently connected client
      */
@@ -147,7 +151,7 @@ public class ServerConnection<handleConnection> {
                     } break;
                 case REMOVEORGASSET:
                     int assetID2 = objInStream.readInt();
-                    Double amount2 = objInStream.readDouble();
+                    double amount2 = objInStream.readDouble();
                     int orgID3 = objInStream.readInt();
                     String rOperator = (String) objInStream.readObject();
                     db.InsertOrgAsset(orgID3,assetID2,amount2,rOperator);
@@ -178,15 +182,10 @@ public class ServerConnection<handleConnection> {
     public void start() throws IOException {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             serverSocket.setSoTimeout(SOCKET_TIMEOUT);
-            for (; ; ) {
-                if (!running.get()) {
-                    // The server is no longer running
-                    break;
-                }
+            // The server is no longer running
+            while (running.get()) {
                 try {
                     Socket socket = serverSocket.accept();
-                    //handleConnection thread = new handleConnection();
-                    //thread.start();
                     handleConnection(socket);
                 } catch (SocketTimeoutException ignored) {
                     // Do nothing. A timeout is normal- we just want the socket to
