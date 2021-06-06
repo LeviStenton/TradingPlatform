@@ -5,6 +5,9 @@ import Database.Order;
 
 import java.util.List;
 
+/**
+ * Marketplace gets the current orders that have not been completed and attempts to pair them up
+ */
 public class Marketplace {
         private DBSource source;
 

@@ -121,6 +121,10 @@ public class DBSource implements DBInterface{
         }
     }
 
+    /**
+     * Gets the whole OrderHistory DB table
+     * @return Returns the table as List<Order>
+     */
     public List<Order> GetOrderHistory(){
         ResultSet rs;
         List<Order> orderHistory = new ArrayList<Order>();
@@ -136,7 +140,10 @@ public class DBSource implements DBInterface{
         }
         return null;
     }
-
+    /**
+     * Gets the whole OrgDetails DB table
+     * @return Returns the table as List<OrgDetails>
+     */
     public List<OrgDetails> GetAllOrgDetails(){
         ResultSet rs;
         List<OrgDetails> details = new ArrayList<OrgDetails>();
@@ -153,6 +160,10 @@ public class DBSource implements DBInterface{
         return null;
     }
 
+    /**
+     * Gets the whole OrgAssets DB table
+     * @return Returns the table as List<OrgAssets>
+     */
     public List<OrgAssets> GetAllOrgAssets(){
         ResultSet rs;
         List<OrgAssets> assets = new ArrayList<>();
@@ -168,7 +179,10 @@ public class DBSource implements DBInterface{
         }
         return null;
     }
-
+    /**
+     * Gets the whole AccountDetails DB table
+     * @return Returns the table as List<User>
+     */
     public List<User> GetAllUsers(){
         ResultSet rs;
         List<User> users = new ArrayList<User>();
@@ -185,6 +199,10 @@ public class DBSource implements DBInterface{
         return null;
     }
 
+    /**
+     * Gets the whole AccountDetails DB table
+     * @return Returns the table as List<User>
+     */
     public List<Order> GetAllOrders(){
         ResultSet rs;
         List<Order> orders = new ArrayList<Order>();
@@ -201,6 +219,10 @@ public class DBSource implements DBInterface{
         return null;
     }
 
+    /**
+     * Delete Org from the OrgDetails DB table
+     * @param orgID The ID of the org to remove
+     */
     public void DeteteOrgFromOrgDetails(int orgID) {
         try {
             deleteOrgFromOrgDetails.setInt(1, orgID);

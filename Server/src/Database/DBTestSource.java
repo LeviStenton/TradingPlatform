@@ -3,6 +3,9 @@ package Database;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is the mock version of DBSource, works the same BUT changes a set of lists instead of the database
+ */
 public class DBTestSource implements DBInterface {
 
     List<Asset> assetList = new ArrayList<Asset>();
@@ -19,7 +22,10 @@ public class DBTestSource implements DBInterface {
     public List<Order> getOrderList(){return this.orderList;};
     public List<Order> getOrderHistoryList(){return this.orderHistoryList;};
 
-
+    /**
+     *
+     * @param orgID
+     */
     @Override
     public void DeteteOrgFromOrgDetails(int orgID) {
         orgDetailsList.removeIf(t -> t.getOrgID() == orgID);
