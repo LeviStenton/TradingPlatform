@@ -665,16 +665,17 @@ public class DBSource {
      * @param password The selected password for the account
      * @param orgID    The org the user will be apart of
      */
-    public void CreateAccount(String userName, String password, Integer orgID) {
+    public boolean CreateAccount(String userName, String password, Integer orgID) {
         ResultSet rs;
         try {
             accountCreation.setString(1, userName);
             accountCreation.setString(2, password);
             accountCreation.setString(3, orgID.toString());
             accountCreation.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

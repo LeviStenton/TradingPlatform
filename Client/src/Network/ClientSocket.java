@@ -77,18 +77,16 @@ public class ClientSocket {
     }
 
     public List<Asset> getAssets(){
-        List<Asset> assets = new ArrayList<Asset>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETASSETS);
             objOutStream.flush();
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
-
                 return (List<Asset>) objInputStream.readObject();
             }
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return assets;
+            return null;
         }
     }
 
@@ -284,7 +282,7 @@ public class ClientSocket {
 
     public List<OrgDetails> getAllOrgs(){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
-            objOutStream.writeObject(GETORGASSETS);
+            objOutStream.writeObject(GETORGDETAILS);
             objOutStream.flush();
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
                 return (List<OrgDetails>) objInputStream.readObject();

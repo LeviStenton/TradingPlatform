@@ -96,8 +96,10 @@ public class ServerConnection {
                         outStream.writeBoolean(db.ChangeUserPassword(currentPass, newPass, userID));
                     } break;
                 case CREATEACC:
-                    db.CreateAccount((String) objInStream.readObject(), (String) objInStream.readObject(), 0);
-                    break;
+                    boolean created = db.CreateAccount((String) objInStream.readObject(), (String) objInStream.readObject(), 0);
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(created);
+                    } break;
                 case ADMINPASS:
                     String aUsername = (String) objInStream.readObject();
                     String aNewPass = (String) objInStream.readObject();
