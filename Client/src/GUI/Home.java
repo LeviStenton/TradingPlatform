@@ -35,7 +35,11 @@ public class Home extends javax.swing.JFrame {
         orgID = this.user.getOrgID();
 
         socket = new ClientSocket();
-        this.assetList =  new ListModelScreen(socket);
+        List<String> assets = new ArrayList<>();
+        for (Asset asset : socket.getAssets()){
+            assets.add(asset.getAssetName());
+        }
+        this.assetList =  new ListModelScreen(assets);
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         System.out.println("Admin: "+user.getAdmin());
@@ -396,7 +400,7 @@ public class Home extends javax.swing.JFrame {
         );
 
         MenuBar.setOpaque(true);
-        MenuBar.setBackground(new java.awt.Color(31, 31, 35));
+        MenuBar.setBackground(new java.awt.Color(255, 255, 255));
         MenuBar.setBorder(null);
         MenuBar.setForeground(new java.awt.Color(255, 255, 255));
 

@@ -33,11 +33,15 @@ public class ServerConnection<handleConnection> {
     public static final String GETALLUSERS = "GETALLUSERS";
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
+<<<<<<< HEAD
     public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
     public static final String REMOVECREDITS = "REMOVECREDITS";
     public static final String REMOVEORGASSET = "REMOVEORGASSET";
 
 
+=======
+    public static final String GETORGDETAILS = "GETORGDETAILS";
+>>>>>>> Client_GUI
 
     // Database connection
     DBSource db;
@@ -123,8 +127,10 @@ public class ServerConnection<handleConnection> {
                         outStream.writeBoolean(db.ChangeUserPassword(currentPass, newPass, userID));
                     } break;
                 case CREATEACC:
-                    db.CreateAccount((String) objInStream.readObject(), (String) objInStream.readObject(), 0);
-                    break;
+                    boolean created = db.CreateAccount((String) objInStream.readObject(), (String) objInStream.readObject(), 0);
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeBoolean(created);
+                    } break;
                 case ADMINPASS:
                     String aUsername = (String) objInStream.readObject();
                     String aNewPass = (String) objInStream.readObject();
@@ -158,12 +164,19 @@ public class ServerConnection<handleConnection> {
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeDouble(db.GetOrgAssetQuantity(orgID2, assetID));
                     } break;
+<<<<<<< HEAD
                 case REMOVEORGASSET:
                     int assetID2 = (int) objInStream.readObject();
                     Double amount2 = (Double) objInStream.readObject();
                     int orgID3 = (int) objInStream.readObject();
                     db.InsertOrgAsset(orgID3,assetID2,amount2,"-");
                     break;
+=======
+                case GETORGDETAILS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllOrgs());
+                    } break;
+>>>>>>> Client_GUI
             }
         }
         catch (ClassNotFoundException e){

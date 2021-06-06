@@ -32,16 +32,19 @@ public class ClientSocket {
     public static final String PROMOTE = "PROMOTE";
     public static final String REMOVEASSET = "REMOVEASSET";
     public static final String ADDASSET = "ADDASSET";
-    public static final String CREDITS = "CREDITS";
     public static final String GETORGASSETS = "GETORGASSETS";
     public static final String GETALLUSERS = "GETALLUSERS";
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
+<<<<<<< HEAD
     public static final String REMOVECREDITS = "REMOVECREDITS";
     public static final String REMOVEORGASSET = "REMOVEORGASSET";
 
 
+=======
+    public static final String GETORGDETAILS = "GETORGDETAILS";
+>>>>>>> Client_GUI
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
@@ -106,18 +109,16 @@ public class ClientSocket {
     }
 
     public List<Asset> getAssets(){
-        List<Asset> assets = new ArrayList<Asset>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETASSETS);
             objOutStream.flush();
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
-
                 return (List<Asset>) objInputStream.readObject();
             }
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return assets;
+            return null;
         }
     }
 
@@ -327,7 +328,17 @@ public class ClientSocket {
         }
     }
 
-    public int credits(String orgName){
-        return 0;
+    public List<OrgDetails> getAllOrgs(){
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETORGDETAILS);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+                return (List<OrgDetails>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
