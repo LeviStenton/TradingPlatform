@@ -37,14 +37,10 @@ public class ClientSocket {
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
-<<<<<<< HEAD
     public static final String REMOVECREDITS = "REMOVECREDITS";
     public static final String REMOVEORGASSET = "REMOVEORGASSET";
 
-
-=======
     public static final String GETORGDETAILS = "GETORGDETAILS";
->>>>>>> Client_GUI
 
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();

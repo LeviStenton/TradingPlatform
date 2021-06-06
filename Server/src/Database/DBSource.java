@@ -75,11 +75,8 @@ public class DBSource implements DBInterface{
     private PreparedStatement getAllUsers;
     private PreparedStatement getAllOrders;
     private PreparedStatement getAllOrgAssets;
-<<<<<<< HEAD
     private PreparedStatement getAllOrgDetails;
-=======
     private PreparedStatement getAllOrgs;
->>>>>>> Client_GUI
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -116,11 +113,8 @@ public class DBSource implements DBInterface{
             getAllUsers = connection.prepareStatement(GETALLUSERS);
             getAllOrders = connection.prepareStatement(GETALLORDERS);
             getAllOrgAssets = connection.prepareStatement(GETALLORGASSETS);
-<<<<<<< HEAD
             getAllOrgDetails = connection.prepareStatement(GETALLORGDETAILS);
-=======
             getAllOrgs = connection.prepareStatement(GETALLORGS);
->>>>>>> Client_GUI
 
         } catch (SQLException e) {
             e.printStackTrace();
