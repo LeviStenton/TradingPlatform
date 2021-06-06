@@ -8,7 +8,7 @@ public class DatabaseStorage {
     private static List<Asset> assetList = new ArrayList<Asset>();
     private static List<User> profileList = new ArrayList<User>();
     private static List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
-    //List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
+    private static List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
     private static List<Order> orderList = new ArrayList<Order>();
     private static List<Order> orderHistoryList = new ArrayList<Order>();
 
@@ -43,5 +43,10 @@ public class DatabaseStorage {
     public static List<OrgAssets> getOrgAssets(){ return orgAssetsList; }
     public static void setOrgAssets(List<OrgAssets> orgAssetsList2){
         orgAssetsList = orgAssetsList2;
+    }
+
+    public static List<OrgDetails> getOrgDetails(){ return orgDetailsList; }
+    public static void setOrgDetails(List<OrgDetails> orgDetailsList2){
+        orgDetailsList = orgDetailsList2;
     }
 }

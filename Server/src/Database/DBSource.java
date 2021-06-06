@@ -39,6 +39,7 @@ public class DBSource {
     private final String DELETEORGFROMORGASSETS = "DELETE FROM OrganizationAssets WHERE OrganizationID = ?";
     private final String GETORDERHISTORY = "SELECT * FROM OrderHistory";
     private final String GETALLORGASSETS = "SELECT * FROM OrganizationAssets";
+    private final String GETALLORGDETAILS = "SELECT * FROM OrganizationDetails";
     private final String GETALLUSERS = "SELECT * FROM AccountDetails";
     private final String GETALLORDERS = "SELECT * FROM Orders";
 
@@ -73,6 +74,7 @@ public class DBSource {
     private PreparedStatement getAllUsers;
     private PreparedStatement getAllOrders;
     private PreparedStatement getAllOrgAssets;
+    private PreparedStatement getAllOrgDetails;
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -109,6 +111,7 @@ public class DBSource {
             getAllUsers = connection.prepareStatement(GETALLUSERS);
             getAllOrders = connection.prepareStatement(GETALLORDERS);
             getAllOrgAssets = connection.prepareStatement(GETALLORGASSETS);
+            getAllOrgDetails = connection.prepareStatement(GETALLORGDETAILS);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -131,13 +134,29 @@ public class DBSource {
         return null;
     }
 
+    public List<OrgDetails> GetAllOrgDetails(){
+        ResultSet rs;
+        List<OrgDetails> details = new ArrayList<OrgDetails>();
+        try{
+            rs = getAllOrgDetails.executeQuery();
+            while (rs.next()){
+                details.add( new OrgDetails(rs.getInt("OrganizationID"),rs.getDouble("CreditQuantity"),rs.getString("OrganizationName")));
+            }
+            return details;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<OrgAssets> GetAllOrgAssets(){
         ResultSet rs;
         List<OrgAssets> assets = new ArrayList<>();
         try{
             rs = getAllOrgAssets.executeQuery();
             while (rs.next()){
-                assets.add( new OrgAssets(rs.getInt("OrganizationID"),rs.getInt("AssetID"),rs.getInt("Quantity")));
+                assets.add( new OrgAssets(rs.getInt("OrganizationID"),rs.getInt("AssetID"),rs.getDouble("Quantity")));
             }
             return assets;
         }
