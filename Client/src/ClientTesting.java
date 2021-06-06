@@ -1,3 +1,4 @@
+import Database.OrgDetails;
 import Database.User;
 import Database.Asset;
 import Database.Order;
@@ -82,6 +83,12 @@ public class ClientTesting {
         int orgID = 2;
         int assetID = 1;
         assertEquals(1, sock.getOrgAssetQuantity(orgID, assetID));
+    }
+
+    @Test
+    void getOrgs(){
+        List<OrgDetails> orgs = sock.getAllOrgs();
+        assertTrue(orgs != null);
     }
 
     /**

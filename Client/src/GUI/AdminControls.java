@@ -6,11 +6,13 @@
 package GUI;
 
 import Database.Asset;
+import Database.OrgDetails;
 import Network.ClientSocket;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,16 +24,25 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AdminControls extends javax.swing.JFrame {
 
     private ListModelScreen assetList;
+    private ListModelScreen orgList;
+
+    private OrgDetails currentOrg;
 
     /**
      * Creates new form AdminControls
      */
     public AdminControls() {
-        ClientSocket socket = new ClientSocket();
-        this.assetList =  new ListModelScreen(socket);
+        this.assetList = new ListModelScreen(assetsStringList());
+        this.orgList = new ListModelScreen(orgsStringList());
         initComponents();
         jLabel2.setVisible(false);
         jLabel3.setVisible(false);
+        jLabel7.setVisible(false);
+        jLabel4.setVisible(false);
+        jLabel5.setVisible(false); // Change org assets
+        jLabel6.setVisible(false); // Org credits
+        jLabel35.setVisible(false);
+        jLabel36.setVisible(false);
     }
 
     /**
@@ -58,7 +69,7 @@ public class AdminControls extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jList1 = new javax.swing.JList(assetList.getModel());
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -115,8 +126,9 @@ public class AdminControls extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jList2 = new javax.swing.JList(orgList.getModel());
         jLabel34 = new javax.swing.JLabel();
+        addNameListListener(new NameListListener());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -124,7 +136,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Admin Controls");
+        jLabel1.setText("Admin Controls - Choose an Organization");
 
         jPanel2.setBackground(new java.awt.Color(48, 48, 56));
 
@@ -142,7 +154,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField1.setBackground(new java.awt.Color(48, 48, 56));
         jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Username");
+        jTextField1.setText("");
         jTextField1.setBorder(null);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,7 +164,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jPasswordField1.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setText("Password");
+        jPasswordField1.setText("");
         jPasswordField1.setBorder(null);
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,11 +246,6 @@ public class AdminControls extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Change Organisation Asset Amount");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
         jLabel23.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -251,7 +258,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel25.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel25.setText("ASSET");
+        jLabel25.setText("-");
 
         jLabel26.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,11 +266,11 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("AMOUNT");
+        jLabel27.setText("-");
 
         jTextField6.setBackground(new java.awt.Color(48, 48, 56));
         jTextField6.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField6.setText("Amount");
+        jTextField6.setText("");
         jTextField6.setBorder(null);
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -372,7 +379,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField2.setBackground(new java.awt.Color(48, 48, 56));
         jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("Username");
+        jTextField2.setText("");
         jTextField2.setBorder(null);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,7 +389,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jPasswordField2.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField2.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField2.setText("Password");
+        jPasswordField2.setText("");
         jPasswordField2.setBorder(null);
         jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,7 +476,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField3.setBackground(new java.awt.Color(48, 48, 56));
         jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setText("Username");
+        jTextField3.setText("");
         jTextField3.setBorder(null);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -499,13 +506,13 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("ADMIN/USER");
+        jLabel18.setText("-");
 
         AdminOn1.setText("Remove Account");
         AdminOn1.setBorder(null);
         AdminOn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdminOn1ActionPerformed(evt);
+                RemoveAccount(evt);
             }
         });
 
@@ -574,7 +581,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField4.setBackground(new java.awt.Color(48, 48, 56));
         jTextField4.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField4.setText("Asset Name");
+        jTextField4.setText("");
         jTextField4.setBorder(null);
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -586,7 +593,7 @@ public class AdminControls extends javax.swing.JFrame {
         ConfirmAccountCreation1.setBorder(null);
         ConfirmAccountCreation1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmAccountCreation1ActionPerformed(evt);
+                AddAsset(evt);
             }
         });
 
@@ -600,7 +607,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField5.setBackground(new java.awt.Color(48, 48, 56));
         jTextField5.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField5.setText("Asset Name");
+        jTextField5.setText("");
         jTextField5.setBorder(null);
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -612,7 +619,7 @@ public class AdminControls extends javax.swing.JFrame {
         ConfirmAccountCreation2.setBorder(null);
         ConfirmAccountCreation2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmAccountCreation2ActionPerformed(evt);
+                RemoveAsset(evt);
             }
         });
 
@@ -696,11 +703,11 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel30.setText("ORG");
+        jLabel30.setText("-");
 
         jTextField7.setBackground(new java.awt.Color(48, 48, 56));
         jTextField7.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField7.setText("Credit");
+        jTextField7.setText("");
         jTextField7.setBorder(null);
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -726,7 +733,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setText("AMOUNT");
+        jLabel33.setText("-");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 130, 35));
@@ -786,11 +793,6 @@ public class AdminControls extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
         jLabel34.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -875,6 +877,7 @@ public class AdminControls extends javax.swing.JFrame {
      */
     private void addNameListListener(ListSelectionListener listener) {
         jList1.addListSelectionListener(listener);
+        jList2.addListSelectionListener(listener);
     }
 
     /**
@@ -882,23 +885,41 @@ public class AdminControls extends javax.swing.JFrame {
      * different name is selected from the list.
      */
     private class NameListListener implements ListSelectionListener {
-
         /**
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent e) {
-            String selected = jList1.getSelectedValue();
-            if (selected != null && !selected.equals("")) {
-                jLabel25.setText(jList1.getSelectedValue());
-                double assetQuantity = -1;
-                ClientSocket sock = new ClientSocket();
-                for(Asset asset : sock.getAssets()){
-                    if(asset.getAssetName().equals(selected)){
-                        sock = new ClientSocket();
-                        assetQuantity = sock.getOrgAssetQuantity(2, asset.getAssetID());
+            ClientSocket sock;
+            String list2Selected = jList2.getSelectedValue();
+            if ((list2Selected != null && !list2Selected.equals(""))) {
+                sock = new ClientSocket();
+                List<OrgDetails> orgs = sock.getAllOrgs();
+                for (OrgDetails org : orgs)
+                    if (list2Selected.equals(org.getOrgName())) {
+                        currentOrg = org;
+                        break;
                     }
+            }
+
+            if(currentOrg != null){
+                sock = new ClientSocket();
+                String list1Selected = jList1.getSelectedValue();
+                List<Asset> assets = sock.getAssets();
+                if ((list1Selected != null && !list1Selected.equals(""))) {
+                    jLabel25.setText(jList1.getSelectedValue());
+                    double assetQuantity = -1;
+                    for(Asset asset : assets){
+                        if(asset.getAssetName().equals(list1Selected)){
+                            sock = new ClientSocket();
+                            assetQuantity = sock.getOrgAssetQuantity(currentOrg.getOrgID(), asset.getAssetID());
+                            break;
+                        }
+                    }
+                    jLabel27.setText(assetQuantity+"");
                 }
-                jLabel27.setText(assetQuantity+"");
+                jLabel1.setText("Admin Controls - " + currentOrg.getOrgName());
+                jLabel30.setText(currentOrg.getOrgName());
+                jLabel33.setText(currentOrg.getCredits()+"");
             }
         }
     }
@@ -923,13 +944,13 @@ public class AdminControls extends javax.swing.JFrame {
     private void SetChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SetChangePasswordActionPerformed
         // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
-        sock.adminChangePassword(jTextField2.getText(), jPasswordField2.getText());
+        jLabel4.setVisible(sock.adminChangePassword(jTextField2.getText(), jPasswordField2.getText()));
     }//GEN-LAST:event_SetChangePasswordActionPerformed
 
     private void ConfirmAccountCreationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreationActionPerformed
         // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
-        sock.createAccount(jTextField1.getText(), jPasswordField1.getText());
+        jLabel7.setVisible(sock.createAccount(jTextField1.getText(), jPasswordField1.getText()));
     }//GEN-LAST:event_ConfirmAccountCreationActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -954,26 +975,22 @@ public class AdminControls extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void ConfirmAccountCreation1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation1ActionPerformed
+    private void AddAsset(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation1ActionPerformed
         // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
-        if(!sock.addAsset(jTextField4.getText()))
-            jLabel2.setVisible(true);
-        else
-            jLabel2.setVisible(false);
+        jLabel35.setVisible(sock.addAsset(jTextField4.getText()));
+        assetList.Update(assetsStringList());
     }//GEN-LAST:event_ConfirmAccountCreation1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
-    private void ConfirmAccountCreation2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation2ActionPerformed
+    private void RemoveAsset(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation2ActionPerformed
         // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
-        if(!sock.removeAsset(jTextField5.getText()))
-            jLabel3.setVisible(true);
-        else
-            jLabel3.setVisible(false);
+        jLabel36.setVisible(sock.removeAsset(jTextField5.getText()));
+        assetList.Update(assetsStringList());
     }//GEN-LAST:event_ConfirmAccountCreation2ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -992,7 +1009,7 @@ public class AdminControls extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ConfirmAccountCreation4ActionPerformed
 
-    private void AdminOn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminOn1ActionPerformed
+    private void RemoveAccount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminOn1ActionPerformed
         // TODO add your handling code here:
         ClientSocket sock = new ClientSocket();
         sock.removeAccount(jTextField3.getText());
@@ -1074,4 +1091,22 @@ public class AdminControls extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
+
+    List<String> assetsStringList(){
+        ClientSocket socket = new ClientSocket();
+        List<String> assets = new ArrayList<>();
+        for (Asset asset : socket.getAssets()){
+            assets.add(asset.getAssetName());
+        }
+        return assets;
+    }
+
+    List<String> orgsStringList(){
+        ClientSocket socket = new ClientSocket();
+        List<String> orgs = new ArrayList<>();
+        for (OrgDetails org : socket.getAllOrgs()){
+            orgs.add(org.getOrgName());
+        }
+        return orgs;
+    }
 }

@@ -42,6 +42,7 @@ public class DBSource implements DBInterface{
     private final String GETALLORGDETAILS = "SELECT * FROM OrganizationDetails";
     private final String GETALLUSERS = "SELECT * FROM AccountDetails";
     private final String GETALLORDERS = "SELECT * FROM Orders";
+    private final String GETALLORGS = "SELECT * FROM OrganizationDetails";
 
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;
@@ -74,7 +75,11 @@ public class DBSource implements DBInterface{
     private PreparedStatement getAllUsers;
     private PreparedStatement getAllOrders;
     private PreparedStatement getAllOrgAssets;
+<<<<<<< HEAD
     private PreparedStatement getAllOrgDetails;
+=======
+    private PreparedStatement getAllOrgs;
+>>>>>>> Client_GUI
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -111,7 +116,11 @@ public class DBSource implements DBInterface{
             getAllUsers = connection.prepareStatement(GETALLUSERS);
             getAllOrders = connection.prepareStatement(GETALLORDERS);
             getAllOrgAssets = connection.prepareStatement(GETALLORGASSETS);
+<<<<<<< HEAD
             getAllOrgDetails = connection.prepareStatement(GETALLORGDETAILS);
+=======
+            getAllOrgs = connection.prepareStatement(GETALLORGS);
+>>>>>>> Client_GUI
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -691,16 +700,17 @@ public class DBSource implements DBInterface{
      * @param password The selected password for the account
      * @param orgID    The org the user will be apart of
      */
-    public void CreateAccount(String userName, String password, Integer orgID) {
+    public boolean CreateAccount(String userName, String password, Integer orgID) {
         ResultSet rs;
         try {
             accountCreation.setString(1, userName);
             accountCreation.setString(2, password);
             accountCreation.setString(3, orgID.toString());
             accountCreation.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -764,12 +774,8 @@ public class DBSource implements DBInterface{
         List<Asset> assets = new ArrayList<Asset>();
         try {
             rs = getAllAssets.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-                Asset asset = new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName"));
-                assets.add(asset);
-                ++i;
-            }
+            while (rs.next())
+                assets.add(new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName")));
             return assets;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -820,5 +826,19 @@ public class DBSource implements DBInterface{
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<OrgDetails> GetAllOrgs() {
+        ResultSet rs;
+        List<OrgDetails> orgs = new ArrayList<>();
+        try {
+            rs = getAllOrgs.executeQuery();
+            while (rs.next())
+                orgs.add(new OrgDetails(rs.getInt("OrganizationID"), rs.getDouble("CreditQuantity"), rs.getString("OrganizationName")));
+            return orgs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

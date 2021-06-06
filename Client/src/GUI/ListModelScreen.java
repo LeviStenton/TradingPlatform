@@ -5,8 +5,7 @@ import Network.ClientSocket;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
-import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -18,8 +17,7 @@ import java.util.List;
  */
 public class ListModelScreen {
 
-    DefaultListModel listModel;
-    private ClientSocket socket;
+    DefaultListModel<String> listModel;
 
     /* BEGIN MISSING CODE */
     /* END MISSING CODE */
@@ -29,32 +27,25 @@ public class ListModelScreen {
      * application.
      *
      */
-    public ListModelScreen(ClientSocket socket) {
-        listModel = new DefaultListModel();
-        this.socket = socket;
-
+    public ListModelScreen(Collection<String> list) {
+        listModel = new DefaultListModel<>();
+        listModel.addAll(list);
         // add the retrieved data to the list model
-        for (Asset asset : socket.getAssets()) {
-            listModel.addElement(asset.getAssetName());
-        }
+//        for (Asset item : list) {
+//            listModel.addElement(item.getAssetName());
+//        }
     }
 
     /**
      * Adds a person to the address book.
      *
      */
-    public void Update() {
+    public void Update(Collection<String> list) {
 
         // check to see if the person is already in the book
         // if not add to the address book and the list model
         listModel.clear();
-        this.socket = new ClientSocket();
-
-        for (Asset asset : socket.getAssets()) {
-            listModel.addElement(asset.getAssetName());
-        }
-
-
+        listModel.addAll(list);
     }
 
     /**
@@ -72,7 +63,7 @@ public class ListModelScreen {
      *
      * @return the listModel to display.
      */
-    public ListModel getModel() {
+    public ListModel<String> getModel() {
         return listModel;
     }
 
