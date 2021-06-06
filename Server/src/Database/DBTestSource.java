@@ -7,10 +7,10 @@ public class DBTestSource implements DBInterface {
 
     List<Asset> assetList = new ArrayList<Asset>();
     List<User> profileList = new ArrayList<User>();
-    List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
-    List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
-    List<Order> orderList = new ArrayList<Order>();
-    List<Order> orderHistoryList = new ArrayList<Order>();
+    public List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
+    public List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
+    public List<Order> orderList = new ArrayList<Order>();
+    public List<Order> orderHistoryList = new ArrayList<Order>();
 
     public List<Asset> getAssetsList(){return this.assetList;};
     public List<User> getAccountDetailsList(){return this.profileList;};

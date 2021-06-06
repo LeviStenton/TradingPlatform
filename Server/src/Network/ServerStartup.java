@@ -1,6 +1,5 @@
 package Network;
 
-import Database.DBInterface;
 import Database.DBSource;
 import Database.Marketplace;
 
@@ -8,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.Console;
 import java.io.IOException;
 
 public class ServerStartup extends Thread{

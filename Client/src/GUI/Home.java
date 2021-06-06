@@ -157,7 +157,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Title");
+        jLabel9.setText("User ID: " + user.getUserID());
 
         jLabel10.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -640,7 +640,7 @@ public class Home extends javax.swing.JFrame {
                             if(jLabel3.getText().equals(list.getAssetName())){
                                 socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"S",Double.parseDouble(jTextField1.getText()),user.getUserID()));
                                 socket = new ClientSocket();
-                                socket.removeOrgAsset(list.getAssetID(),Double.parseDouble(jTextField1.getText()),user);
+                                socket.removeOrgAsset(list.getAssetID(),Double.parseDouble(jTextField1.getText()),user, "-");
                                 jLabel36.setText("Sell order placed!");
                                 jLabel36.setVisible(true);
                                 jLabel13.setVisible(false);
@@ -678,7 +678,7 @@ public class Home extends javax.swing.JFrame {
                         if(jLabel3.getText().equals(list.getAssetName())){
                             socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
                             socket = new ClientSocket();
-                            socket.removeCredits(totalCost,user);
+                            socket.removeCredits(totalCost,user,"-");
                             jLabel36 .setText("Buy Order placed!");
                             jLabel36 .setVisible(true);
                             return;

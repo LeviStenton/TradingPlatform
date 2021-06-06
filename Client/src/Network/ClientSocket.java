@@ -39,7 +39,6 @@ public class ClientSocket {
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
     public static final String REMOVECREDITS = "REMOVECREDITS";
     public static final String REMOVEORGASSET = "REMOVEORGASSET";
-
     public static final String GETORGDETAILS = "GETORGDETAILS";
 
     public ClientSocket(){
@@ -53,25 +52,25 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
-    public void removeOrgAsset(int assetID,double amount, User user){
+    public void removeOrgAsset(int assetID,double amount, User user, String operator){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVEORGASSET);
-            objOutStream.writeObject(assetID);
-            objOutStream.writeObject(amount);
-            objOutStream.writeObject(user.getOrgID());
-
+            objOutStream.writeInt(assetID);
+            objOutStream.writeDouble(amount);
+            objOutStream.writeInt(user.getOrgID());
+            objOutStream.writeObject(operator);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void removeCredits(double amount, User user){
+    public void removeCredits(double amount, User user, String operator){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVECREDITS);
-            objOutStream.writeObject(amount);
-            objOutStream.writeObject(user.getOrgID());
-
+            objOutStream.writeDouble(amount);
+            objOutStream.writeInt(user.getOrgID());
+            objOutStream.writeObject(operator);
         }
         catch (IOException e) {
             e.printStackTrace();
