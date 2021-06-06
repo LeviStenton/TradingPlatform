@@ -7,8 +7,10 @@ package GUI;
 
 import Database.Asset;
 import Database.OrgDetails;
+import Database.User;
 import Network.ClientSocket;
 
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -39,8 +41,8 @@ public class AdminControls extends javax.swing.JFrame {
         jLabel3.setVisible(false);
         jLabel7.setVisible(false);
         jLabel4.setVisible(false);
-        jLabel5.setVisible(false); // Change org assets
-        jLabel6.setVisible(false); // Org credits
+        jLabel5.setVisible(false);
+        jLabel6.setVisible(false);
         jLabel35.setVisible(false);
         jLabel36.setVisible(false);
     }
@@ -282,7 +284,7 @@ public class AdminControls extends javax.swing.JFrame {
         ConfirmAccountCreation3.setBorder(null);
         ConfirmAccountCreation3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmAccountCreation3ActionPerformed(evt);
+                ChangeAssets(evt);
             }
         });
 
@@ -719,7 +721,7 @@ public class AdminControls extends javax.swing.JFrame {
         ConfirmAccountCreation4.setBorder(null);
         ConfirmAccountCreation4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfirmAccountCreation4ActionPerformed(evt);
+                ChangeCredits(evt);
             }
         });
 
@@ -997,16 +999,65 @@ public class AdminControls extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
-    private void ConfirmAccountCreation3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation3ActionPerformed
+    private void ChangeAssets(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation3ActionPerformed
         // TODO add your handling code here:
+        String list1Selected = jList1.getSelectedValue();
+        if(currentOrg != null && (list1Selected != null && !list1Selected.equals(""))){
+            ClientSocket sock = new ClientSocket();
+            List<Asset> assets = sock.getAssets();
+            int assetID = -1;
+            for(Asset asset : assets){
+                if(asset.getAssetName().equals(list1Selected)){
+                    assetID = asset.getAssetID();
+                    break;
+                }
+            }
+
+            if(assetID != -1){
+                User user = new User(0, "", currentOrg.getOrgID(), false);
+                sock = new ClientSocket();
+                sock.removeOrgAsset(assetID, Double.parseDouble(jTextField6.getText()), user, "=");
+            }
+
+            jLabel25.setText(list1Selected);
+            double assetQuantity = -1;
+            for(Asset asset : assets){
+                if(asset.getAssetName().equals(list1Selected)){
+                    sock = new ClientSocket();
+                    assetQuantity = sock.getOrgAssetQuantity(currentOrg.getOrgID(), asset.getAssetID());
+                    break;
+                }
+            }
+
+            jLabel27.setText(assetQuantity+"");
+            jLabel5.setVisible(true);
+        }
+
     }//GEN-LAST:event_ConfirmAccountCreation3ActionPerformed
 
     private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
-    private void ConfirmAccountCreation4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation4ActionPerformed
+    private void ChangeCredits(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmAccountCreation4ActionPerformed
         // TODO add your handling code here:
+        if(currentOrg != null){
+            ClientSocket sock = new ClientSocket();
+            User user = new User(0, "", currentOrg.getOrgID(), false);
+            sock.removeCredits(Double.parseDouble(jTextField7.getText()), user, "=");
+            String list2Selected = jList2.getSelectedValue();
+            if ((list2Selected != null && !list2Selected.equals(""))) {
+                sock = new ClientSocket();
+                List<OrgDetails> orgs = sock.getAllOrgs();
+                for (OrgDetails org : orgs)
+                    if (list2Selected.equals(org.getOrgName())) {
+                        currentOrg = org;
+                        break;
+                    }
+            }
+            jLabel33.setText(currentOrg.getCredits()+"");
+            jLabel6.setVisible(true);
+        }
     }//GEN-LAST:event_ConfirmAccountCreation4ActionPerformed
 
     private void RemoveAccount(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdminOn1ActionPerformed

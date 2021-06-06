@@ -1,5 +1,4 @@
-package Database;
-
+import Database.*;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +52,7 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopNormalCase(){
-        Marketplace mk = new Marketplace(source);
+        Marketplace mk = new Marketplace(db);
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(0,"1");
 
@@ -85,7 +84,7 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopNoCase(){
-        Marketplace mk = new Marketplace(source);
+        Marketplace mk = new Marketplace(db);
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(150,"1");
 
@@ -115,7 +114,7 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseMatch(){
-        Marketplace mk = new Marketplace(source);
+        Marketplace mk = new Marketplace(db);
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(0,"2");
 
@@ -161,7 +160,7 @@ public class ServerTests {
 
     @Test
     void RunMarketPlaceLoopDifferentQuantityCaseNoMatch(){
-        Marketplace mk = new Marketplace(source);
+        Marketplace mk = new Marketplace(db);
         source.InsertNewOrgIntoOrgDetails(150,"1");
         source.InsertNewOrgIntoOrgDetails(150,"2");
 

@@ -1,3 +1,5 @@
+package Database;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;
@@ -13,12 +15,6 @@ public class Hashing{
         String  originalPassword = str;
         String generatedSecuredPasswordHash = generateStorngPasswordHash(originalPassword);
         System.out.println(generatedSecuredPasswordHash);
-
-//        boolean matched = validatePassword("password", generatedSecuredPasswordHash);
-//        System.out.println(matched);
-//
-//        matched = validatePassword("password1", generatedSecuredPasswordHash);
-//        System.out.println(matched);
     }
 
     private static byte[] fromHex(String hex) throws NoSuchAlgorithmException

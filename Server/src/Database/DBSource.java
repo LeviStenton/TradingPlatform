@@ -665,7 +665,6 @@ public class DBSource implements DBInterface{
      * @param operator Takes math operators "+" "-" "="
      */
     public void UpdateOrgAsset(double quantity, int orgID, int assetID, String operator) {
-        ResultSet rs;
         double assetQuantity = GetOrgAssetQuantity(orgID, assetID);
         assetQuantity = ChangeWithOperator(assetQuantity, quantity, operator);
         try {
@@ -689,11 +688,8 @@ public class DBSource implements DBInterface{
      */
     public void ChangeOrgCredits(double credits, int orgID, String operator) {
         double currentCredits = 0;
-
         currentCredits = GetOrgCredits(orgID);
         currentCredits = ChangeWithOperator(currentCredits, credits, operator);
-
-
         try {
             changeOrgCredits.setDouble(1, currentCredits);
             changeOrgCredits.setInt(2, orgID);
