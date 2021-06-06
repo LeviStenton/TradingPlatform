@@ -19,6 +19,8 @@ public class Order implements Serializable {
 
     /**
      * Constructor for the Database.Order class
+     *
+     * @param order The results from querying the database for an order
      */
     public Order(ResultSet order) {
         try {
@@ -35,6 +37,12 @@ public class Order implements Serializable {
 
     }
 
+    /**
+     * Constructor for the Database.Order class
+     *
+     * @param order The results from querying the database for an order
+     * @param completed Determines whether the order is completed
+     */
     public Order(ResultSet order, String completed) {
         try {
             this.orderType = order.getString("OrderType");
@@ -50,6 +58,16 @@ public class Order implements Serializable {
         this.completed = completed;
     }
 
+    /**
+     * Constructor for the Database.Order class, made manually
+     *
+     * @param orderID The ID number of the order
+     * @param assetID The ID number of the asset
+     * @param price The price of the order
+     * @param type The type of order, 'sell' or 'buy'
+     * @param quantity The quantity of the asset sold/bought
+     * @param userID The ID number of the user issuing the order
+     */
     public Order(int orderID, int assetID, double price, String type, double quantity, int userID){
         this.orderID = orderID;
         this.assetID = assetID;
@@ -59,6 +77,14 @@ public class Order implements Serializable {
         this.userID = userID;
     }
 
+    /**
+     * Constructor for the Database.Order class, made manually
+     * @param assetID The ID number of the asset
+     * @param price The price of the order
+     * @param type The type of order, 'sell' or 'buy'
+     * @param quantity The quantity of the asset sold/bought
+     * @param userID The ID number of the user issuing the order
+     */
     public Order(int assetID, double price, String type, double quantity, int userID){
         this.assetID = assetID;
         this.price = price;
@@ -70,7 +96,7 @@ public class Order implements Serializable {
     /**
      * Get the ID of the person who placed the order
      *
-     * @return
+     * @return This Order's user ID
      */
     public int getUserID() {
         return this.userID;
@@ -112,15 +138,29 @@ public class Order implements Serializable {
         return this.assetID;
     }
 
-    //TODO comments
+    /**
+     * Gets the ID of the order
+     *
+     * @return the ID number of the order
+     */
     public int getOrderID() {
         return this.orderID;
     }
 
+    /**
+     * Gets the date the order was placed
+     *
+     * @return the date the or was placed
+     */
     public String getDatePlaced() {
         return this.datePlaced;
     }
 
+    /**
+     * Gets that state of completion of the order
+     *
+     * @return whether the order was completed or not
+     */
     public String getCompleted() {
         return this.completed;
     }
@@ -144,17 +184,12 @@ public class Order implements Serializable {
     }
 
     /**
-     * Set the date the order was placed
+     * Set whether or not that order is complete
      *
-     * @param datePlaced
+     * @param completed Determines whether the order is completed
      */
-    public void setDatePlaced(String datePlaced) {
-        this.datePlaced = datePlaced;
-    }
-
     public void setCompleted(String completed) {
         this.completed = completed;
     }
 
-    ;
 }

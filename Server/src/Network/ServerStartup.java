@@ -1,6 +1,5 @@
 package Network;
 
-import Database.DBSource;
 import Database.Marketplace;
 
 import javax.swing.*;
@@ -10,17 +9,20 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class ServerStartup extends Thread{
+
+    /**
+     * Starts the server up
+     *
+     * @param args the arguments taken by main()
+     * @throws IOException if anything main runs breaks, throw this
+     */
     public static void main(String[] args) throws IOException {
         ServerConnection server = new ServerConnection();
         ServerStartup marketplaceThread = new ServerStartup();
-
         SwingUtilities.invokeLater(() -> createAndShowGUI(server));
         try {
             marketplaceThread.start();
-
             server.start();
-
-
         } catch (IOException e) {
             // In the case of an exception, show an error message and terminate
             SwingUtilities.invokeLater(() -> {
@@ -32,10 +34,12 @@ public class ServerStartup extends Thread{
         }
     }
 
+    /**
+     * Runs the threading for the server
+     */
     public void run() {
         System.out.println("Working1");
-        DBSource source = new DBSource();
-        Marketplace mk = new Marketplace(source);
+        Marketplace mk = new Marketplace();
         while(true){
             System.out.println("Working");
             mk.GroupAssets();
@@ -47,6 +51,11 @@ public class ServerStartup extends Thread{
         }
     }
 
+    /**
+     * Creates and starts the GUI for the server
+     *
+     * @param server the server that the GUI displays the details of
+     */
     private static void createAndShowGUI(ServerConnection server) {
         JDialog dialog = new JDialog();
         dialog.setTitle("src.Network server for Address Book");

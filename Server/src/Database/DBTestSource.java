@@ -8,30 +8,12 @@ import java.util.List;
  */
 public class DBTestSource implements DBInterface {
 
-    List<Asset> assetList = new ArrayList<Asset>();
-    List<User> profileList = new ArrayList<User>();
-    public List<OrgAssets> orgAssetsList = new ArrayList<OrgAssets>();
-    public List<OrgDetails> orgDetailsList = new ArrayList<OrgDetails>();
-    public List<Order> orderList = new ArrayList<Order>();
-    public List<Order> orderHistoryList = new ArrayList<Order>();
-
-    public List<Asset> getAssetsList(){return this.assetList;};
-    public List<User> getAccountDetailsList(){return this.profileList;};
-    public List<OrgAssets> getOrgAssetsList(){return this.orgAssetsList;};
-    public List<OrgDetails> getOrgDetailsList(){return this.orgDetailsList;};
-    public List<Order> getOrderList(){return this.orderList;};
-    public List<Order> getOrderHistoryList(){return this.orderHistoryList;};
-
-    /**
-     *
-     * @param orgID
-     */
-    @Override
-    public void DeteteOrgFromOrgDetails(int orgID) {
-        orgDetailsList.removeIf(t -> t.getOrgID() == orgID);
-        orgAssetsList.removeIf(t -> t.getOrgID() == orgID);
-
-    }
+    List<Asset> assetList = new ArrayList<>();
+    List<User> profileList = new ArrayList<>();
+    public List<OrgAssets> orgAssetsList = new ArrayList<>();
+    public List<OrgDetails> orgDetailsList = new ArrayList<>();
+    public List<Order> orderList = new ArrayList<>();
+    public List<Order> orderHistoryList = new ArrayList<>();
 
     @Override
     public void InsertNewOrgIntoOrgDetails(float credits, String orgName) {
@@ -39,36 +21,8 @@ public class DBTestSource implements DBInterface {
     }
 
     @Override
-    public void DeleteAsset(int assetID) {
-        assetList.removeIf(t -> t.getAssetID() == assetID);
-    }
-
-    @Override
     public void AddNewAsset(String assetName) {
         assetList.add(new Asset(assetList.size() + 1,assetName));
-    }
-
-    @Override
-    public void DeleteUser(int userID) {
-        profileList.removeIf(t -> t.getUserID() == userID);
-    }
-
-    @Override
-    public void ChangeUserPassword(String password, int userID) {
-        for(User account: profileList){
-            if(account.getUserID() == userID){
-                account.setPassword(password);
-            }
-        }
-    }
-
-    @Override
-    public void ChangeUserOrg(int orgID, int userID) {
-        for(User account: profileList){
-            if(account.getUserID() == userID){
-                account.setOrgID(orgID);
-            }
-        }
     }
 
     @Override
@@ -122,7 +76,7 @@ public class DBTestSource implements DBInterface {
     @Override
     public User loginAttempt(String userName, String password) {
         for(User account: profileList){
-            if(account.getUserName() == userName && account.getPassword().equals(password)){
+            if(account.getUserName().equals(userName) && account.getPassword().equals(password)){
                 return  account;
             }
         }
@@ -163,15 +117,9 @@ public class DBTestSource implements DBInterface {
     @Override
     public double ChangeWithOperator(double current, double toChange, String operator) {
         switch (operator) {
-            case "+":
-                current += toChange;
-                break;
-            case "-":
-                current -= toChange;
-                break;
-            case "=":
-                current = toChange;
-                break;
+            case "+" -> current += toChange;
+            case "-" -> current -= toChange;
+            case "=" -> current = toChange;
         }
         return current;
     }
@@ -199,7 +147,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public void ChangeOrgCredits(double credits, int orgID, String operator) {
-        double currentCredits = 0;
+        double currentCredits;
 
         currentCredits = GetOrgCredits(orgID);
         currentCredits = ChangeWithOperator(currentCredits, credits, operator);
@@ -217,9 +165,9 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public List<Order> GetOrders(int assetID, String orderType) {
-        List<Order> toReturn = new ArrayList<Order>();
+        List<Order> toReturn = new ArrayList<>();
         for(Order order: orderList){
-            if(order.getOrderType() == orderType){
+            if(order.getOrderType().equals(orderType)){
                 if(order.getAssetID() == assetID){
                     toReturn.add(order);
                 }
@@ -233,7 +181,7 @@ public class DBTestSource implements DBInterface {
 
     @Override
     public List<Integer> GetAssetCount() {
-        List<Integer> toReturn = new ArrayList<Integer>();
+        List<Integer> toReturn = new ArrayList<>();
         for(Asset asset: assetList){
             toReturn.add(asset.getAssetID());
         }

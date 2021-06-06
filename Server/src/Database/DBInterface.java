@@ -5,19 +5,9 @@ import java.util.List;
 public interface DBInterface {
 
 
-    void DeteteOrgFromOrgDetails(int orgID);
-
     void InsertNewOrgIntoOrgDetails(float credits, String orgName);
 
-    void DeleteAsset(int assetID);
-
     void AddNewAsset(String assetName);
-
-    void DeleteUser(int userID);
-
-    void ChangeUserPassword(String password, int userID);
-
-    void ChangeUserOrg(int orgID, int userID);
 
     double GetOrderQuantity(int orderID);
 

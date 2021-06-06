@@ -1,4 +1,4 @@
-package src.Database;
+package Database;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,7 +20,7 @@ public class DBConnection {
      */
     private DBConnection() {
         Properties props = new Properties();
-        FileInputStream in = null;
+        FileInputStream in;
         try {
             in = new FileInputStream("./db.props");
             props.load(in);
@@ -35,10 +35,8 @@ public class DBConnection {
             // get a connection
             instance = DriverManager.getConnection(url + "/" + schema, username,
                     password);
-        } catch (SQLException sqle) {
+        } catch (SQLException | FileNotFoundException sqle) {
             System.err.println(sqle);
-        } catch (FileNotFoundException fnfe) {
-            System.err.println(fnfe);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
