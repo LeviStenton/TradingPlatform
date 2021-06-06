@@ -36,7 +36,9 @@ public class ClientSocket {
     public static final String GETORGASSETS = "GETORGASSETS";
     public static final String GETALLUSERS = "GETALLUSERS";
     public static final String GETALLORDERS = "GETALLORDERS";
+    public static final String GETALLORGDETAILS = "GETALLORGDETAILS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
+
 
 
     public ClientSocket(){
@@ -101,6 +103,22 @@ public class ClientSocket {
             try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
 
                 return (List<OrgAssets>) objInputStream.readObject();
+            }
+        }
+        catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return assets;
+        }
+    }
+
+    public List<OrgDetails> getAllOrgDetails(){
+        List<OrgDetails> assets = new ArrayList<OrgDetails>();
+        try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
+            objOutStream.writeObject(GETALLORGDETAILS);
+            objOutStream.flush();
+            try(ObjectInputStream objInputStream = new ObjectInputStream(sock.getInputStream())){
+
+                return (List<OrgDetails>) objInputStream.readObject();
             }
         }
         catch (IOException | ClassNotFoundException e) {

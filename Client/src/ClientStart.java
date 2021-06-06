@@ -28,18 +28,20 @@ public class ClientStart extends Thread{
 
             socket = new ClientSocket();
             DatabaseStorage.setOrderHistory(socket.getOrderHistory());
-            GUI.Home.UpdateOrderHistory();
 
             socket = new ClientSocket();
             DatabaseStorage.setProfileList(socket.getAllUsers());
 
             socket = new ClientSocket();
             DatabaseStorage.setOrders(socket.getAllOrders());
-            GUI.Home.UpdateOrders();
 
+            socket = new ClientSocket();
+            DatabaseStorage.setOrgAssets(socket.getAllOrgAssets());
 
-            //socket = new ClientSocket();
-            //DatabaseStorage.setOrgAssets(socket.getAllOrgAssets());
+            socket = new ClientSocket();
+            DatabaseStorage.setOrgDetails(socket.getAllOrgDetails());
+
+            GUI.Home.UpdateHome();
 
 //            for(Asset asset : DatabaseStorage.getAssetList()){
 //                System.out.println(asset.getAssetName());

@@ -22,6 +22,8 @@ import java.util.List;
 public class Home extends javax.swing.JFrame {
     private ClientSocket socket;
     private User user;
+    static int orgID;
+
 
     private ListModelScreen assetList;
 
@@ -30,6 +32,8 @@ public class Home extends javax.swing.JFrame {
      */
     public Home(User user) {
         this.user = user;
+        orgID = this.user.getOrgID();
+
         socket = new ClientSocket();
         this.assetList =  new ListModelScreen(socket);
         initComponents();
@@ -141,7 +145,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Name");
+        jLabel8.setText(user.getUserName());
 
         jLabel9.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
@@ -474,8 +478,7 @@ public class Home extends javax.swing.JFrame {
             if (AssetsList.getSelectedValue() != null
                     && !AssetsList.getSelectedValue().equals("")) {
                 jLabel3.setText(AssetsList.getSelectedValue());
-                UpdateOrderHistory();
-                UpdateOrders();
+                UpdateHome();
                 int assetID = -1;
                 double amountOwn = 0;
                 for(Asset asset : DatabaseStorage.getAssetList()){
@@ -494,6 +497,17 @@ public class Home extends javax.swing.JFrame {
                 }
                 jLabel4.setText("Amount owned: " + amountOwn);
                 //System.out.println(AssetsList.getSelectedValue());
+            }
+        }
+    }
+
+    public static void UpdateHome(){
+        UpdateOrderHistory();
+        UpdateOrders();
+        for (OrgDetails details : DatabaseStorage.getOrgDetails()){
+            if(details.getOrgID() == orgID){
+                WalletLabel.setText("$ " + details.getCredits());
+                jLabel10.setText(details.getOrgName());
             }
         }
     }
@@ -608,11 +622,19 @@ public class Home extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         ClientSocket socket = new ClientSocket();
-        for(Asset list : DatabaseStorage.getAssetList()){
-            if(jLabel3.getText().equals(list.getAssetName())){
-                socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+        double totalCost = Double.parseDouble(jTextField2.getText()) * Double.parseDouble(jTextField1.getText());
+        for(OrgDetails details : DatabaseStorage.getOrgDetails()){
+            if(details.getOrgID() == user.getOrgID()){
+                if(totalCost <= details.getCredits()){
+                    for(Asset list : DatabaseStorage.getAssetList()){
+                        if(jLabel3.getText().equals(list.getAssetName())){
+                            socket.sendOrder(new Order(list.getAssetID(),Double.parseDouble(jTextField2.getText()),"B",Double.parseDouble(jTextField1.getText()),user.getUserID()));
+                        }
+                    }
+                }
             }
         }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -674,10 +696,10 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenu TopBar;
     private javax.swing.JPanel Wallet;
     private javax.swing.JPanel WalletBack;
-    private javax.swing.JLabel WalletLabel;
+    private static javax.swing.JLabel WalletLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel10;
+    private static javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

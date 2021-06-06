@@ -1,6 +1,8 @@
 package Database;
 
-public class OrgAssets {
+import java.io.Serializable;
+
+public class OrgAssets implements Serializable {
 
     private int orgID;
     private int assetID;
