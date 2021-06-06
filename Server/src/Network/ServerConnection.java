@@ -33,7 +33,7 @@ public class ServerConnection {
     public static final String GETALLUSERS = "GETALLUSERS";
     public static final String GETALLORDERS = "GETALLORDERS";
     public static final String GETALLORGASSETS = "GETALLORGASSETS";
-
+    public static final String GETORGDETAILS = "GETORGDETAILS";
 
     // Database connection
     DBSource db;
@@ -130,6 +130,10 @@ public class ServerConnection {
                     int assetID = objInStream.readInt();
                     try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
                         outStream.writeDouble(db.GetOrgAssetQuantity(orgID, assetID));
+                    } break;
+                case GETORGDETAILS:
+                    try(ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream())){
+                        outStream.writeObject(db.GetAllOrgs());
                     } break;
             }
         }

@@ -6,11 +6,13 @@
 package GUI;
 
 import Database.Asset;
+import Database.OrgDetails;
 import Network.ClientSocket;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,13 +24,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AdminControls extends javax.swing.JFrame {
 
     private ListModelScreen assetList;
+    private ListModelScreen orgList;
 
     /**
      * Creates new form AdminControls
      */
     public AdminControls() {
         ClientSocket socket = new ClientSocket();
-        this.assetList =  new ListModelScreen(socket);
+        List<String> assets = new ArrayList<>();
+        for (Asset asset : socket.getAssets()){
+            assets.add(asset.getAssetName());
+        }
+        this.assetList =  new ListModelScreen(assets);
+        socket = new ClientSocket();
+        List<String> orgs = new ArrayList<>();
+        for (OrgDetails org : socket.getAllOrgs()){
+            orgs.add(org.getOrgName());
+        }
+        this.orgList = new ListModelScreen(orgs);
         initComponents();
         jLabel2.setVisible(false);
         jLabel3.setVisible(false);
@@ -58,7 +71,7 @@ public class AdminControls extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jList1 = new javax.swing.JList(assetList.getModel());
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -115,7 +128,7 @@ public class AdminControls extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jList2 = new javax.swing.JList(orgList.getModel());
         jLabel34 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -142,7 +155,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField1.setBackground(new java.awt.Color(48, 48, 56));
         jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("Username");
+        jTextField1.setText("");
         jTextField1.setBorder(null);
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,7 +165,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jPasswordField1.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField1.setText("Password");
+        jPasswordField1.setText("");
         jPasswordField1.setBorder(null);
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -234,16 +247,11 @@ public class AdminControls extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Change Organisation Asset Amount");
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jList1);
 
         jLabel23.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel23.setText("Assets");
+        jLabel23.setText("-");
 
         jLabel24.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(255, 255, 255));
@@ -251,7 +259,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel25.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel25.setText("ASSET");
+        jLabel25.setText("-");
 
         jLabel26.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,11 +267,11 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel27.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel27.setText("AMOUNT");
+        jLabel27.setText("-");
 
         jTextField6.setBackground(new java.awt.Color(48, 48, 56));
         jTextField6.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField6.setText("Amount");
+        jTextField6.setText("");
         jTextField6.setBorder(null);
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -372,7 +380,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField2.setBackground(new java.awt.Color(48, 48, 56));
         jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("Username");
+        jTextField2.setText("");
         jTextField2.setBorder(null);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -382,7 +390,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jPasswordField2.setBackground(new java.awt.Color(48, 48, 56));
         jPasswordField2.setForeground(new java.awt.Color(255, 255, 255));
-        jPasswordField2.setText("Password");
+        jPasswordField2.setText("");
         jPasswordField2.setBorder(null);
         jPasswordField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,7 +477,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField3.setBackground(new java.awt.Color(48, 48, 56));
         jTextField3.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField3.setText("Username");
+        jTextField3.setText("");
         jTextField3.setBorder(null);
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -499,7 +507,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("ADMIN/USER");
+        jLabel18.setText("-");
 
         AdminOn1.setText("Remove Account");
         AdminOn1.setBorder(null);
@@ -574,7 +582,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField4.setBackground(new java.awt.Color(48, 48, 56));
         jTextField4.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField4.setText("Asset Name");
+        jTextField4.setText("");
         jTextField4.setBorder(null);
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -600,7 +608,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jTextField5.setBackground(new java.awt.Color(48, 48, 56));
         jTextField5.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField5.setText("Asset Name");
+        jTextField5.setText("");
         jTextField5.setBorder(null);
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -696,11 +704,11 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel30.setText("ORG");
+        jLabel30.setText("");
 
         jTextField7.setBackground(new java.awt.Color(48, 48, 56));
         jTextField7.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField7.setText("Credit");
+        jTextField7.setText("");
         jTextField7.setBorder(null);
         jTextField7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -726,7 +734,7 @@ public class AdminControls extends javax.swing.JFrame {
 
         jLabel33.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel33.setText("AMOUNT");
+        jLabel33.setText("");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 130, 35));
@@ -786,11 +794,6 @@ public class AdminControls extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(jList2);
 
         jLabel34.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -875,6 +878,7 @@ public class AdminControls extends javax.swing.JFrame {
      */
     private void addNameListListener(ListSelectionListener listener) {
         jList1.addListSelectionListener(listener);
+        jList2.addListSelectionListener(listener);
     }
 
     /**
@@ -887,19 +891,19 @@ public class AdminControls extends javax.swing.JFrame {
          * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
          */
         public void valueChanged(ListSelectionEvent e) {
-            String selected = jList1.getSelectedValue();
-            if (selected != null && !selected.equals("")) {
-                jLabel25.setText(jList1.getSelectedValue());
-                double assetQuantity = -1;
-                ClientSocket sock = new ClientSocket();
-                for(Asset asset : sock.getAssets()){
-                    if(asset.getAssetName().equals(selected)){
-                        sock = new ClientSocket();
-                        assetQuantity = sock.getOrgAssetQuantity(2, asset.getAssetID());
-                    }
-                }
-                jLabel27.setText(assetQuantity+"");
-            }
+//            String selected = jList1.getSelectedValue();
+//            if (selected != null && !selected.equals("")) {
+//                jLabel25.setText(jList1.getSelectedValue());
+//                double assetQuantity = -1;
+//                ClientSocket sock = new ClientSocket();
+////                for(Asset asset : sock.getAssets()){
+////                    if(asset.getAssetName().equals(selected)){
+////                        sock = new ClientSocket();
+////                        assetQuantity = sock.getOrgAssetQuantity(2, asset.getAssetID());
+////                    }
+////                }
+//                jLabel27.setText(assetQuantity+"");
+//            }
         }
     }
 

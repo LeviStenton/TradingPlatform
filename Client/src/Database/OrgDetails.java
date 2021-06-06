@@ -7,7 +7,7 @@ public class OrgDetails implements Serializable {
     private double credits;
     private String orgName;
 
-    public OrgDetails (int orgID, double credits, String orgName){
+    public OrgDetails(int orgID, double credits, String orgName){
         this.orgID = orgID;
         this.credits = credits;
         this.orgName = orgName;

@@ -252,6 +252,12 @@ public class ServerTests {
         assertEquals(1, db.GetOrgAssetQuantity(orgID, assetID));
     }
 
+    @Test
+    void getOrgs(){
+        List<OrgDetails> orgs = db.GetAllOrgs();
+        assertTrue(orgs != null);
+    }
+
     /**
      * GLASS BOX TESTS ------------------------------------------------------------------
      */

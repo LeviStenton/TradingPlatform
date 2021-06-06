@@ -41,6 +41,7 @@ public class DBSource {
     private final String GETALLORGASSETS = "SELECT * FROM OrganizationAssets";
     private final String GETALLUSERS = "SELECT * FROM AccountDetails";
     private final String GETALLORDERS = "SELECT * FROM Orders";
+    private final String GETALLORGS = "SELECT * FROM OrganizationDetails";
 
     private PreparedStatement loginVerification;
     private PreparedStatement getPassword;
@@ -73,6 +74,7 @@ public class DBSource {
     private PreparedStatement getAllUsers;
     private PreparedStatement getAllOrders;
     private PreparedStatement getAllOrgAssets;
+    private PreparedStatement getAllOrgs;
 
     public DBSource() {
         connection = src.Database.DBConnection.getInstance();
@@ -109,6 +111,7 @@ public class DBSource {
             getAllUsers = connection.prepareStatement(GETALLUSERS);
             getAllOrders = connection.prepareStatement(GETALLORDERS);
             getAllOrgAssets = connection.prepareStatement(GETALLORGASSETS);
+            getAllOrgs = connection.prepareStatement(GETALLORGS);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -735,12 +738,8 @@ public class DBSource {
         List<Asset> assets = new ArrayList<Asset>();
         try {
             rs = getAllAssets.executeQuery();
-            int i = 0;
-            while (rs.next()) {
-                Asset asset = new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName"));
-                assets.add(asset);
-                ++i;
-            }
+            while (rs.next())
+                assets.add(new Asset((int)rs.getObject("AssetID"), (String) rs.getObject("AssetName")));
             return assets;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -791,5 +790,19 @@ public class DBSource {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<OrgDetails> GetAllOrgs() {
+        ResultSet rs;
+        List<OrgDetails> orgs = new ArrayList<>();
+        try {
+            rs = getAllOrgs.executeQuery();
+            while (rs.next())
+                orgs.add(new OrgDetails(rs.getInt("OrganizationID"), rs.getDouble("CreditQuantity"), rs.getString("OrganizationName")));
+            return orgs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
