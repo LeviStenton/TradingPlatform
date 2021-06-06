@@ -2,7 +2,15 @@ import Database.DatabaseStorage;
 import GUI.Login;
 import Network.ClientSocket;
 
+import java.io.IOException;
+
 public class ClientStart extends Thread{
+
+    /**
+     * Starts the Client and its GUI up
+     *
+     * @param args the arguments taken by main()
+     */
     public static void main(String[] args){
         Login login = new Login();
         ClientStart updateAssets = new ClientStart();
@@ -14,6 +22,10 @@ public class ClientStart extends Thread{
         });
         updateAssets.start();
     }
+
+    /**
+     * Manages threading for the client class
+     */
     public void run() {
         ClientSocket socket;
         while (true){

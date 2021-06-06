@@ -12,13 +12,17 @@ import java.security.spec.InvalidKeySpecException;
  */
 public class Hashing{
     public Hashing(String str) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String  originalPassword = str;
-        String generatedSecuredPasswordHash = generateStorngPasswordHash(originalPassword);
+        String generatedSecuredPasswordHash = generateStorngPasswordHash(str);
         System.out.println(generatedSecuredPasswordHash);
     }
 
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
-    {
+    /**
+     * Hashes from a hex string
+     *
+     * @param hex the hex string
+     * @return an array of bytes
+     */
+    private static byte[] fromHex(String hex) {
         byte[] bytes = new byte[hex.length() / 2];
         for(int i = 0; i<bytes.length ;i++)
         {
@@ -27,6 +31,14 @@ public class Hashing{
         return bytes;
     }
 
+    /**
+     * Generates a hashed password from a password string
+     *
+     * @param password the string to be hashed
+     * @return the hashed password
+     * @throws NoSuchAlgorithmException excpetion to be thrown
+     * @throws InvalidKeySpecException exception to be thrown
+     */
     private static String generateStorngPasswordHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
     {
         int iterations = 1000;
@@ -39,6 +51,12 @@ public class Hashing{
         return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
+    /**
+     * Gets an array of random bytes
+     *
+     * @return an array of bytes
+     * @throws NoSuchAlgorithmException exception to be thrown
+     */
     private static byte[] getSalt() throws NoSuchAlgorithmException
     {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -47,8 +65,13 @@ public class Hashing{
         return salt;
     }
 
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException
-    {
+    /**
+     * Creates a hex string from an array of bytes
+     *
+     * @param array the array bytes
+     * @return a hex string
+     */
+    private static String toHex(byte[] array) {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();

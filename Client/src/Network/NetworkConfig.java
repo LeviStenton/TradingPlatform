@@ -10,6 +10,9 @@ public class NetworkConfig {
     public String getIP() { return IP; }
     public int getPORT() { return  PORT; }
 
+    /**
+     * Reads from a local .txt file to get networking details
+     */
     public NetworkConfig() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             String[] readIP = reader.readLine().split(" ");
@@ -25,6 +28,9 @@ public class NetworkConfig {
         }
     }
 
+    /**
+     * Updates the config file with blank details
+     */
     public void updateFile(){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILENAME))){
             writer.write("port = " + PORT + "\n");

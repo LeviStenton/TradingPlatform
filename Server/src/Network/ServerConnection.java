@@ -3,22 +3,12 @@ package Network;
 import Database.DBSource;
 import Database.Order;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-<<<<<<< HEAD
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-=======
->>>>>>> a7d88417971639dd091668ec197c04a009e32fad
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServerConnection {

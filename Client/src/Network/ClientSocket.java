@@ -41,6 +41,9 @@ public class ClientSocket {
     public static final String REMOVEORGASSET = "REMOVEORGASSET";
     public static final String GETORGDETAILS = "GETORGDETAILS";
 
+    /**
+     * The constructor for the client's networking
+     */
     public ClientSocket(){
         NetworkConfig config = new NetworkConfig();
         System.out.println("IP: " + HOSTNAME + "\nPORT: " + PORT);
@@ -52,6 +55,15 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Remove an asset from an organization
+     *
+     * @param assetID the ID of the asset
+     * @param amount the quantity to remove
+     * @param user the user removing the asset
+     * @param operator +, -, or = the sum of assets
+     */
     public void removeOrgAsset(int assetID,double amount, User user, String operator){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVEORGASSET);
@@ -65,6 +77,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Remove a number of credits from an organization a user belongs to
+     *
+     * @param amount the amount to remove
+     * @param user the user to remove credits from their organization
+     * @param operator +, -, or = the sum of assets
+     */
     public void removeCredits(double amount, User user, String operator){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVECREDITS);
@@ -77,6 +96,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Send an order to the database
+     *
+     * @param order the order to be sent
+     */
     public void sendOrder(Order order){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(ORDER);
@@ -87,6 +111,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Attempt a login by a user using text fields
+     *
+     * @param login the username of the user
+     * @param password the password of the user
+     * @return the user that the details matched to, if any
+     */
     public User sendLogin(String login, String password){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(LOGIN);
@@ -103,6 +134,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Gets all Asset objects and their details from the database
+     *
+     * @return the list of Assets
+     */
     public List<Asset> getAssets(){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETASSETS);
@@ -117,6 +153,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Get all the Assets belonging to an organization
+     *
+     * @return the list of Assets
+     */
     public List<OrgAssets> getAllOrgAssets(){
         List<OrgAssets> assets = new ArrayList<OrgAssets>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -133,6 +174,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Get a list of all organizations as OrgDetails objects from the database
+     *
+     * @return the list of organizations
+     */
     public List<OrgDetails> getAllOrgDetails(){
         List<OrgDetails> assets = new ArrayList<OrgDetails>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -149,6 +195,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Get a list of the history of orders from the database
+     *
+     * @return the history of orders
+     */
     public List<Order> getOrderHistory(){
         List<Order> assets = new ArrayList<Order>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -165,6 +216,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Gets a list of all users in the database
+     *
+     * @return the list of users
+     */
     public List<User> getAllUsers(){
         List<User> assets = new ArrayList<User>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -181,6 +237,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Gets a list of all order currently trading from the database
+     *
+     * @return the list of trading orders
+     */
     public List<Order> getAllOrders(){
         List<Order> orders = new ArrayList<Order>();
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
@@ -197,6 +258,14 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Changes the password from the user's perspective
+     *
+     * @param currentPass the user's current password
+     * @param newPass the user's new password
+     * @param userID the user's ID number
+     * @return whether changing the password was successful or not
+     */
     public boolean changePassword(String currentPass, String newPass, int userID){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(PASSWORD);
@@ -214,6 +283,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Changes a user's password from the admin control panel
+     *
+     * @param username the username of the user
+     * @param newPass their new password
+     * @return whether changing the password was successful or not
+     */
     public boolean adminChangePassword(String username, String newPass){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(ADMINPASS);
@@ -230,6 +306,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Creating a new user account and write it to the database
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return whether creating the account was successful or not
+     */
     public boolean createAccount(String username, String password){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(CREATEACC);
@@ -246,6 +329,12 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Remove a user's account from the database
+     *
+     * @param username the username of the user to remove
+     * @return whether removing the account was successful or not
+     */
     public boolean removeAccount(String username){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVEACC);
@@ -261,6 +350,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Promote a user to an admin or demote them to a user
+     *
+     * @param username the username of the user
+     * @param admin whether the user is admin or not
+     * @return whether promoting/demoting the user was successful or not
+     */
     public boolean promoteAccount(String username, boolean admin){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(PROMOTE);
@@ -277,6 +373,12 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Add a new asset to the database
+     *
+     * @param assetName the name of the asset to add
+     * @return whether adding the asset was successful or not
+     */
     public boolean addAsset(String assetName){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(ADDASSET);
@@ -292,6 +394,12 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Remove an asset from the database
+     *
+     * @param assetName the name of the asset to remove
+     * @return
+     */
     public boolean removeAsset(String assetName){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(REMOVEASSET);
@@ -307,6 +415,13 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Get the quantity of an asset that belong to an organization
+     *
+     * @param orgID the ID number of the organization
+     * @param assetID the ID number of the asset
+     * @return the quantity of the asset
+     */
     public double getOrgAssetQuantity(int orgID, int assetID){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETORGASSETS);
@@ -323,6 +438,11 @@ public class ClientSocket {
         }
     }
 
+    /**
+     * Get a list of all organization in the database as OrgDetails objects
+     *
+     * @return a list of OrgDetails
+     */
     public List<OrgDetails> getAllOrgs(){
         try (ObjectOutputStream objOutStream = new ObjectOutputStream(sock.getOutputStream())) {
             objOutStream.writeObject(GETORGDETAILS);
