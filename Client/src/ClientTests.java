@@ -1,9 +1,10 @@
+import Database.DatabaseStorage;
 import Database.Order;
 import Database.User;
 import Network.ClientSocket;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * BLACK BOX TESTS --------------------------------------------------------------------------
@@ -15,31 +16,29 @@ class BlackBoxTests {
 
     @Test
     void buyOrder() {
-
+        sock.sendOrder(new Order(1, 10, "B", 1, 1 ));
     }
 
     @Test
     void sellOrder() {
-
+        sock.sendOrder(new Order(1, 10, "S", 1, 1 ));
     }
 
     @Test
     void accountCreation() {
-
+        assertTrue(sock.createAccount("Levi", "test"));
     }
 
     @Test
     void removeAccount() {
-        String username = "Eggs";
-        assertTrue(sock.removeAccount(username));
+        assertTrue(sock.removeAccount("Eggs"));
     }
 
     @Test
     void loginVerification() {
         String username = "LeviStenton";
-        String password = "test";
-        User user = sock.sendLogin(username, password);
-        System.out.println(user.getUserName() + " " + user.getAdmin());
+        String password = "test123";
+        assertNotNull(sock.sendLogin(username, password));
     }
 
     @Test
